@@ -1,4 +1,6 @@
-## Files and folders details
+#Attendance System
+
+## Project Structure - Files and folders details
 
 - **Root Directory:** The root directory is the main folder in which all the files and folders for that particular application are present, like the entry point file, src folder, public folder, routes, models, views, and controllers.
   
