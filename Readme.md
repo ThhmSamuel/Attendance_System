@@ -1,4 +1,4 @@
-#Attendance System
+##Attendance System
 
 ## Project Structure - Files and folders details
 
