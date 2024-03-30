@@ -23,7 +23,7 @@
 //     if(err) throw err;
 //     console.log("Connected to database");  
 // });  
-
+ 
  
 // app.use("/",require("./src/routes/pages"));   
 // app.use("/api", require("./src/controllers/auth")); 
@@ -34,7 +34,7 @@
 const express = require("express");
 const db = require("./src/routes/db-config") 
 const app = express(); 
-const cookie = require("cookie-parser");
+const cookie = require("cookie-parser"); 
 const PORT = process.env.PORT || 5000;
 
 app.use("/js",express.static(__dirname + "/public/assets/js"));   // meaning , you can access "public/assets/js" with just  "js/" 
@@ -57,7 +57,7 @@ db.connect((err)=>{
     if(err) throw err;
     console.log("Connected to database");  
 });  
-
+ 
  
 app.use("/",require("./src/routes/pages"));    // bring anything that starts with "/" to  "./src/routes/pages"
 app.use("/api", require("./src/controllers/auth"));  // bring anything that starts with "/api" to "./src/controllers/auth"  
