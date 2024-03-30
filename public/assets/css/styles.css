@@ -194,13 +194,28 @@ h1 {
   }
   
   .show{ 
-    width: calc(var(--nav-width) + 156px);
+    width: calc(var(--nav-width) + 156px); 
   }
 
   /* .body-pd{
     padding-left: calc(var(--nav-width) + 188px);
   } */
 }
+
+/* Data table */
+.data_table{
+  background: #fff;
+  padding: 15px;
+  box-shadow: 1px 3px 5px #aaa; 
+  border-radius: 5px;
+}
+
+.data_table .btn{
+  padding: 5px 10px;
+  margin: 5px 5px 1px 5px;
+  width: 80px;
+}
+
 
 
 

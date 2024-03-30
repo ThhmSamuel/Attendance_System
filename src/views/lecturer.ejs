@@ -33,7 +33,7 @@
                             <span class="nav__name">Dashboard</span> 
                         </a>
 
-                        <a href="#" class="nav__link">
+                        <a href="#" class="nav__link"> 
                             <i class='bx bx-grid-alt nav__icon' ></i>
                             <span class="nav__name">Generate QR Code</span>
                         </a>
@@ -44,7 +44,7 @@
                         </a>
                         
                         <a href="#" class="nav__link">
-                            <i class='bx bx-message-square-detail nav__icon' ></i>
+                            <i class='bx bx-message-square-detail nav__icon'></i>    
                             <span class="nav__name">MC Approval</span>
                         </a>
 
@@ -72,14 +72,15 @@
         <!--===== MAIN JS =====-->
         <script src="js/main.js"></script>
 
-        <script>
+        <script> 
+
             // Immediately show the sidebar without requiring any click event
-            const navBar = document.getElementById('nav-bar');
+            const navBar = document.getElementById('nav-bar'); 
             if (navBar) {
                 navBar.classList.add('show');
             }
 
-            var userEmail = "<%= user.email %>";
+            var userEmail = "<%= user.email %>"; 
             console.log(userEmail);
 
         </script>
