@@ -11,7 +11,7 @@
   --first-color: #4723D9;
   --first-color-light: #AFA5D9;
   --white-color: #F7F6FB;
-  
+   
   /*===== Font and typography =====*/ 
   --body-font: 'Nunito', sans-serif;
   --normal-font-size: 1rem;
@@ -26,7 +26,7 @@
 }
 
 body{
-  position: relative; 
+  position: relative;  
   /* margin: var(--header-height) 0 0 0; */
   padding: 0 1rem;
   font-family: var(--body-font);
