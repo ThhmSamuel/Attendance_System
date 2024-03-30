@@ -8,3 +8,5 @@ const db = sql.createConnection({
 })
 
 module.exports = db;  
+
+

@@ -8,14 +8,15 @@
         <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
 
         <!-- ===== CSS ===== -->
-        <link rel="stylesheet" href="assets/css/styles.css"> 
+        <link rel="stylesheet" href="css/styles.css"> 
 
         <title>Attendance Management System</title>
-    </head>  
+    </head>   
     <body id="body-pd">
         
         <div class="content" id="main-content"> 
             <h1>Page admin</h1>
+            <h1><%= user.email %></h1>      
         </div>
 
         <div class="l-navbar" id="nav-bar"> 
@@ -58,7 +59,7 @@
                     </div>
                 </div>
 
-                <a href="#" class="nav__link">
+                <a href="/logout" class="nav__link">
                     <i class='bx bx-log-out nav__icon' ></i>
                     <span class="nav__name">Log Out</span>
                 </a>
@@ -67,7 +68,7 @@
  
         
         <!--===== MAIN JS =====-->
-        <script src="assets/js/main.js"></script>
+        <script src="js/main.js"></script>
 
         <script>
             // Immediately show the sidebar without requiring any click event
@@ -75,6 +76,10 @@
             if (navBar) {
                 navBar.classList.add('show');
             }
+
+            var userEmail = "<%= user.email %>";
+            console.log(userEmail);
+
         </script>
 
     </body>
