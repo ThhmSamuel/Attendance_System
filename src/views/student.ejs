@@ -25,37 +25,37 @@
                     <a href="#" class="nav__logo">
                         <span class="nav__logo-name">Student</span>       
                     </a>
-
+    
                     <div class="nav__list">
-                        <a href="#" class="nav__link active"> 
+                        <a href="#" class="nav__link active" onclick="loadContent('dashboard.html')"> 
                             <i class='bx bxs-dashboard  nav__icon' ></i>
                             <span class="nav__name">Dashboard</span>
                         </a>
-
-                        <a href="#" class="nav__link">
+    
+                        <a href="#" class="nav__link" onclick="loadContent('attendance.html')">
                             <i class='bx bxs-calendar-alt nav__icon' ></i>
                             <span class="nav__name">Monitor Attendance</span>
                         </a>
                         
-                        <a href="#" class="nav__link">
+                        <a href="#" class="nav__link" onclick="loadContent('/student/uploadMC.html')">
                             <i class='bx bx-message-square-detail nav__icon' ></i>
                             <span class="nav__name">MC Approval Status</span>
                         </a>
-
-                        <a href="#" class="nav__link"> 
+    
+                        <a href="#" class="nav__link" onclick="loadContent('settings.html')"> 
                             <i class='bx bx-cog nav__icon' ></i>
                             <span class="nav__name">Settings</span>  
                         </a>
                     </div>
                     
                 </div> 
-
+    
                 <a href="/logout" class="nav__link">   
                     <i class='bx bx-log-out nav__icon' ></i>
                     <span class="nav__name">Log Out</span>
                 </a>
             </nav>
-        </div> 
+        </div>
  
         
         <!--===== MAIN JS =====-->
@@ -71,7 +71,21 @@
             var userEmail = "<%= user.email %>";
             console.log(userEmail);
 
+            // Function to load HTML content into the main content area
+            function loadContent(page) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("main-content").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("GET", page, true);
+                xhttp.send();
+            }
+
         </script>
+
+        
 
     </body>
 </html> 
