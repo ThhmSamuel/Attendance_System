@@ -53,13 +53,14 @@
                     </div>
                     
                 </div> 
-
+    
                 <a href="/logout" class="nav__link">   
                     <i class='bx bx-log-out nav__icon' ></i>
                     <span class="nav__name">Log Out</span>
                 </a>
             </nav>
         </div>   
+
         
         <!--===== MAIN JS =====-->
         <script src="js/main.js"></script> 
@@ -81,7 +82,6 @@
             var userEmail = "<%= user.email %>";
             console.log(userEmail);
 
-
             function fetchPageContent(event, pageURL) { 
                 event.preventDefault(); // Prevent default behavior
                 
@@ -95,6 +95,8 @@
                     .catch(error => console.error('Error fetching page content:', error));
             }
             
+            
+            // Function to load HTML content into the main content area
             function loadContent(page) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
@@ -105,8 +107,9 @@
                 xhttp.open("GET", page, true);
                 xhttp.send();
             }
-  
         </script> 
+
+        
 
     </body>
 </html> 

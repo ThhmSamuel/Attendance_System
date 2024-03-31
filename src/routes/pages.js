@@ -1,6 +1,7 @@
 const express = require("express"); 
 const loggedIn = require("../controllers/loggedIn");
 const logout = require("../controllers/logout");  
+const uploadMC = require("../controllers/uploadMC");
 const router = express.Router();
   
 
@@ -31,5 +32,7 @@ router.get("/",loggedIn,(req,res)=>{
 
 router.get("/logout",logout)    
  
+//Route to upload MC
+router.post("/uploadMC",uploadMC)
 
 module.exports = router;   
