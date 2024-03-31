@@ -1,7 +1,7 @@
 const express = require("express"); 
 const loggedIn = require("../controllers/loggedIn");
 const logout = require("../controllers/logout");  
-const uploadMC = require("../controllers/uploadMC");
+const uploadMC = require("../models/uploadMC");
 const router = express.Router();
   
 
