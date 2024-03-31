@@ -7,15 +7,18 @@
         <!-- ===== BOX ICONS ===== -->
         <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
 
-        <!-- ===== CSS ===== -->
-        <link rel="stylesheet" href="css/styles.css">   
+        <!-- ===== CSS ===== --> 
+        <link rel="stylesheet" href="css/bootstrap.min.css">   
+        <link rel="stylesheet" href="css/datatables.min.css"> 
+        <link rel="stylesheet" href="css/styles.css">   <!-- ===== loading the custom css after bootstrap to prevent bootstrap from overriding style.css ===== --> 
 
-        <title>Attendance Management System</title>
-    </head>  
+
+        <title>Attendance Management System</title>  
+    </head>   
     <body>
         
         <div class="content" id="main-content">
-            <h1>Page student</h1>  
+            <h1>Page student</h1>   
             <h1><%= user.email %></h1>      
         </div> 
 
@@ -26,24 +29,25 @@
                         <span class="nav__logo-name">Student</span>       
                     </a>
 
-                    <div class="nav__list">
+                    <div class="nav__list"> 
                         <a href="#" class="nav__link active"> 
                             <i class='bx bxs-dashboard  nav__icon' ></i>
-                            <span class="nav__name">Dashboard</span>
-                        </a>
-
-                        <a href="#" class="nav__link">
-                            <i class='bx bxs-calendar-alt nav__icon' ></i>
+                            <span class="nav__name">Dashboard</span> 
+                        </a> 
+ 
+                        <a href="student/student-monitoring.html" onclick="fetchPageContent(event,'student/student-monitoring.html')" class="nav__link"> 
+                        <!-- <a href="#" class="nav__link" onclick="loadContent('/student/student-monitoring.html')">  -->
+                                <i class='bx bxs-calendar-alt nav__icon' ></i>
                             <span class="nav__name">Monitor Attendance</span>
                         </a>
-                        
-                        <a href="#" class="nav__link">
+                         
+                        <a href="#" class="nav__link"> 
                             <i class='bx bx-message-square-detail nav__icon' ></i>
                             <span class="nav__name">MC Approval Status</span>
                         </a>
 
                         <a href="#" class="nav__link"> 
-                            <i class='bx bx-cog nav__icon' ></i>
+                            <i class='bx bx-cog nav__icon' ></i> 
                             <span class="nav__name">Settings</span>  
                         </a>
                     </div>
@@ -55,11 +59,17 @@
                     <span class="nav__name">Log Out</span>
                 </a>
             </nav>
-        </div> 
- 
+        </div>   
         
         <!--===== MAIN JS =====-->
         <script src="js/main.js"></script> 
+
+        <script src="js/data-table/bootstrap.bundle.min.js"></script>
+        <script src="js/data-table/jquery-3.6.0.min.js"></script> 
+        <script src="js/data-table/datatables.min.js"></script>  
+        <script src="js/data-table/pdfmake.min.js"></script>
+        <script src="js/data-table/vfs_fonts.js"></script> 
+        <script src="js/data-table/custom.js"></script>      
 
         <script>
             // Immediately show the sidebar without requiring any click event
@@ -71,7 +81,32 @@
             var userEmail = "<%= user.email %>";
             console.log(userEmail);
 
-        </script>
+
+            function fetchPageContent(event, pageURL) { 
+                event.preventDefault(); // Prevent default behavior
+                
+                fetch(pageURL)
+                    .then(response => response.text())
+                    .then(data => {
+                        var doc = new DOMParser().parseFromString(data, 'text/html');
+                        var newContent = doc.querySelector("#main-content").innerHTML;  
+                        document.getElementById("main-content").innerHTML = newContent;
+                    })
+                    .catch(error => console.error('Error fetching page content:', error));
+            }
+            
+            function loadContent(page) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("main-content").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("GET", page, true);
+                xhttp.send();
+            }
+  
+        </script> 
 
     </body>
 </html> 

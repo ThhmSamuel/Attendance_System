@@ -8,7 +8,7 @@
     <script src="qrcode.js"></script> -->
     <style>         
  
- body {
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -16,7 +16,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0; 
+            background-color: #f0f0f0;  
         }
         .container1 {  
             width: 1000px;
@@ -49,19 +49,22 @@
         }
 
         button {
-            width: calc(50% - 10px);
+            width: calc(50% - 7px); 
+            /* width: 100%; */
             padding: 10px;
             background-color: #007bff; 
             color: #fff;
             border: none;
-            border-radius: 3px;
+            border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.3s;
             margin-bottom: 10px;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+        
         #generateQR {
             float: left;
         }
@@ -135,122 +138,127 @@
             margin-top: 10px;
         } 
  
+        .content { 
+            margin-left: 250px; 
+            padding: 16px; 
+        }
+        
+        .datatable-result{
+            padding-top: 10px;
+        }
+
 
     </style> 
 
-    <link rel="stylesheet" href="/public/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/public/assets/css/datatables.min.css">
-    <link rel="stylesheet" href="/public/assets/css/styles.css">  
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css"> 
+    <link rel="stylesheet" href="../assets/css/datatables.min.css"> 
+    <link rel="stylesheet" href="../assets/css/styles.css">   
  
 
 </head>  
 <body>
 
-    <div class="container1">    
 
-        <div class="label-container"> 
-            <label for="moduleName">Select module:</label>    
-            <select id="moduleName">
-                <option value="All">All</option>   
-                <option value="Physics">Physics</option>  
-            </select> 
+    <div class="content" id="main-content">
 
-            <label for="attendanceStatus">Select attendance status:</label>    
-            <select id="attendanceStatus">
-                <option value="All">All</option>   
-                <option value="Present">Present</option>  
-                <option value="Absent">Absent</option>   
-                <option value="Approved Absent">Approved Absent</option>   
-            </select>   
+        <div class="container1">     
 
-             
-            <label for="monthYear">Select month and year:</label>
-            <select id="monthYear">
-                <option value="All">All</option>
-            </select> 
-
-            <div class="button-container">
-                <button id="showTableBtn">Show Table</button>
-                <button id="collapseTableBtn">Collapse Table</button>
-            </div>
-
-
-            <!-- <div class="table-container" style="padding: 40px; display: none;"> 
-                <table id="attendance-table">  
-                    <thead>
-                        <tr> 
-                            <th>Date</th>  
-                            <th>Start Time</th> 
-                            <th>End Time</th> 
-                            <th>Status</th> 
-                        </tr>  
-                    </thead>  
-                    <tbody id="attendance-table-body">
-                    </tbody> 
-                </table>
-            </div> -->
-        </div> 
-
-        <div class="container" style="display: none;">    
-            <div class="row">
-                <div class="col-12"> 
-                    <div class="data_table"> 
-                        <table id="example" class="table table-striped table-bordered">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Position</th> 
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                </tr> 
-                            </thead> 
-                            <tbody>
-                                <tr>
-                                    <td>Vivian Harrell</td>
-                                    <td>Financial Controller</td>
-                                    <td>San Francisco</td>
-                                    <td>62</td>
-                                    <td>2009/02/14</td>
-                                    <td>$452,500</td>
-                                </tr>
-                                <tr>
-                                    <td>Timothy Mooney</td>
-                                    <td>Office Manager</td>
-                                    <td>London</td>
-                                    <td>37</td>
-                                    <td>2008/12/11</td>
-                                    <td>$136,200</td>
-                                </tr>
-                                <tr>
-                                    <td>Jackson Bradshaw</td>
-                                    <td>Director</td>
-                                    <td>New York</td>
-                                    <td>65</td>
-                                    <td>2008/09/26</td>
-                                    <td>$645,750</td>
-                                </tr>
-                                <tr>
-                                    <td>Olivia Liang</td>
-                                    <td>Support Engineer</td>
-                                    <td>Singapore</td>
-                                    <td>64</td>
-                                    <td>2011/02/03</td>
-                                    <td>$234,500</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="label-container"> 
+                <label for="moduleName">Select module:</label>    
+                <select id="moduleName">
+                    <option value="All">All</option>   
+                    <option value="Physics">Physics</option>  
+                </select> 
+    
+                <label for="attendanceStatus">Select attendance status:</label>    
+                <select id="attendanceStatus">
+                    <option value="All">All</option>   
+                    <option value="Present">Present</option>  
+                    <option value="Absent">Absent</option>   
+                    <option value="Approved Absent">Approved Absent</option>   
+                </select>   
+    
+                
+                <label for="monthYear">Select month and year:</label>
+                <select id="monthYear">
+                    <option value="All">All</option>
+                </select> 
+    
+                <div class="button-container">
+                    <button id="showDataBtn">Show Data</button>
+                    <button id="clearTableBtn">Clear</button>  
                 </div>
             </div>
+ 
+            <label class="datatable-result">Result:</label>
+
+            <div class="container">    
+                <div class="row">
+                    <div class="col-12"> 
+                        <div class="data_table">  
+                            <table id="example" class="table table-striped table-bordered">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Position</th> 
+                                        <th>Office</th>
+                                        <th>Age</th>
+                                        <th>Start date</th>
+                                        <th>Salary</th>
+                                    </tr> 
+                                </thead> 
+                                <!-- <tbody>
+                                    <tr>
+                                        <td>Vivian Harrell</td>
+                                        <td>Financial Controller</td>
+                                        <td>San Francisco</td>
+                                        <td>62</td>
+                                        <td>2009/02/14</td>
+                                        <td>$452,500</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Timothy Mooney</td>
+                                        <td>Office Manager</td>
+                                        <td>London</td>
+                                        <td>37</td>
+                                        <td>2008/12/11</td>
+                                        <td>$136,200</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jackson Bradshaw</td>
+                                        <td>Director</td>
+                                        <td>New York</td>
+                                        <td>65</td>
+                                        <td>2008/09/26</td>
+                                        <td>$645,750</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Olivia Liang</td>
+                                        <td>Support Engineer</td>
+                                        <td>Singapore</td>
+                                        <td>64</td>
+                                        <td>2011/02/03</td>
+                                        <td>$234,500</td>
+                                    </tr>
+                                </tbody> -->
+                            </table>
+                        </div>
+                    </div>
+                </div> 
+            </div>
         </div>
+        
+        
     </div>
+
+        
+
+    
 
 
     <script>
 
-        document.getElementById("showTableBtn").addEventListener("click", function() {
+        document.getElementById("showDataBtn").addEventListener("click", function() {
             checkField()
         });
 
@@ -337,15 +345,16 @@
             select.appendChild(option);
         }  
 
-    </script>
+    </script> 
 
-    <script src="/public/assets/js/data-table/bootstrap.bundle.min.js"></script>
-    <script src="/public/assets/js/data-table/jquery-3.6.0.min.js"></script>
-    <script src="/public/assets/js/data-table/datatables.min.js"></script>
-    <script src="/public/assets/js/data-table/pdfmake.min.js"></script>
-    <script src="/public/assets/js/data-table/vfs_fonts.js"></script>
-    <script src="/public/assets/js/data-table/custom.js"></script>
-
+    <script src="../assets/js/data-table/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/data-table/jquery-3.6.0.min.js"></script> 
+    <script src="../assets/js/data-table/datatables.min.js"></script>  
+    <script src="../assets/js/data-table/pdfmake.min.js"></script>
+    <script src="../assets/js/data-table/vfs_fonts.js"></script> 
+    <script src="../assets/js/data-table/custom.js"></script> 
+    <!-- .. to move back one directory(student dir) , then move to assets .. -->  
+ 
     
 
 

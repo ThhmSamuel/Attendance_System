@@ -16,7 +16,7 @@ router.get("/",loggedIn,(req,res)=>{
 
         }else if(roleType === "Lecturer"){ 
             res.render("lecturer",{user:req.user});    
-
+ 
         }else if(roleType === "Student"){  
             res.render("student",{user:req.user});    
         } 
