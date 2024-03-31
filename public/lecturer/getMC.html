@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get MC Images</title>
+</head>
+<body>
+    <h1>MC Image from Database</h1>
+
+    <div id="imageContainer">
+        <!-- Image will be displayed here -->
+    </div>
+
+    <script>
+        // Function to fetch uploaded files from the server
+        function retrieveFiles() {
+            fetch('/getMC')
+                .then(response => response.text())
+                .then(data => {
+                    // Display the retrieved files in the files-container div
+                    document.getElementById('files-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error retrieving files:', error);
+                    document.getElementById('files-container').innerHTML = '<p>Error retrieving files. Please try again later.</p>';
+                });
+        }
+        // Call the retrieveFiles function when the page loads
+        window.onload = retrieveFiles;
+    </script>
+</body>
+</html>
