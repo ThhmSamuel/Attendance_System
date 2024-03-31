@@ -11,6 +11,7 @@ app.use("/img",express.static(__dirname + "/public/assets/img"));
 app.use("/student",express.static(__dirname + "/public/student")); 
 app.use("/admin",express.static(__dirname + "/public/admin")); 
 app.use("/lecturer",express.static(__dirname + "/public/lecturer"));   
+app.use("/models",express.static(__dirname + "/public/models"));    
  
 console.log(__dirname)  
 
@@ -24,8 +25,126 @@ db.connect((err)=>{
     if(err) throw err;
     console.log("Connected to database");  
 });  
- 
+
+
+// STUDENT --------------------------------------------------------
+
+app.post('/studentModuleData', (req, res) => {
+    // Assuming req.body contains the data sent from the client 
+    const { email } = req.body;
+
+    const sqlQuery1 = `SELECT moduleName , startMonth, endMonth FROM module_cohort JOIN cohort ON cohort.cohortID = module_cohort.cohortID JOIN module ON module_cohort.moduleID = module.moduleID JOIN student ON student.cohortID = module_cohort.cohortID JOIN cohort_term ON cohort_term.termID = student.termID WHERE studentEmail = '${email}';`;
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+app.post('/studentAttendanceData', (req, res) => { 
+    const { email , moduleName , attendanceStatus , monthYear } = req.body; 
+      
+    const [year, monthNumber] = monthYear.split("-");
+
+    var sqlQuery1; 
+
+    if (moduleName === "All" && attendanceStatus === "All" && monthYear === "All") { 
+
+        console.log("All All All");
+        sqlQuery1 = `SELECT * FROM class_session JOIN attendance ON class_session.classSessionID = attendance.classSessionID JOIN class_type ON class_type.class_typeID = class_session.class_typeID JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN module ON module.moduleID = module_lecturer.moduleID JOIN attendance_status ON attendance.statusID = attendance_status.statusID JOIN attendance_threshold ON attendance_threshold.moduleID = module_lecturer.moduleID WHERE studentEmail = '${email}';`
+        
+    } else if (moduleName === "All" && attendanceStatus === "All") {
+
+        console.log("All All");
+        sqlQuery1 = `SELECT * FROM class_session JOIN attendance ON class_session.classSessionID = attendance.classSessionID JOIN class_type ON class_type.class_typeID = class_session.class_typeID JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN module ON module.moduleID = module_lecturer.moduleID JOIN attendance_status ON attendance.statusID = attendance_status.statusID JOIN attendance_threshold ON attendance_threshold.moduleID = module_lecturer.moduleID WHERE studentEmail = '${email}' AND MONTH(startTime) = ${monthNumber} AND YEAR(startTime) = ${year};`
+    
+    } else if (moduleName === "All" && monthYear === "All") {
+
+        console.log("All All");
+        sqlQuery1 = `SELECT * FROM class_session JOIN attendance ON class_session.classSessionID = attendance.classSessionID JOIN class_type ON class_type.class_typeID = class_session.class_typeID JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN module ON module.moduleID = module_lecturer.moduleID JOIN attendance_status ON attendance.statusID = attendance_status.statusID JOIN attendance_threshold ON attendance_threshold.moduleID = module_lecturer.moduleID WHERE studentEmail = '${email}' AND status = '${attendanceStatus}';`
+
+    } else if (attendanceStatus === "All" && monthYear === "All") { 
+
+        console.log("All All");
+        sqlQuery1 = `SELECT * FROM class_session JOIN attendance ON class_session.classSessionID = attendance.classSessionID JOIN class_type ON class_type.class_typeID = class_session.class_typeID JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN module ON module.moduleID = module_lecturer.moduleID JOIN attendance_status ON attendance.statusID = attendance_status.statusID JOIN attendance_threshold ON attendance_threshold.moduleID = module_lecturer.moduleID WHERE studentEmail = '${email}' AND moduleName = '${moduleName}';`
+    
+    } else if (moduleName === "All") {
+
+        console.log("All");
+        sqlQuery1 = `SELECT * FROM class_session JOIN attendance ON class_session.classSessionID = attendance.classSessionID JOIN class_type ON class_type.class_typeID = class_session.class_typeID JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN module ON module.moduleID = module_lecturer.moduleID JOIN attendance_status ON attendance.statusID = attendance_status.statusID JOIN attendance_threshold ON attendance_threshold.moduleID = module_lecturer.moduleID WHERE studentEmail = '${email}' AND status = '${attendanceStatus}' AND MONTH(startTime) = ${monthNumber} AND YEAR(startTime) = ${year};`
+
+    } else if (attendanceStatus === "All") {
+
+        console.log("All");
+        sqlQuery1 = `SELECT * FROM class_session JOIN attendance ON class_session.classSessionID = attendance.classSessionID JOIN class_type ON class_type.class_typeID = class_session.class_typeID JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN module ON module.moduleID = module_lecturer.moduleID JOIN attendance_status ON attendance.statusID = attendance_status.statusID JOIN attendance_threshold ON attendance_threshold.moduleID = module_lecturer.moduleID WHERE studentEmail = '${email}' AND moduleName = '${moduleName}' AND MONTH(startTime) = ${monthNumber} AND YEAR(startTime) = ${year};`
+
+    } else if (monthYear === "All") {
+        
+        console.log("All");
+        sqlQuery1 = `SELECT * FROM class_session JOIN attendance ON class_session.classSessionID = attendance.classSessionID JOIN class_type ON class_type.class_typeID = class_session.class_typeID JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN module ON module.moduleID = module_lecturer.moduleID JOIN attendance_status ON attendance.statusID = attendance_status.statusID JOIN attendance_threshold ON attendance_threshold.moduleID = module_lecturer.moduleID WHERE studentEmail = '${email}' AND moduleName = '${moduleName}' AND status = '${attendanceStatus}';` 
+
+    } else {
+
+        console.log("None All");
+        sqlQuery1 = `SELECT * FROM class_session JOIN attendance ON class_session.classSessionID = attendance.classSessionID JOIN class_type ON class_type.class_typeID = class_session.class_typeID JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN module ON module.moduleID = module_lecturer.moduleID JOIN attendance_status ON attendance.statusID = attendance_status.statusID JOIN attendance_threshold ON attendance_threshold.moduleID = module_lecturer.moduleID WHERE studentEmail = '${email}' AND moduleName = '${moduleName}' AND status = '${attendanceStatus}' AND MONTH(startTime) = ${monthNumber} AND YEAR(startTime) = ${year};`
+
+    }
+
+    // Wrapping the database query inside a promise  
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+
+});
+
+
+// STUDENT --------------------------------------------------------
+
+
+
+
+
+
+
+
  
 app.use("/",require("./src/routes/pages"));    // bring anything that starts with "/" to  "./src/routes/pages"
 app.use("/api", require("./src/controllers/auth"));  // bring anything that starts with "/api" to "./src/controllers/auth"  
 app.listen(PORT);   
+
+
