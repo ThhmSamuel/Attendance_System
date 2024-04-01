@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+</head>
+<body>
+  <h1>User Management</h1>
+  <form id="addUserForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br>
+    <label for="password">Password:</label>
+    <input type="text" id="password" name="password" required><br>
+    <label for="role">Role:</label>
+    <select id="role" name="role" required>
+      <option value="1">Admin</option>
+      <option value="2">Lecturer</option>
+      <option value="3">Student</option>
+    </select><br>
+    <button type="submit">Add User</button>
+  </form>
+  
+  
+  <!-- User Table -->
+  <h1>User List</h1>
+  <div id="userTable"></div>
+  <ul id="userList"></ul>
+
+  <script>
+    document.getElementById('addUserForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      console.log('Form Submitted')
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const role = document.getElementById('role').value;
+
+      try {
+        const response = await fetch('/addUsers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password, role })
+        });
+        if (response.ok) {
+          alert('User added successfully');
+          document.getElementById('name').value = '';
+          document.getElementById('email').value = '';
+          document.getElementById('password').value = '';
+          fetchUsers();
+        } else {
+          const errorMessage = await response.text();
+          alert(errorMessage);
+        }
+      } catch (error) {
+        console.error('Error adding user:', error);
+        alert('An error occurred, please try again');
+      }
+    });
+
+    function fetchUsers() {
+      fetch('/userList')
+        .then(response => response.json())
+        .then(users => {
+          const userList = document.getElementById('userList');
+          userList.innerHTML = '';
+          users.forEach(user => {
+            const li = document.createElement('li');
+            li.textContent = `${user.email} (Role: ${user.role})`;
+            userList.appendChild(li);
+          });
+          renderUserTable(users);
+        })
+        .catch(error => console.error('Error fetching users:', error));
+    }
+
+    function renderUserTable(users) {
+      const tableRows = users.map(user => `<tr><td>${user.id}</td><td>${user.email}</td><td>${user.role}</td></tr>`);
+      const table = `
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows.join('')}
+          </tbody>
+        </table>
+      `;
+      document.getElementById('userTable').innerHTML = table; // Changed userList to userTable
+    }
+
+    fetchUsers();
+  </script>
+</body>
+</html>
