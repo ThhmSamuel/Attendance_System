@@ -252,7 +252,6 @@ select {
 
 button {
   width: calc(50% - 7px); 
-  /* width: 100%; */
   padding: 10px;
   background-color: #007bff; 
   color: #fff;
@@ -371,3 +370,69 @@ td a:hover {
   /* margin-right: 10px; Add spacing between label and text */
   font-weight: bold; /* Optionally make the label bold */
 }
+
+
+.button-attendance:hover, 
+.button-attendance:focus {
+  background-color: #4723D9;
+  color: white;
+}
+ 
+.button-attendance.highlight { 
+  background-color: #4723D9;
+  color: white;
+}
+
+.button-attendance:not(.highlight) { 
+  background-color: #a08af8;
+  border: 1px solid #ddd; 
+} 
+  
+.button-attendance:not(.highlight):hover {  
+  background-color: #4723D9;
+}
+
+button .button-attendance {
+  width: calc(50% - 7px); 
+  padding: 10px;
+  background-color: #4723D9; 
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 10px;
+}
+
+.studentID-input{ 
+  width: 99%;
+}
+
+
+.general-use-container{
+  width: 1220px; 
+  padding: 20px;  
+  background-color: #fff; 
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: auto;
+  display: block;
+  margin-bottom: 10px;
+
+}
+
+.search-button{
+  width: 100px;
+}  
+
+
+.container2{
+  width: 1220px; 
+  padding: 20px;  
+  background-color: #fff; 
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: auto;
+  display: block; 
+}
+

@@ -60,7 +60,7 @@ document.getElementById("showDataBtn").addEventListener("click", function() {
         });
 });
 
-
+        
 function clearStudentAttendanceData() {
     //to clear the content within the datatable
     const tableBody = document.getElementById("student-attendance-table");
@@ -68,7 +68,7 @@ function clearStudentAttendanceData() {
 
     //to clear the datatable's data
     var table = $('#example').DataTable();
-    table.clear();
+    table.clear(); 
     table.draw();
 
     //to reset the fields in the form 
