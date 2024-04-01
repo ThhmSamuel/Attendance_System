@@ -7,10 +7,19 @@ $(document).ready(function(){
         buttons:['copy', 'csv', 'excel', 'pdf', 'print']
         
     }); 
+
+    var table2 = $('#example2').DataTable({
+        
+        buttons:['copy', 'csv', 'excel', 'pdf', 'print']
+        
+    }); 
      
     
-    table.buttons().container()
+    table.buttons().container() 
     .appendTo('#example_wrapper .col-md-6:eq(0)'); 
+
+    table2.buttons().container() 
+    .appendTo('#example2_wrapper .col-md-6:eq(0)');
 
 });
 

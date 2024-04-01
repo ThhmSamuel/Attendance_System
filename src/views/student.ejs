@@ -36,10 +36,9 @@
                             <span class="nav__name">Dashboard</span> 
                         </a> 
  
-                        <a href="student/student-monitoring.html" onclick="loadAttendancePage()" class="nav__link"> 
-                        <!-- <a href="student/student-monitoring.html" onclick="fetchPageContent(event, 'student/student-monitoring.html')" class="nav__link">  -->
-                                <i class='bx bxs-calendar-alt nav__icon' ></i>
-                            <span class="nav__name">Monitor Attendance</span>
+                        <a href="student/student-monitoring.html" onclick="loadTablePage('student/student-monitoring.html')" class="nav__link"> 
+                            <i class='bx bxs-calendar-alt nav__icon' ></i>
+                            <span class="nav__name">Monitor Attendance</span> 
                         </a>
                          
                         <a href="#" onclick="loadContent('/student/uploadMC.html')" class="nav__link"> 
@@ -91,11 +90,10 @@
                     .catch(error => console.error('Error fetching page content:', error));
             }
 
-
             
             // monitoring attendance page   
-            function loadAttendancePage() {
-                fetchPageContent(event, 'student/student-monitoring.html'); 
+            function loadTablePage(page) {
+                fetchPageContent(event, page); 
                 loadDataTablesScripts();  
             }
 
