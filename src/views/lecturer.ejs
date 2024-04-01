@@ -8,6 +8,8 @@
         <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
 
         <!-- ===== CSS ===== -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">   
+        <link rel="stylesheet" href="css/datatables.min.css"> 
         <link rel="stylesheet" href="css/styles.css"> 
 
         <title>Attendance Management System</title>
@@ -25,7 +27,7 @@
                     <a href="#" class="nav__logo">
                         <span class="nav__logo-name">Lecturer</span>      
                     </a>
-
+ 
                     <div class="nav__list">
 
                         <a href="/" class="nav__link active" onclick="loadContent('dashboard.html')"> 
@@ -38,7 +40,7 @@
                             <span class="nav__name">Generate QR Code</span>
                         </a>
 
-                        <a href="#" class="nav__link" onclick="loadContent('Monitor-Attendance.html')">
+                        <a href="#" class="nav__link" onclick="loadTablePage('lecturer/lecturer-monitoring.html')">
                             <i class='bx bxs-calendar-alt nav__icon' ></i>
                             <span class="nav__name">Monitor Attendance</span>
                         </a>
@@ -61,7 +63,7 @@
 
                 </div> 
 
-                <a href="/logout" class="nav__link">
+                <a href="/logout" class="nav__link"> 
                     <i class='bx bx-log-out nav__icon' ></i>
                     <span class="nav__name">Log Out</span>
                 </a>
@@ -82,6 +84,62 @@
 
             var userEmail = "<%= user.email %>"; 
             console.log(userEmail);
+
+            function fetchPageContent(event, pageURL) { 
+                event.preventDefault(); // Prevent default behavior 
+                
+                fetch(pageURL)
+                    .then(response => response.text())
+                    .then(data => {
+                        var doc = new DOMParser().parseFromString(data, 'text/html');
+                        var newContent = doc.querySelector("#main-content").innerHTML;          
+                        document.getElementById("main-content").innerHTML = newContent;
+                    })
+                    .catch(error => console.error('Error fetching page content:', error));
+            }
+
+
+            
+            // monitoring attendance page   
+            function loadTablePage(page) {
+                fetchPageContent(event, page); 
+                loadDataTablesScripts();  
+            }
+
+            function loadDataTablesScripts() {
+                const head = document.getElementsByTagName('head')[0];
+                const scriptsToRemove = head.querySelectorAll('script[data-remove-on-reload]');
+
+                // Remove all previously loaded script elements
+                scriptsToRemove.forEach(script => {
+                    script.parentNode.removeChild(script); 
+                });
+
+                const scripts = [
+                    'js/data-table/jquery-3.6.0.min.js',
+                    'js/data-table/datatables.min.js',
+                    'js/data-table/pdfmake.min.js',
+                    'js/data-table/vfs_fonts.js',
+                    'js/data-table/custom.js',
+                    'js/lecturerAttendanceMonitoring.js'
+                ];
+
+                // Function to load each script sequentially
+                function loadScript(index) {
+                    if (index >= scripts.length) return; // Exit if all scripts are loaded 
+                    const scriptTag = document.createElement('script');
+                    scriptTag.src = scripts[index];
+                    scriptTag.setAttribute('data-remove-on-reload', 'true'); // Add a custom attribute to mark for removal
+                    scriptTag.onload = function() {
+                        loadScript(index + 1); // Load next script after current one is loaded
+                    };
+                    head.appendChild(scriptTag);
+                }
+
+                // Start loading scripts from the beginning of the array
+                loadScript(0);
+            } 
+
 
             // Function to load HTML content into the main content area
             function loadContent(page) {

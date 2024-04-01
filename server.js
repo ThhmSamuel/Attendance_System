@@ -27,7 +27,7 @@ db.connect((err)=>{
 });  
 
 
-// STUDENT --------------------------------------------------------
+// STUDENT starts here --------------------------------------------------------
 
 app.post('/studentModuleData', (req, res) => {
     // Assuming req.body contains the data sent from the client 
@@ -60,7 +60,7 @@ app.post('/studentModuleData', (req, res) => {
 
 
 app.post('/studentAttendanceData', (req, res) => { 
-    const { email , moduleName , attendanceStatus , monthYear } = req.body; 
+    const { email , moduleName , attendanceStatus , monthYear } = req.body;  
       
     const [year, monthNumber] = monthYear.split("-");
 
@@ -133,9 +133,132 @@ app.post('/studentAttendanceData', (req, res) => {
 });
 
 
-// STUDENT --------------------------------------------------------
+// STUDENT  ends here --------------------------------------------------------
 
 
+// LECTURER starts here --------------------------------------------------------
+
+app.post('/lecturerModuleData', (req, res) => {
+    // Assuming req.body contains the data sent from the client 
+    const { email } = req.body;
+
+    const sqlQuery1 = `SELECT moduleName FROM module_cohort JOIN module ON module.moduleID = module_cohort.moduleID JOIN module_lecturer ON module_lecturer.moduleID = module_cohort.moduleID JOIN lecturer ON lecturer.lecturerID = module_lecturer.lecturerID where email = '${email}';`;
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+}); 
+
+
+app.post('/lecturerAttendanceData', (req, res) => { 
+    const { email , moduleName , monthYear } = req.body;   
+
+    console.log(email, moduleName, monthYear);
+      
+    const [year, monthNumber] = monthYear.split("-");
+
+    var sqlQuery1; 
+
+    if (moduleName === "All" && monthYear === "All") {
+ 
+        console.log("All All");
+        sqlQuery1 = `SELECT * FROM class_session JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN lecturer ON lecturer.lecturerID = module_lecturer.lecturerID JOIN module ON module.moduleID = module_lecturer.moduleID JOIN class_type ON class_type.class_typeID = class_session.class_typeID WHERE email = '${email}';` 
+
+
+    } else if (moduleName === "All") {
+
+        console.log("All");
+        sqlQuery1 = `SELECT * FROM class_session JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN lecturer ON lecturer.lecturerID = module_lecturer.lecturerID JOIN module ON module.moduleID = module_lecturer.moduleID JOIN class_type ON class_type.class_typeID = class_session.class_typeID WHERE email = '${email}' AND MONTH(startTime) = ${monthNumber} AND YEAR(startTime) = ${year};`
+
+    } else if (monthYear === "All") {
+        
+        console.log("All module"); 
+        sqlQuery1 = `SELECT * FROM class_session JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN lecturer ON lecturer.lecturerID = module_lecturer.lecturerID JOIN module ON module.moduleID = module_lecturer.moduleID JOIN class_type ON class_type.class_typeID = class_session.class_typeID WHERE email = '${email}' AND moduleName = '${moduleName}';`
+
+
+    } else {  
+
+        console.log("None All"); 
+        sqlQuery1 = `SELECT * FROM class_session JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN lecturer ON lecturer.lecturerID = module_lecturer.lecturerID JOIN module ON module.moduleID = module_lecturer.moduleID JOIN class_type ON class_type.class_typeID = class_session.class_typeID WHERE email = '${email}' AND moduleName = '${moduleName}' AND MONTH(startTime) = ${monthNumber} AND YEAR(startTime) = ${year};`
+
+    }
+
+    // Wrapping the database query inside a promise  
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+
+});
+
+
+
+app.post('/classAttendanceData', (req, res) => {
+    // Assuming req.body contains the data sent from the client 
+    const { class_session_id } = req.body;
+
+    const sqlQuery1 = `SELECT * FROM attendance JOIN class_session ON attendance.classSessionID = class_session.classSessionID JOIN student ON student.studentEmail = attendance.studentEmail JOIN attendance_status ON attendance.statusID = attendance_status.statusID JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID JOIN class_type ON class_type.class_typeID = class_session.class_typeID JOIN module ON module.moduleID = module_lecturer.moduleID WHERE class_session.classSessionID = '${class_session_id}';`;
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+}); 
+
+
+
+// LECTURER ends here ----------------------------------------------------------
 
 
 

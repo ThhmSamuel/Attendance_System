@@ -1,15 +1,14 @@
-function fetchStudentAttendanceData() {
+function fetchLecturerAttendanceData() {
     var moduleName = document.getElementById("moduleName").value; 
     var monthYear = document.getElementById("monthYear").value;
-    var attendanceStatus = document.getElementById("attendanceStatus").value;
 
-    return new Promise((resolve, reject) => {
-        fetch('/studentAttendanceData', {
-                method: 'POST',
+    return new Promise((resolve, reject) => {  
+        fetch('/lecturerAttendanceData', { 
+                method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: userEmail, moduleName, attendanceStatus, monthYear }),
+                body: JSON.stringify({ email: userEmail, moduleName, monthYear }),
             })
             .then(response => {
                 if (!response.ok) {
@@ -18,6 +17,7 @@ function fetchStudentAttendanceData() {
                 return response.json();
             })   
             .then(data => {
+                console.log(data);
                 resolve(data); // Resolve with the fetched data
             })
             .catch(error => {
@@ -25,10 +25,9 @@ function fetchStudentAttendanceData() {
             }); 
     });
 } 
- 
-// Event listener for the "Show Data" button
+
 document.getElementById("showDataBtn").addEventListener("click", function() {
-    fetchStudentAttendanceData()
+    fetchLecturerAttendanceData()
         .then(data => {
             var table = $('#example').DataTable();
             // Clear existing data
@@ -41,18 +40,20 @@ document.getElementById("showDataBtn").addEventListener("click", function() {
                 const startTimeString = startDate.toLocaleTimeString();
                 const endTimeString = endDate.toLocaleTimeString();
         
+            
                 const row = `<tr> 
                     <td>${item.moduleName}</td>
                     <td>${item.classType}</td>
-                    <td>${item.status}</td>
                     <td>${startDateString}</td>
                     <td>${startTimeString}</td>
                     <td>${endTimeString}</td>
+                    <td><a href="#" onclick="openPopup('${item.classSessionID}')">${item.classSessionID}</a></td>
                 </tr>`;
+
                 // Add the row to the table
                 table.row.add($(row).get(0));
             });
-            // Redraw the table 
+            // Redraw the table  
             table.draw();
         }) 
         .catch(error => {
@@ -61,9 +62,79 @@ document.getElementById("showDataBtn").addEventListener("click", function() {
 });
 
 
-function clearStudentAttendanceData() {
+function openPopup(class_session_id) { 
+
+    return new Promise((resolve, reject) => {  
+        fetch('/classAttendanceData', {  
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ class_session_id }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })   
+            .then(data => {
+                // console.log(data);
+
+                document.getElementById('classSessionID').innerHTML  = class_session_id;
+
+                var table = $('#example2').DataTable();  
+                
+                // Clear existing data
+                table.clear();
+                
+                // Map data and create rows
+                data.forEach(item => {
+                    const startDate = new Date(item.startTime);
+                    const endDate = new Date(item.endTime);
+                    const startDateString = startDate.toLocaleDateString();
+                    const startTimeString = startDate.toLocaleTimeString();
+                    const endTimeString = endDate.toLocaleTimeString();
+
+                    const row = `<tr> 
+                        <td>${item.name}</td>
+                        <td>${item.status}</td>
+                        <td>${startDateString}</td>
+                        <td>${startTimeString}</td>
+                        <td>${endTimeString}</td>
+                        <td>${item.classSessionID}</td>
+                        <td>${item.moduleName}</td>
+                        <td>${item.classType}</td> 
+                    </tr>`;
+
+                    // Add the row to the table
+                    table.row.add($(row).get(0));
+                });
+
+                // Redraw the table  
+                table.draw();
+
+
+                document.getElementById('popup').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block'; 
+                resolve(data); // Resolve with the fetched data 
+            })
+            .catch(error => {
+                reject(error); // Reject with the error
+            }); 
+    });
+
+}
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+}
+
+
+function clearLecturerAttendanceData() { 
     //to clear the content within the datatable
-    const tableBody = document.getElementById("student-attendance-table");
+    const tableBody = document.getElementById("lecturer-attendance-table");
     tableBody.innerHTML = "";
 
     //to clear the datatable's data
@@ -74,17 +145,14 @@ function clearStudentAttendanceData() {
     //to reset the fields in the form 
     var moduleNameSelect = document.getElementById("moduleName");
     var monthYearSelect = document.getElementById("monthYear");
-    var attendanceStatusSelect = document.getElementById("attendanceStatus");
-
+ 
     moduleNameSelect.value = "All";
     monthYearSelect.value = "All";
-    attendanceStatusSelect.value = "All";
 }  
-
 
 function fetchDataAndPopulateDropdowns(options) { 
     return new Promise((resolve, reject) => {
-        fetch('/studentModuleData', options)
+        fetch('/lecturerModuleData', options)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -92,22 +160,18 @@ function fetchDataAndPopulateDropdowns(options) {
                 return response.json();
             })
             .then(data => {
-                const moduleNames = []; 
-                const startMonths = [];
-                const endMonths = [];
+                const moduleNames = [];
 
                 data.forEach(item => {
                     moduleNames.push(item.moduleName);
-                    startMonths.push(item.startMonth);
-                    endMonths.push(item.endMonth);
                 });
 
                 // Populating the month and year based on the semester
                 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                 var select = document.getElementById("monthYear");
 
-                var startMonth = startMonths[0];
-                var endMonth = endMonths[0];
+                var startMonth = '2024-1';
+                var endMonth = '2024-6'; 
 
                 var startYear = parseInt(startMonth.substring(0, 4));
                 var endYear = parseInt(endMonth.substring(0, 4));
@@ -144,7 +208,7 @@ function fetchDataAndPopulateDropdowns(options) {
             });
     });
 } 
-
+ 
 
 fetchDataAndPopulateDropdowns({ 
     method: 'POST',
