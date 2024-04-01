@@ -1,36 +1,139 @@
-function fetchStudentAttendanceData(){   
-    var moduleName = document.getElementById("moduleName").value; 
+// // Function to fetch student attendance data
+// function fetchStudentAttendanceData() {
+//     var moduleName = document.getElementById("moduleName").value;
+//     var monthYear = document.getElementById("monthYear").value;
+//     var attendanceStatus = document.getElementById("attendanceStatus").value;
+
+//     return new Promise((resolve, reject) => {
+//         fetch('/studentAttendanceData', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                 },
+//                 body: JSON.stringify({ email: userEmail, moduleName, attendanceStatus, monthYear }),
+//             })
+//             .then(response => {
+//                 if (!response.ok) {
+//                     throw new Error('Network response was not ok');
+//                 }
+//                 return response.json();
+//             })
+//             .then(data => {
+//                 console.log(data);
+
+//                 const tableBody = document.getElementById("student-attendance-table");
+//                 tableBody.innerHTML = ""; // Clear the table before populating it with new data
+
+//                 data.forEach(item => {
+//                     const row = document.createElement("tr");
+
+//                     const startDate = new Date(item.startTime);
+//                     const endDate = new Date(item.endTime);
+//                     const startDateString = startDate.toLocaleDateString();
+//                     const startTimeString = startDate.toLocaleTimeString();
+//                     const endTimeString = endDate.toLocaleTimeString();
+
+//                     row.innerHTML = `
+//                         <td>${item.moduleName}</td>
+//                         <td>${item.classType}</td>
+//                         <td>${item.status}</td>
+//                         <td>${startDateString}</td>
+//                         <td>${startTimeString}</td>
+//                         <td>${endTimeString}</td>
+//                     `; 
+//                     tableBody.appendChild(row);
+//                 });
+
+//                 resolve(data); // Resolve with the fetched data
+//             })
+//             .catch(error => {
+//                 reject(error); // Reject with the error
+//             });
+//     });
+// }
+
+function fetchStudentAttendanceData() {
+    var moduleName = document.getElementById("moduleName").value;
     var monthYear = document.getElementById("monthYear").value;
-    var attendanceStatus = document.getElementById("attendanceStatus").value;  
+    var attendanceStatus = document.getElementById("attendanceStatus").value;
 
     return new Promise((resolve, reject) => {
         fetch('/studentAttendanceData', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: userEmail, moduleName, attendanceStatus, monthYear }), 
-        }) 
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data); 
-            
-            // var table = document.getElementById("attendanceTable");
-            // table.innerHTML = ""; // Clear the table before populating it with new data
-
-            resolve(data); // Resolve with the fetched data
-        })
-        .catch(error => {
-            reject(error); // Reject with the error
-        });
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: userEmail, moduleName, attendanceStatus, monthYear }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                resolve(data); // Resolve with the fetched data
+            })
+            .catch(error => {
+                reject(error); // Reject with the error
+            }); 
     });
 } 
+ 
+// Event listener for the "Show Data" button
+document.getElementById("showDataBtn").addEventListener("click", function() {
+    fetchStudentAttendanceData()
+        .then(data => {
+            var table = $('#example').DataTable();
+            // Clear existing data
+            table.clear();
+            // Map data and create rows
+            data.forEach(item => {
+                const startDate = new Date(item.startTime);
+                const endDate = new Date(item.endTime);
+                const startDateString = startDate.toLocaleDateString();
+                const startTimeString = startDate.toLocaleTimeString();
+                const endTimeString = endDate.toLocaleTimeString();
+        
+                const row = `<tr> 
+                    <td>${item.moduleName}</td>
+                    <td>${item.classType}</td>
+                    <td>${item.status}</td>
+                    <td>${startDateString}</td>
+                    <td>${startTimeString}</td>
+                    <td>${endTimeString}</td>
+                </tr>`;
+                // Add the row to the table
+                table.row.add($(row).get(0));
+            });
+            // Redraw the table
+            table.draw();
+        }) 
+        .catch(error => {
+            console.error('Error fetching student attendance data:', error);
+        });
+});
 
+
+function clearStudentAttendanceData() {
+    //to clear the content within the datatable
+    const tableBody = document.getElementById("student-attendance-table");
+    tableBody.innerHTML = "";
+
+    //to clear the datatable's data
+    var table = $('#example').DataTable();
+    table.clear();
+    table.draw();
+
+    //to reset the fields in the form 
+    var moduleNameSelect = document.getElementById("moduleName");
+    var monthYearSelect = document.getElementById("monthYear");
+    var attendanceStatusSelect = document.getElementById("attendanceStatus");
+
+    moduleNameSelect.value = "All";
+    monthYearSelect.value = "All";
+    attendanceStatusSelect.value = "All";
+}  
 
 
 function fetchDataAndPopulateDropdowns(options) { 
