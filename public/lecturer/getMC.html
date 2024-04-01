@@ -3,30 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get MC Images</title>
+    <title>Display Images</title>
 </head>
 <body>
-    <h1>MC Image from Database</h1>
-
-    <div id="imageContainer">
-        <!-- Image will be displayed here -->
-    </div>
+    <h1>MC Files</h1>
+    <div id="images-container"></div>
 
     <script>
-        // Function to fetch uploaded files from the server
         function retrieveFiles() {
             fetch('/getMC')
-                .then(response => response.text())
+                .then(response => response.json())
                 .then(data => {
-                    // Display the retrieved files in the files-container div
-                    document.getElementById('files-container').innerHTML = data;
+                    console.log('Data received:', data); // Debugging statement
+
+                    const imagesContainer = document.getElementById('images-container');
+                    if (!imagesContainer) {
+                        console.error('Images container not found');
+                        return;
+                    }
+
+                    data.forEach(file => {
+                        console.log('Processing file:', file); // Debugging statement
+
+                        const imageElement = document.createElement('img');
+                        imageElement.src = 'data:image/jpeg;base64,' + file.file_data;
+
+                        const headingElement = document.createElement('h2');
+                        headingElement.textContent = file.file_name;
+
+                        imagesContainer.appendChild(headingElement);
+                        imagesContainer.appendChild(imageElement);
+                    });
                 })
                 .catch(error => {
                     console.error('Error retrieving files:', error);
-                    document.getElementById('files-container').innerHTML = '<p>Error retrieving files. Please try again later.</p>';
+                    document.getElementById('images-container').innerHTML = '<p>Error retrieving files. Please try again later.</p>';
                 });
         }
-        // Call the retrieveFiles function when the page loads
+
         window.onload = retrieveFiles;
     </script>
 </body>
