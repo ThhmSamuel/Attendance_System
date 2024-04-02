@@ -329,8 +329,74 @@ app.post('/getModuleByCohort', (req, res) => {
 }); 
 
 
+app.post('/getAllTerm', (req, res) => {  
+
+    const sqlQuery1 = `SELECT DISTINCT(term) FROM cohort_term`;  
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+}); 
 
 
+app.post('/getStudentAttendanceRateByModule', (req, res) => {   
+
+    const { moduleName , term } = req.body;
+
+    const sqlQuery1 =  
+    `SELECT name, ROUND(((totalSessions - COUNT(status)) / totalSessions) * 100 ,1) as 'attendance_rate' , attendance_threshold.percentage ,  COUNT(status) as absence , totalSessions 
+    FROM class_session
+    JOIN attendance ON class_session.classSessionID = attendance.classSessionID
+    JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID
+    JOIN attendance_status ON attendance.statusID = attendance_status.statusID
+    JOIN attendance_threshold ON attendance_threshold.moduleID = module_lecturer.moduleID
+    JOIN module ON module.moduleID = module_lecturer.moduleID
+    JOIN student ON student.studentEmail = attendance.studentEmail
+    JOIN cohort_term ON cohort_term.termID = student.termID
+    WHERE status = 'Absent' AND moduleName = '${moduleName}' AND term = '${term}'
+    GROUP BY student.studentEmail;`;   
+
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
 // ADMIN end here --------------------------------------------------------------
 
 

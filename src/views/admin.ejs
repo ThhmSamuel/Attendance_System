@@ -17,7 +17,7 @@
     <body id="body-pd">
         
         <div class="content" id="main-content">  
-            <h1>Page admin</h1>
+            <h1>Page admin</h1> 
             <h1><%= user.email %></h1>      
         </div> 
 
@@ -26,7 +26,7 @@
                 <div>
                     <a href="#" class="nav__logo">
                         <span class="nav__logo-name">Admin</span>      
-                    </a>
+                    </a> 
  
                     <div class="nav__list">
                         <a href="#" class="nav__link active" onclick="loadContent('dashboard.html')"> 
@@ -34,8 +34,8 @@
                             <span class="nav__name">Dashboard</span>
                         </a>
 
-                        <a href="#" class="nav__link" onclick="loadTablePage('admin/admin-monitoring.html')">
-                            <i class='bx bxs-calendar-alt nav__icon' ></i>
+                        <a href="#" class="nav__link" onclick="loadTablePage('admin/admin-monitoring.html','js/adminAttendanceMonitoring.js')">
+                            <i class='bx bxs-calendar-alt nav__icon' ></i> 
                             <span class="nav__name">Monitor Attendance</span>
                         </a>
                          
@@ -44,7 +44,7 @@
                             <span class="nav__name">Manage Course Roster</span>
                         </a>
  
-                        <a href="#" class="nav__link" onclick="loadContent('Flagging-Feature.html')">
+                        <a href="#" class="nav__link" onclick="loadTablePage('admin/admin-flagging-feature.html','js/adminFlaggingFeature.js')">
                             <i class='bx bxs-flag nav__icon' ></i>
                             <span class="nav__name">Flagging Feature</span>
                         </a> 
@@ -62,7 +62,8 @@
                         <a href="#" class="nav__link" onclick="loadContent('Setting.html')"> 
                             <i class='bx bx-cog nav__icon' ></i>
                             <span class="nav__name">Settings</span>  
-                        </a> 
+                        </a>
+
                     </div>
                 </div> 
  
@@ -76,6 +77,8 @@
         
         <!--===== MAIN JS =====-->
         <script src="js/main.js"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <canvas id="flagChart" style="width:100%;max-width:1000px"></canvas>  
 
         <script>
             // Immediately show the sidebar without requiring any click event
@@ -103,12 +106,53 @@
 
             
             // monitoring attendance page   
-            function loadTablePage(page) {
-                fetchPageContent(event, page); 
-                loadDataTablesScripts();  
-            }
+            // function loadTablePage(page) {
+            //     fetchPageContent(event, page); 
+            //     loadDataTablesScripts();  
+            // }
 
-            function loadDataTablesScripts() {
+            // function loadDataTablesScripts() {
+            //     const head = document.getElementsByTagName('head')[0];
+            //     const scriptsToRemove = head.querySelectorAll('script[data-remove-on-reload]');
+
+            //     // Remove all previously loaded script elements
+            //     scriptsToRemove.forEach(script => {
+            //         script.parentNode.removeChild(script); 
+            //     });
+
+            //     const scripts = [
+            //         'js/data-table/jquery-3.6.0.min.js',
+            //         'js/data-table/datatables.min.js',
+            //         'js/data-table/pdfmake.min.js',
+            //         'js/data-table/vfs_fonts.js',
+            //         'js/data-table/custom.js',
+            //         'js/adminAttendanceMonitoring.js',  
+            //         'js/adminFlaggingFeature.js' 
+            //     ];
+
+            //     // Function to load each script sequentially
+            //     function loadScript(index) {
+            //         if (index >= scripts.length) return; // Exit if all scripts are loaded 
+            //         const scriptTag = document.createElement('script');
+            //         scriptTag.src = scripts[index];
+            //         scriptTag.setAttribute('data-remove-on-reload', 'true'); // Add a custom attribute to mark for removal
+            //         scriptTag.onload = function() {
+            //             loadScript(index + 1); // Load next script after current one is loaded
+            //         };
+            //         head.appendChild(scriptTag);
+            //     }
+
+            //     // Start loading scripts from the beginning of the array
+            //     loadScript(0);
+            // }
+
+            function loadTablePage(page,scriptPage) {
+                fetchPageContent(event, page); 
+                loadDataTablesScripts(scriptPage);  
+            }
+            
+
+            function loadDataTablesScripts(scriptPage) {  
                 const head = document.getElementsByTagName('head')[0];
                 const scriptsToRemove = head.querySelectorAll('script[data-remove-on-reload]');
 
@@ -123,7 +167,6 @@
                     'js/data-table/pdfmake.min.js',
                     'js/data-table/vfs_fonts.js',
                     'js/data-table/custom.js',
-                    'js/adminAttendanceMonitoring.js' 
                 ];
 
                 // Function to load each script sequentially
@@ -140,6 +183,12 @@
 
                 // Start loading scripts from the beginning of the array
                 loadScript(0);
+
+                const uniqueScript = document.createElement('script');
+                uniqueScript.src = scriptPage; 
+                uniqueScript.setAttribute('data-remove-on-reload', 'true');
+                head.appendChild(uniqueScript);  
+
             } 
 
             // Function to load HTML content into the main content area

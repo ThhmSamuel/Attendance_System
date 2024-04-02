@@ -14,9 +14,10 @@ function fetchDataAndPopulateModuleByStudentID(studentID) {
             return response.json();
         })
         .then(data => {
+            clearStudentAttendanceData();
             const moduleNames = []; 
  
-            data.forEach(item => {
+            data.forEach(item => { 
                 moduleNames.push(item.moduleName); 
             }); 
                 
@@ -37,6 +38,10 @@ function fetchDataAndPopulateModuleByStudentID(studentID) {
             });
 
             toggleContainer1Visibility();
+
+            var table = $('#example').DataTable(); 
+            table.clear(); 
+            table.draw();
 
             resolve(data); // Resolve with the fetched data
         }) 
@@ -282,7 +287,7 @@ function fetchLecturerAttendanceData() {
             .catch(error => {
                 reject(error); // Reject with the error
             }); 
-    });
+    }); 
 } 
 
 document.getElementById("showDataByClassBtn").addEventListener("click", function() {
@@ -291,7 +296,7 @@ document.getElementById("showDataByClassBtn").addEventListener("click", function
             var table = $('#example3').DataTable();
             // Clear existing data 
             table.clear();
-            // Map data and create rows
+            // Map data and create rows 
             data.forEach(item => {
                 const startDate = new Date(item.startTime);
                 const endDate = new Date(item.endTime);
@@ -340,7 +345,7 @@ function openPopup(class_session_id) {
             .then(data => {
                 // console.log(data);
 
-                document.getElementById('classSessionID').innerHTML  = class_session_id;
+                document.getElementById('classSessionID').innerHTML  = class_session_id; 
 
                 var table = $('#example2').DataTable();  
                 
@@ -397,22 +402,21 @@ function clearLecturerAttendanceData() {
     tableBody.innerHTML = "";
 
     //to clear the datatable's data
-    var table = $('#example').DataTable();
+    var table = $('#example3').DataTable(); 
     table.clear();
     table.draw();
 
     //to reset the fields in the form 
     var monthYearSelect = document.getElementById("monthYear-byClass"); 
- 
     monthYearSelect.value = "All"; 
 }  
-
 
 
 document.getElementById('cohort').addEventListener('change', function() {
     // Get the selected cohort value
     var selectedCohort = this.value;
-
+    console.log(selectedCohort); 
+    clearLecturerAttendanceData()  
     fetchDataAndPopulateModuleByCohort(selectedCohort);
 });
 
