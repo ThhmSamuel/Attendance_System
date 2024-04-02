@@ -436,3 +436,27 @@ button .button-attendance {
   display: block; 
 }
 
+.flag-result{
+  padding-top: 20px; 
+} 
+
+ 
+tr.excellent {
+  background-color: #b9f6ca; 
+}
+
+tr.good { 
+  background-color: #ffe082; 
+}
+
+tr.critical{
+  background-color: #ffcccc;  
+}
+
+tr.exceeded_threshold {
+  background-color: #ff5e5e; 
+}
+ 
+#flagChart{
+  margin-left: 350px;
+}
