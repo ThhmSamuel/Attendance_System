@@ -64,21 +64,22 @@ const addUsers = (req, res) => {
     const sql = 'INSERT INTO logincredential (email, password, roleID) VALUES (?, ?, ?)';
     db.query(sql, [email, password, role], (err, result) => {
       if (err) {
-        res.status(500).send('Error adding user');
+        res.status(500).send({message: 'Error adding user'});
       } else {
-        res.status(201).send('User added successfully');
+        res.status(201).send({message: 'User added successfully'});
       }
     });
 };
 
 const removeUsers = (req, res) => {
-    const userId = req.params.id;
-    const sql = 'DELETE FROM logincredential WHERE id = ?';
-    db.query(sql, [userId], (err, result) => {
+    const email = req.body.email;
+    console.log("Email received from client:", email);
+    const sql = 'DELETE FROM logincredential WHERE email = ?';
+    db.query(sql, email, (err, result) => {
         if (err) {
-        res.status(500).send('Error removing user');
+        res.status(500).send({message: 'Error removing user'});
         } else {
-        res.status(200).send('User removed successfully');
+        res.status(200).send({message: 'User removed successfully'});
         }
     });
 };
@@ -90,7 +91,7 @@ const userList = (req, res) => {
         res.status(500).send('Error retrieving users');
       } else {
         const users = results.map(user => ({
-          id: user.id,
+          //id: user.id,
           email: user.email,
           roleID: user.roleID
         }));
