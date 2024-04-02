@@ -39,7 +39,7 @@
                             <span class="nav__name">Monitor Attendance</span>
                         </a>
 
-                        <a href="#" class="nav__link" onclick="loadContent('/admin/manage-user.html')">
+                        <a href="/admin/manage-user.html" class="nav__link" onclick="loadContent('')">
                             <i class='bx bx-columns nav__icon' ></i>
                             <span class="nav__name">Manage Users</span>
                         </a>
@@ -213,45 +213,8 @@
                 xhttp.send();
             }
 
-            function fetchUsers() {
-                fetch('/userList')
-                    .then(response => response.json())
-                    .then(users => {
-                    const userList = document.getElementById('userList');
-                    userList.innerHTML = '';
-                    users.forEach(user => {
-                        const li = document.createElement('li');
-                        li.textContent = `${user.email} (Role: ${user.role})`;
-                        userList.appendChild(li);
-                    });
-                    renderUserTable(users);
-                    })
-                    .catch(error => console.error('Error fetching users:', error));
-                }
 
-            function renderUserTable(users) {
-                const tableRows = users.map(user => `<tr><td>${user.id}</td><td>${user.email}</td><td>${user.role}</td></tr>`);
-                const table = `
-                    <table>
-                    <thead>
-                        <tr>
-                        <th>ID</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${tableRows.join('')}
-                    </tbody>
-                    </table>
-                `;
-                document.getElementById('userTable').innerHTML = table; // Changed userList to userTable
-                }
-
-                fetchUsers();
-    
-
-
+            
         </script>
 
     </body>
