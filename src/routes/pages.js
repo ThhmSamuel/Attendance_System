@@ -7,7 +7,7 @@ const getMC = require("../models/getMC");
 // const addUsers = require("../models/manageUser");
 // const removeUsers = require("../models/manageUser");
 // const userList = require("../models/manageUser");
-const { addUsers, removeUsers, userList } = require("../models/manageUser"); // Destructure functions
+const { addUsers, removeUsers, userList } = require("../models/manage-user"); // Destructure functions
 
 
 const router = express.Router();
@@ -52,6 +52,6 @@ router.post("/addUsers",addUsers)
 //Route to remove user
 router.post("/removeUsers",removeUsers)
 //Route to get userList
-router.get("/userList",userList)
+router.get("/userList",userList) 
 
 module.exports = router;   

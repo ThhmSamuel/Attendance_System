@@ -8,8 +8,6 @@
 <body>
   <h1>User Management</h1>
   <form id="addUserForm">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required><br>
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" required><br>
     <label for="password">Password:</label>
@@ -23,17 +21,16 @@
     <button type="submit">Add User</button>
   </form>
   
-  
   <!-- User Table -->
   <h1>User List</h1>
   <div id="userTable"></div>
   <ul id="userList"></ul>
 
   <script>
-    document.getElementById('addUserForm').addEventListener('submit', async (event) => {
+
+    document.getElementById('addUserForm').addEventListener('submit', async function(event) {
       event.preventDefault();
-      console.log('Form Submitted')
-      const name = document.getElementById('name').value;
+
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const role = document.getElementById('role').value;
@@ -44,20 +41,22 @@
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ name, email, password, role })
+          body: JSON.stringify({ email, password, role })
         });
-        if (response.ok) {
-          alert('User added successfully');
-          document.getElementById('name').value = '';
-          document.getElementById('email').value = '';
-          document.getElementById('password').value = '';
-          fetchUsers();
-        } else {
-          const errorMessage = await response.text();
-          alert(errorMessage);
+        
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
+        
+        const data = await response.json();
+        alert(data.message);
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
+        // Optionally, fetch updated user list after adding a user
+        fetchUsers();
       } catch (error) {
-        console.error('Error adding user:', error);
+        console.error('There was an error!', error);
+        // Handle errors gracefully, display an error message to the user, etc.
         alert('An error occurred, please try again');
       }
     });
@@ -94,10 +93,11 @@
           </tbody>
         </table>
       `;
-      document.getElementById('userTable').innerHTML = table; // Changed userList to userTable
+      document.getElementById('userTable').innerHTML = table;
     }
 
     fetchUsers();
   </script>
 </body>
 </html>
+
