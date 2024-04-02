@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Flagging Feature</title>
-
+    <title>Admin Generate QR</title>
     <style>         
  
         body {
@@ -13,9 +12,9 @@
             padding: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center; 
             height: 100vh;
-            background-color: #f0f0f0;  
+            background-color: #f0f0f0;   
         }
         .container1 {  
             width: 1000px;
@@ -148,74 +147,44 @@
 
 
     </style>  
-
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css"> 
-    <link rel="stylesheet" href="../assets/css/datatables.min.css"> 
+ 
     <link rel="stylesheet" href="../assets/css/styles.css">   
 
 </head> 
 <body> 
  
-
+ 
     <div class="content" id="main-content"> 
 
-        <div class="general-use-container">
+        <div class="container3">  
 
-            <label for="cohort-flag">Select cohort :</label>    
-            <select id="cohort-flag"> 
-                <!-- <option value="" disabled selected>Select Cohort</option> -->
+            <label for="moduleName">Select a module:</label> 
+            <select id="moduleName"> 
+            </select> 
+        
+            <label for="classType">Select the class type:</label>
+            <select id="classType">
+                <option value="Lecture">Lecture</option> 
+                <option value="Tutorial">Tutorial</option> 
             </select>
-
-            <label for="moduleName-flag">Select module:</label>    
-            <select id="moduleName-flag"> 
-            </select>
-
-            <label for="term-flag">Select term:</label>    
-            <select id="term-flag"> 
-            </select>
-
-            <div class="button-container">  
-                <button onclick="fetchStudentAttendanceRate()" id="showDataFlag">Show Data</button>
-                <button onclick="clearFlaggingData()" id="showDataFlag">Clear</button>       
+        
+            <label for="date">Date:</label> 
+            <input id="date" type="date" required> 
+            <label for="timeFrom">Time From:</label>
+            <input id="timeFrom" type="time" required>
+            <label for="timeTo">Time To:</label>
+            <input id="timeTo" type="time" required>
+            <button id="generateQR">Generate QR Code</button>
+            <button id="clear" onclick="clearFields()">Clear</button>   
+            <div class="expire-container">
+                <button class="expire-button" id="expireButton" onclick="clearFields()">Expire Session</button>
             </div>
-
-            <label class="flag-result"></label>  
-            
-            <div class="container">    
-                <div class="row">
-                    <div class="col-12"> 
-                        <div class="data_table">  
-                            <table id="example3" class="table table-striped table-bordered">
-                                <thead class="table-dark">
-                                    <tr> 
-                                        <th>Student Name</th>  
-                                        <th>Attendance Rate (%)</th>  
-                                        <th>Absence Count</th>
-                                        <th>Potential Final Status</th>  
-                                    </tr> 
-                                </thead>  
-                                <tbody id="flagging-table"> 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div> 
-            </div> 
+            <label id="class-SessionID"></label>  
+            <div class="qrcodePlacement" id="qrcode"></div>
 
         </div>
-
-       
-
+        
     </div>
 
-
-
-    <script src="/public/assets/js/data-table/bootstrap.bundle.min.js"></script>
-    <script src="/public/assets/js/data-table/jquery-3.6.0.min.js"></script>
-    <script src="/public/assets/js/data-table/datatables.min.js"></script>
-    <script src="/public/assets/js/data-table/pdfmake.min.js"></script>
-    <script src="/public/assets/js/data-table/vfs_fonts.js"></script>
-    <script src="/public/assets/js/data-table/custom.js"></script>
-    
 </body>
 </html>

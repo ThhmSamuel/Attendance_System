@@ -11,7 +11,7 @@ function fetchLecturerAttendanceData() {
                 body: JSON.stringify({ email: userEmail, moduleName, monthYear }),
             })
             .then(response => {
-                if (!response.ok) {
+                if (!response.ok) {  
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
