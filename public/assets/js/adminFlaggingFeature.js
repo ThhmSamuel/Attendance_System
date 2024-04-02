@@ -165,7 +165,7 @@ function fetchStudentAttendanceRate() {
             .then(data => {
 
                 threshold = data[0].percentage;
-                total_sessions = data[0].totalSessions; 
+                total_sessions = data[0].totalSessions;  
 
                 document.querySelector('.flag-result').textContent = `Attendance threshold for ${moduleName} is ${threshold}% and total sessions is ${total_sessions}.`;
 

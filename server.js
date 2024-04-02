@@ -4,6 +4,22 @@ const app = express();
 const cookie = require("cookie-parser"); 
 const PORT = process.env.PORT || 5000;
 
+const cors = require('cors');
+const session = require('express-session');
+const path = require('path');
+const { log } = require('console');
+
+app.use(cors());  
+app.use(express.json());
+
+// Use express-session middleware
+app.use(session({
+    secret: 'your-secret-key', // Change this to a secure random string 
+    resave: false,
+    saveUninitialized: true, 
+    cookie: { secure: false } // Set secure to true if using HTTPS
+  }));
+
 app.use("/js",express.static(__dirname + "/public/assets/js"));   // meaning , you can access "public/assets/js" with just  "js/" 
 app.use("/css",express.static(__dirname + "/public/assets/css")); 
 app.use("/scss",express.static(__dirname + "/public/assets/scss")); 
@@ -26,6 +42,7 @@ db.connect((err)=>{
     console.log("Connected to database");  
 });  
 
+let activeSessionIDs = new Set(); // Set to store active session IDs
 
 // STUDENT starts here --------------------------------------------------------
 
@@ -137,6 +154,328 @@ app.post('/studentAttendanceData', (req, res) => {
 
 
 // LECTURER starts here --------------------------------------------------------
+app.get('/page', (req, res) => {
+    const sessionID = req.query.sessionID;
+  
+    // Check if session ID is valid
+    if (isValidSessionID(sessionID)) { 
+        // Serve the webpage
+        res.sendFile(path.join(static_directory, 'public/attendance-form.html'));   
+    } else {  
+        // Return an error response
+        res.status(403).send('Invalid session ID'); 
+    }
+});
+
+
+
+app.post('/insertClassSession', (req, res) => { 
+    // Assuming req.body contains the data to be inserted
+    const { startTime, endTime, moduleName, lecturerName, class_sessionID, classType } = req.body;
+
+    console.log(lecturerName, moduleName, class_sessionID, classType, startTime, endTime);
+    const sqlQuery1 = `SELECT lecturerID FROM lecturer WHERE name = "${lecturerName}"`;   
+    const sqlQuery2 = `SELECT moduleID FROM module WHERE moduleName = '${moduleName}';`; 
+    const sqlQuery3 = `SELECT statusID FROM session_status WHERE status = "Active"`
+    const sqlQuery6 = `SELECT statusID FROM attendance_status where status='Absent';`;
+    const sqlQuery9 = `SELECT class_typeID FROM class_type WHERE classType = '${classType}';`; 
+
+
+    // Create a promise for each query
+    const query1Promise = new Promise((resolve, reject) => {
+        db.query(sqlQuery1, (error1, results1) => {
+            if (error1) {
+                reject('Error querying table1');
+            } else {
+                resolve(results1);
+            }
+        });
+    });
+
+    const query2Promise = new Promise((resolve, reject) => {
+        db.query(sqlQuery2, (error2, results2) => {
+            if (error2) {
+                reject('Error querying table2');
+            } else {
+                resolve(results2);
+            }
+        });
+    });
+ 
+    const query3Promise = new Promise((resolve, reject) => {
+        db.query(sqlQuery3, (error3, results3) => { 
+            if (error3) {
+                reject('Error querying table3');
+            } else {
+                resolve(results3);
+            }
+        });
+    });
+
+    const query6Promise = new Promise((resolve, reject) => {
+        db.query(sqlQuery6, (error6, results6) => { 
+            if (error6) {
+                reject('Error querying table6');
+            } else { 
+                resolve(results6);
+            }
+        });
+    });
+
+    const query9Promise = new Promise((resolve, reject) => {
+        db.query(sqlQuery9, (error9, results9) => { 
+            if (error9) { 
+                reject('Error querying table6');
+            } else { 
+                resolve(results9);
+            }
+        });
+    });
+
+
+    return Promise.all([query1Promise, query2Promise, query3Promise,query6Promise,query9Promise])
+    .then(([results1, results2,results3,results6,results9]) => {  
+        const rowDataPacket_lecturer = results1[0]; 
+        const lecturerID = rowDataPacket_lecturer['lecturerID'];
+
+        const rowDataPacket_module = results2[0];  
+        const moduleID = rowDataPacket_module['moduleID']; 
+
+        const rowDataPacket_status = results3[0];
+        const statusID = rowDataPacket_status['statusID']; 
+
+        const rowDataPacket_attendancestatus = results6[0]; 
+        const attendance_statusID = rowDataPacket_attendancestatus['statusID']; 
+
+        const rowDataPacket_classType = results9[0];
+        const classTypeID = rowDataPacket_classType['class_typeID']; 
+
+        const sqlQuery4 = `SELECT module_lecturer_ID FROM module_lecturer WHERE moduleID = "${moduleID}" AND lecturerID = "${lecturerID}";`;
+        const query4Promise = new Promise((resolve, reject) => {
+            db.query(sqlQuery4, (error3, results3) => {
+                if (error3) {
+                    reject('Error querying table4'); 
+                } else { 
+                    resolve(results3);
+                }
+            });
+        });
+        
+        // Promise for query4 
+        return query4Promise.then(results4 => {
+            const moduleLecturerID = results4.map(rowDataPacket => rowDataPacket.module_lecturer_ID);
+
+            const sqlQuery5 = `INSERT INTO class_session (startTime, endTime, classSessionID, module_lecturer_ID, statusID,class_typeID) VALUES ("${startTime}", "${endTime}", "${class_sessionID}", "${moduleLecturerID}", ${statusID}, ${classTypeID});`;
+            db.query(sqlQuery5, (err, result) => {
+                // if(err) return res.json(err);
+                // return res.json({ message: "Class Session inserted successfully", result });
+            });     
+
+
+            const sqlQuery7 = `SELECT cohortID FROM module_lecturer WHERE module_lecturer_ID = "${moduleLecturerID}";`;
+
+            // Promise for query 7 
+            const query7Promise = new Promise((resolve, reject) => { 
+                db.query(sqlQuery7, (error7, results7) => {
+                    if (error7) {
+                        reject('Error querying table7');
+                    } else {
+                        resolve(results7);  
+                    } 
+                });
+            }); 
+
+
+            return query7Promise.then(results7 => {
+
+                const cohortID = results7.map(rowDataPacket => rowDataPacket.cohortID);
+                const sqlQuery8 = `SELECT studentEmail FROM student WHERE cohortID = ${cohortID};`;
+
+
+                // Promise for query 8 
+                const query8Promise = new Promise((resolve, reject) => {
+                    db.query(sqlQuery8, (error8, results8) => {
+                        if (error8) {
+                            reject('Error querying table8');
+                        } else {
+                            resolve(results8); 
+                        }
+                    });
+                }); 
+
+                return query8Promise.then(results8 => {
+                    const studentEmails = results8.map(rowDataPacket => rowDataPacket.studentEmail);
+
+                    const attendancePromises = studentEmails.map(student => {
+                        const sql = `INSERT INTO attendance (studentEmail, classSessionID, statusID) VALUES ("${student}", "${class_sessionID}",${attendance_statusID})`;
+                        return new Promise((resolve, reject) => {
+                            db.query(sql, (err, result) => { 
+                                if (err) { 
+                                    console.error("Error inserting attendance:", err);  
+                                    reject(err);
+                                } else {
+                                    resolve(result);
+                                } 
+                            });
+                        });
+                    }); 
+            
+                    // Execute all attendance insertion promises
+                    return Promise.all(attendancePromises)
+                        .then(() => {
+                            return res.status(200).json({ message: "Attendance inserted successfully" });
+                        })
+                        .catch(error => {
+                            console.error("Error inserting attendance:", error);
+                            return res.status(500).json({ error: "Error inserting attendance" });
+                        });
+                });
+            
+            });
+
+        });
+        
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        return false; // Return false in case of an error
+    });
+
+});
+
+
+app.post('/expireClassSessionID' , (req,res) => {
+    const { class_sessionID } = req.body;
+    
+    const sqlQuery1 = `SELECT statusID FROM session_status where status = "Expired"`;    
+    const query1Promise = new Promise((resolve, reject) => {
+        db.query(sqlQuery1, (error1, results1) => {
+            if (error1) {
+                reject('Error querying table1');
+            } else {
+                resolve(results1);
+            }
+        });
+    });
+
+    return query1Promise.then(results1 => {
+        const rowDataPacket_status = results1[0];
+        const statusID = rowDataPacket_status['statusID']; 
+
+        const sqlQuery2 = `UPDATE class_session SET statusID = ${statusID} WHERE classSessionID = "${class_sessionID}";`;  
+        db.query(sqlQuery2, (err, result) => {
+            if(err) return res.json(err);
+            return res.json({ message: "Class Session ID expired successfully", result });
+        });
+    })
+})
+
+app.post('/submit-form', (req, res) => {
+    const { lecturerName, moduleName, class_sessionID , studentEmail_hardcode } = req.body; 
+ 
+    isValidClassSessionID(lecturerName, moduleName, class_sessionID) 
+    .then(isValid => {
+        if (isValid) {
+
+            const sqlQuery1 = `SELECT statusID FROM attendance_status where status='Present';`;
+            const query1Promise = new Promise((resolve, reject) => {
+                db.query(sqlQuery1, (error1, results1) => {
+                    if (error1) {
+                        reject('Error querying table1');
+                    } else {
+                        resolve(results1);
+                    }
+                });     
+            });
+
+            return query1Promise.then(results1 => {
+                const rowDataPacket_status = results1[0];
+                const statusID = rowDataPacket_status['statusID']; 
+
+                const sqlQuery2 = `UPDATE attendance SET statusID = ${statusID} WHERE studentEmail = "${studentEmail_hardcode}" AND classSessionID = "${class_sessionID}";`;  
+                db.query(sqlQuery2, (err, result) => {
+                    if(err) return res.json(err);
+                    return res.json({ message: "Attendance Updated Successfully", result });    
+                });
+            }) 
+
+        } else { 
+            console.log('Invalid class session ID'); 
+            res.status(403).send('Invalid class session ID');  
+        } 
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error'); // Send an error response
+    });
+
+}); 
+
+app.get('/getSessionID', (req, res) => {
+    // Create a new session
+    req.session.regenerate((err) => {
+      if (err) { 
+        console.error('Error generating new session:', err);
+        res.status(500).send('Error generating new session');
+      } else {
+        const sessionID = req.sessionID;   
+        activeSessionIDs.add(sessionID); // Add the new session ID to the active set
+  
+        // Send the session ID to the client
+        res.json({ sessionID });
+  
+        // Expire old session IDs
+        expireOldSessionIDs(sessionID);  
+      }
+    });
+}); 
+
+app.post('/expireClassSessionID' , (req,res) => {
+    const { class_sessionID } = req.body;
+    
+    const sqlQuery1 = `SELECT statusID FROM session_status where status = "Expired"`;    
+    const query1Promise = new Promise((resolve, reject) => {
+        db.query(sqlQuery1, (error1, results1) => {
+            if (error1) {
+                reject('Error querying table1');
+            } else {
+                resolve(results1);
+            }
+        });
+    });
+
+    return query1Promise.then(results1 => {
+        const rowDataPacket_status = results1[0];
+        const statusID = rowDataPacket_status['statusID']; 
+
+        const sqlQuery2 = `UPDATE class_session SET statusID = ${statusID} WHERE classSessionID = "${class_sessionID}";`;  
+        db.query(sqlQuery2, (err, result) => {
+            if(err) return res.json(err);
+            return res.json({ message: "Class Session ID expired successfully", result });
+        });
+    })
+})
+
+// Function to expire old session IDs
+function expireOldSessionIDs(newSessionID) {
+    activeSessionIDs.forEach((sessionID) => {
+      if (sessionID !== newSessionID) {
+        activeSessionIDs.delete(sessionID); // Remove expired session ID from the active set
+      }
+    });
+}
+
+// Check if the session ID is in the activeSessionIDs set  
+function isValidSessionID(sessionID) {
+    return activeSessionIDs.has(sessionID);
+}
+  
+// Clear the active session IDs
+app.post('/clearActiveSessionIDs', (req, res) => {
+    activeSessionIDs.clear(); 
+    res.sendStatus(200); 
+});
+
 
 app.post('/lecturerModuleData', (req, res) => {
     // Assuming req.body contains the data sent from the client 
@@ -167,6 +506,34 @@ app.post('/lecturerModuleData', (req, res) => {
         });
 }); 
 
+app.post('/getLecturerName', (req, res) => {
+    // Assuming req.body contains the data sent from the client  
+    const { email } = req.body;
+
+    const sqlQuery1 = `SELECT name FROM lecturer WHERE email = '${email}';`;  
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
 
 app.post('/lecturerAttendanceData', (req, res) => { 
     const { email , moduleName , monthYear } = req.body;   
@@ -311,7 +678,7 @@ app.post('/getModuleByCohort', (req, res) => {
             db.query(sqlQuery1, (error1, results1) => {
                 if (error1) {
                     reject({ error: 'Error querying table2' });
-                } else {
+                } else { 
                     resolve(results1);
                 }
             });
