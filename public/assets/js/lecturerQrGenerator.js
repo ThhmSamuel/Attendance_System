@@ -45,35 +45,41 @@ function getLecturerName() {
 
 
 function checkField(){   
-    console.log("Checking fields..." + lecturerName);
+
     var moduleName = document.getElementById("moduleName").value;
     var classType = document.getElementById("classType").value; 
     var timeFrom = document.getElementById("timeFrom").value;
     var timeTo = document.getElementById("timeTo").value;
     var date = document.getElementById("date").value; 
 
-    if (!moduleName || !timeFrom || !timeTo || !date || !classType) { 
+    console.log("Check Field : ",moduleName,timeFrom,timeTo,date,classType)
+
+    if (!moduleName || !timeFrom || !timeTo ||  !date  ||  !classType) {      
         alert("Please fill in all fields.");
         return;
     } else {
-    
-        generateSessionID(true) 
-        .then(sessionID => {
-            var classSessionID = sessionID
-            document.getElementById('class-SessionID').innerText = "Class Session ID : "+classSessionID; 
-            createClassSessionID_database(databaseStartTime,databaseEndTime,moduleName,lecturerName,classSessionID,classType) 
-        })
-        .catch(error => {
-            console.error('Error generating session ID:', error);
-        });
+        
+        if((timeFrom === timeTo)){
+            alert("Start time and end time must not be the same"); 
+        } else {
+            generateSessionID(true) 
+            .then(sessionID => {
+                var classSessionID = sessionID
+                document.getElementById('class-SessionID').innerText = "Class Session ID : "+classSessionID; 
+                createClassSessionID_database(databaseStartTime,databaseEndTime,moduleName,lecturerName,classSessionID,classType) 
+            })
+            .catch(error => {
+                console.error('Error generating session ID:', error);
+            });
 
-        //generate QR code 
-        makeCode(moduleName,timeFrom,timeTo,date);
-        // Start executing makeCode initially
-        executeMakeCode(moduleName,timeFrom,timeTo,date);
+            //generate QR code 
+            makeCode(moduleName,timeFrom,timeTo,date);
+            // Start executing makeCode initially
+            executeMakeCode(moduleName,timeFrom,timeTo,date);
 
-        var databaseStartTime = date + ' ' + timeFrom
-        var databaseEndTime = date + ' ' + timeTo 
+            var databaseStartTime = date + ' ' + timeFrom
+            var databaseEndTime = date + ' ' + timeTo 
+        }
     }    
 }
 
@@ -274,9 +280,10 @@ document.getElementById("expireButton").addEventListener("click", function() {
 
 
 document.getElementById("generateQR").addEventListener("click", function() {
-    clearInterval(intervalID);   
+    clearInterval(intervalID);    
+    console.log("hello") 
     checkField(); 
-});
+}); 
 
 
 function fetchDataAndPopulateModuleDropdown(){
