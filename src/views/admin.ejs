@@ -38,8 +38,13 @@
                             <i class='bx bxs-calendar-alt nav__icon' ></i> 
                             <span class="nav__name">Monitor Attendance</span>
                         </a>
+
+                        <a href="/admin/manage-user.html" class="nav__link" onclick="loadContent('')">
+                            <i class='bx bx-columns nav__icon' ></i>
+                            <span class="nav__name">Manage Users</span>
+                        </a>
                          
-                        <a href="#" class="nav__link" onclick="loadContent('Manage-Course-Roster.html')">
+                        <a href="#" class="nav__link" onclick="loadContent('/admin/manage-course-roster.html')">
                             <i class='bx bx-columns nav__icon' ></i>
                             <span class="nav__name">Manage Course Roster</span>
                         </a>
@@ -79,6 +84,11 @@
         <script src="js/main.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <canvas id="flagChart" style="width:100%;max-width:1000px"></canvas>  
+
+
+
+
+
 
         <script>
             // Immediately show the sidebar without requiring any click event
@@ -165,6 +175,8 @@
                 xhttp.send();
             }
 
+
+            
         </script>
 
     </body>
