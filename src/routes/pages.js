@@ -4,9 +4,8 @@ const logout = require("../controllers/logout");
 const uploadMC = require("../models/uploadMC");
 const getMC = require("../models/getMC");
 
-const router = express.Router();
+const router = express.Router(); 
   
-
 
 router.get("/",loggedIn,(req,res)=>{   
  
@@ -26,13 +25,14 @@ router.get("/",loggedIn,(req,res)=>{
         
     }else{
         res.sendFile("loginPage.html", {root:"./public/"})   
-
     }
          
 }); 
  
 
-router.get("/logout",logout)    
+
+
+router.get("/logout",logout)     
  
 //Route to upload MC
 router.post("/uploadMC",uploadMC)

@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 5000;
 const cors = require('cors');
 const session = require('express-session');
 const path = require('path');
-const { log } = require('console');
+const { log, Console } = require('console');
 
 app.use(cors());  
 app.use(express.json());
@@ -17,8 +17,8 @@ app.use(session({
     secret: 'your-secret-key', // Change this to a secure random string 
     resave: false,
     saveUninitialized: true, 
-    cookie: { secure: false } // Set secure to true if using HTTPS
-  }));
+    cookie: { secure: false } // Set secure to true if using HTTPS 
+  })); 
 
 app.use("/js",express.static(__dirname + "/public/assets/js"));   // meaning , you can access "public/assets/js" with just  "js/" 
 app.use("/css",express.static(__dirname + "/public/assets/css")); 
@@ -154,18 +154,30 @@ app.post('/studentAttendanceData', (req, res) => {
 
 
 // LECTURER starts here --------------------------------------------------------
-app.get('/page', (req, res) => {
+
+app.get('/page', (req, res) => {    
+    const sessionID = req.query.sessionID; 
+    if (isValidSessionID(sessionID)) { 
+        // Serve the webpage
+        res.sendFile(path.join(__dirname, 'public/attendance-form.html'));   
+    } else {   
+        // Return an error response
+        res.status(403).send('Invalid session ID'); 
+    }
+}); 
+
+app.get('/formLogin', (req, res) => {
     const sessionID = req.query.sessionID;
   
     // Check if session ID is valid
     if (isValidSessionID(sessionID)) { 
         // Serve the webpage
-        res.sendFile(path.join(static_directory, 'public/attendance-form.html'));   
-    } else {  
+        res.sendFile("loginPageAttendanceForm.html", {root:"./public/"});   
+    } else {   
         // Return an error response
         res.status(403).send('Invalid session ID'); 
-    }
-});
+    } 
+}); 
 
 
 
@@ -370,34 +382,82 @@ app.post('/expireClassSessionID' , (req,res) => {
     })
 })
 
+
+function isStudentTakingSubject(studentEmail, moduleName) {
+    
+    const sqlQuery1 = `SELECT 
+    CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END AS is_taking_subject
+    FROM 
+        student
+        JOIN cohort ON student.cohortID = cohort.cohortID
+        JOIN module_cohort ON module_cohort.cohortID = cohort.cohortID
+        JOIN module ON module.moduleID = module_cohort.moduleID
+    WHERE 
+        studentEmail = '${studentEmail}' AND moduleName = '${moduleName}';`;
+
+    // Wrapping the database query inside a promise
+    return new Promise((resolve, reject) => {
+        db.query(sqlQuery1, (error1, results1) => { 
+            if (error1) {
+                reject({ error: 'Error querying table2' });
+            } else {
+                resolve(results1);
+            }
+        });
+    });
+}
+
+
+
+
 app.post('/submit-form', (req, res) => {
-    const { lecturerName, moduleName, class_sessionID , studentEmail_hardcode } = req.body; 
+    const { lecturerName, moduleName, class_sessionID , studentEmail } = req.body; 
  
-    isValidClassSessionID(lecturerName, moduleName, class_sessionID) 
+    isValidClassSessionID(lecturerName, moduleName, class_sessionID)  
     .then(isValid => {
         if (isValid) {
 
-            const sqlQuery1 = `SELECT statusID FROM attendance_status where status='Present';`;
-            const query1Promise = new Promise((resolve, reject) => {
-                db.query(sqlQuery1, (error1, results1) => {
-                    if (error1) {
-                        reject('Error querying table1');
-                    } else {
-                        resolve(results1);
-                    }
-                });     
+            isStudentTakingSubject(studentEmail, moduleName)
+            .then((data) => {
+                console.log(data); 
+
+                const rowDataPacket_subjectStatus= data[0];
+                const isTaking = rowDataPacket_subjectStatus['is_taking_subject'];  
+
+                if(isTaking === 0) {
+
+                    console.log('Student is not taking the subject');
+                    res.status(403).send('Student is not taking the subject');
+    
+                } else {
+    
+                    const sqlQuery1 = `SELECT statusID FROM attendance_status where status='Present';`;
+                    const query1Promise = new Promise((resolve, reject) => {
+                        db.query(sqlQuery1, (error1, results1) => {
+                            if (error1) {
+                                reject('Error querying table1');
+                            } else {
+                                resolve(results1);
+                            }
+                        });     
+                    });
+    
+                    return query1Promise.then(results1 => {
+                        const rowDataPacket_status = results1[0];
+                        const statusID = rowDataPacket_status['statusID']; 
+    
+                        const sqlQuery2 = `UPDATE attendance SET statusID = ${statusID} WHERE studentEmail = "${studentEmail}" AND classSessionID = "${class_sessionID}";`;  
+                        db.query(sqlQuery2, (err, result) => {
+                            if(err) return res.json(err);
+                            return res.json({ message: "Attendance Updated Successfully", result });    
+                        });
+                    }) 
+                }
+
+            })
+            .catch((error) => {
+                console.error(error); 
             });
-
-            return query1Promise.then(results1 => {
-                const rowDataPacket_status = results1[0];
-                const statusID = rowDataPacket_status['statusID']; 
-
-                const sqlQuery2 = `UPDATE attendance SET statusID = ${statusID} WHERE studentEmail = "${studentEmail_hardcode}" AND classSessionID = "${class_sessionID}";`;  
-                db.query(sqlQuery2, (err, result) => {
-                    if(err) return res.json(err);
-                    return res.json({ message: "Attendance Updated Successfully", result });    
-                });
-            }) 
 
         } else { 
             console.log('Invalid class session ID'); 
@@ -410,6 +470,51 @@ app.post('/submit-form', (req, res) => {
     });
 
 }); 
+
+// app.post('/submit-form', (req, res) => {
+//     const { lecturerName, moduleName, class_sessionID , studentEmail } = req.body; 
+ 
+//     isValidClassSessionID(lecturerName, moduleName, class_sessionID)  
+//     .then(isValid => {
+//         if (isValid) {
+
+
+//             const sqlQuery1 = `SELECT statusID FROM attendance_status where status='Present';`;
+//             const query1Promise = new Promise((resolve, reject) => {
+//                 db.query(sqlQuery1, (error1, results1) => {
+//                     if (error1) {
+//                         reject('Error querying table1');
+//                     } else {
+//                         resolve(results1);
+//                     }
+//                 });     
+//             });
+
+//             return query1Promise.then(results1 => {
+//                 const rowDataPacket_status = results1[0];
+//                 const statusID = rowDataPacket_status['statusID']; 
+
+//                 const sqlQuery2 = `UPDATE attendance SET statusID = ${statusID} WHERE studentEmail = "${studentEmail}" AND classSessionID = "${class_sessionID}";`;  
+//                 db.query(sqlQuery2, (err, result) => {
+//                     if(err) return res.json(err);
+//                     return res.json({ message: "Attendance Updated Successfully", result });    
+//                 });
+//             }) 
+            
+
+//         } else { 
+//             console.log('Invalid class session ID'); 
+//             res.status(403).send('Invalid class session ID');  
+//         } 
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         res.status(500).send('Internal Server Error'); // Send an error response
+//     });
+
+// }); 
+
+
 
 app.get('/getSessionID', (req, res) => {
     // Create a new session
@@ -476,6 +581,64 @@ app.post('/clearActiveSessionIDs', (req, res) => {
     res.sendStatus(200); 
 });
 
+// Function to check if the class session ID is valid 
+function isValidClassSessionID(lecturerName, moduleName, class_sessionID) {  
+    const sqlQuery1 = `SELECT lecturerID FROM lecturer WHERE name = "${lecturerName}"`;   
+    const sqlQuery2 = `SELECT moduleID FROM module WHERE moduleName = '${moduleName}';`; 
+
+    // Create a promise for each query
+    const query1Promise = new Promise((resolve, reject) => {
+        db.query(sqlQuery1, (error1, results1) => {
+            if (error1) {
+                reject('Error querying table1');
+            } else {
+                resolve(results1);
+            }
+        });
+    });
+
+    const query2Promise = new Promise((resolve, reject) => {
+        db.query(sqlQuery2, (error2, results2) => {
+            if (error2) {
+                reject('Error querying table2');
+            } else { 
+                resolve(results2);
+            }
+        }); 
+    });
+
+    // Execute both queries and handle their results
+    return Promise.all([query1Promise, query2Promise])
+        .then(([results1, results2]) => {
+            const rowDataPacket_lecturer = results1[0]; 
+            const lecturerID = rowDataPacket_lecturer['lecturerID'];
+
+            const rowDataPacket_module = results2[0];  
+            const moduleID = rowDataPacket_module['moduleID'];
+
+            const sqlQuery3 = `SELECT classSessionID FROM class_session JOIN session_status on class_session.statusID = session_status.statusID WHERE module_lecturer_ID = (SELECT module_lecturer_ID FROM module_lecturer WHERE moduleID = "${moduleID}" AND lecturerID = "${lecturerID}") AND status = 'Active';`;
+            
+            const query3Promise = new Promise((resolve, reject) => {
+                db.query(sqlQuery3, (error3, results3) => {
+                    if (error3) {
+                        reject('Error querying table3');
+                    } else {
+                        resolve(results3);
+                    }
+                });
+            });
+            
+            // Promise for query3
+            return query3Promise.then(results3 => {
+                const classSessionIDs = results3.map(rowDataPacket => rowDataPacket.classSessionID);
+                return classSessionIDs.includes(class_sessionID);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            return false; // Return false in case of an error
+        });
+}
 
 app.post('/lecturerModuleData', (req, res) => {
     // Assuming req.body contains the data sent from the client 

@@ -114,10 +114,9 @@
 
 <script> 
 
-    var studentEmail_hardcode = "student1@soton.ac.uk"
+    var studentEmail;
+    // console.log("location: "+location.search)
 
-    // For details amendment --------------------------------------------------------------------------
-    // Function to extract URL parameters
     function getUrlParameter(name) {
         name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -130,7 +129,10 @@
     var date = getUrlParameter('date').split('-').join('/'); 
     var time = getUrlParameter('time').split('-').join(' ');   
     var lecturerName = getUrlParameter('lecturer').split('-').join(' ');  
+    studentEmail = getUrlParameter('studentEmail').split('-').join(' ');   
     
+    console.log(studentEmail)
+
     // Can only update if its element by ID
     document.getElementById('moduleName').innerText = moduleName; 
     document.getElementById('lecturerName').innerText = "Lecturer : " + lecturerName;    
@@ -156,11 +158,11 @@
                 headers: {
                     "Content-Type": "application/json" // Ensure proper JSON content type
                 }, 
-                body: JSON.stringify({ lecturerName, moduleName, class_sessionID , studentEmail_hardcode }) // Send sessionId as JSON object 
+                body: JSON.stringify({ lecturerName, moduleName, class_sessionID , studentEmail }) 
             });      
-
+            
             if (response.ok) {
-                alert("Attendance has been submitted!");
+                alert("Attendance has been submitted!"); 
                 console.log("Data sent successfully");
             } else {
                 alert("Invalid Class Session ID");  
