@@ -117,6 +117,10 @@
             function loadTablePage(page,scriptPage) {
                 fetchPageContent(event, page); 
                 loadDataTablesScripts(scriptPage);  
+
+                if(flagChart){
+                    flagChart.destroy(); 
+                }
             }
             
 

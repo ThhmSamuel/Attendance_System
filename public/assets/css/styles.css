@@ -215,7 +215,22 @@ h1 {
   margin-top: 5px;
   margin-bottom: 5px;
   margin-right: 5px;
-  width: 80px;
+  width: 80px; 
+}
+
+.data_table th {
+  background-color: #6a4ae9; 
+  border-color: #380aee;
+}
+
+.data_table .dt-buttons .btn {
+  background-color: #007bff; 
+  border-color: #007bff;
+}
+
+
+.temp {
+  background-color: #d2c7ff; 
 }
 
 
@@ -441,21 +456,16 @@ button .button-attendance {
 }  
 
  
-tr.excellent {
-  background-color: #b9f6ca; 
-}
 
 tr.good { 
-  background-color: #ffe082; 
+  background-color: #e6e0ff; 
 }
 
 tr.critical{
-  background-color: #ffcccc;  
+  background-color: #dad1ff;  
 }
 
-tr.exceeded_threshold {
-  background-color: #ff5e5e; 
-}
+
  
 #flagChart{
   margin-left: 350px;
@@ -475,3 +485,5 @@ input{
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   height: 520px; 
 }
+
+

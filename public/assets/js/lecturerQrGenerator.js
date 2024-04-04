@@ -11,7 +11,7 @@ var intervalID; // Variable to store the interval ID
 function executeMakeCode(moduleName,timeFrom,timeTo,date) {
     intervalID = setInterval(function() {
         makeCode(moduleName,timeFrom,timeTo,date); // Call makeCode function
-    }, 5000); // 5000 milliseconds = 5 seconds
+    }, 20000); // 20000 milliseconds = 20 seconds 
     console.log(intervalID) 
 }  
 
@@ -150,8 +150,8 @@ async function submitForm() {
 
 function makeCode(moduleName,timeFrom,timeTo,date) {   
     generateSessionID(false) 
-    .then(sessionID => {  
-        var url = "http://127.0.0.1:5000/page/?" + 
+    .then(sessionID => {   
+        var url = "http://127.0.0.1:5000/formLogin/?" + 
                     "sessionID=" + encodeURIComponent(sessionID) +  
                     "&moduleName=" + encodeURIComponent(moduleName) +  
                     "&time=" + encodeURIComponent(timeFrom) + "-to-" + encodeURIComponent(timeTo) + 
@@ -170,6 +170,7 @@ function makeCode(moduleName,timeFrom,timeTo,date) {
         console.error('Error generating session ID:', error);
     });            
 } 
+ 
 
 
 function clearFields() {
