@@ -62,23 +62,29 @@ function checkField(){
         if((timeFrom === timeTo)){
             alert("Start time and end time must not be the same"); 
         } else {
-            generateSessionID(true) 
-            .then(sessionID => {
-                var classSessionID = sessionID
-                document.getElementById('class-SessionID').innerText = "Class Session ID : "+classSessionID; 
-                createClassSessionID_database(databaseStartTime,databaseEndTime,moduleName,lecturerName,classSessionID,classType) 
-            })
-            .catch(error => {
-                console.error('Error generating session ID:', error);
-            });
 
-            //generate QR code 
-            makeCode(moduleName,timeFrom,timeTo,date);
-            // Start executing makeCode initially
-            executeMakeCode(moduleName,timeFrom,timeTo,date);
+            if (timeFrom >= timeTo) {
+                alert("Start time must be before end time"); 
+                return;
+            } else {
+                generateSessionID(true) 
+                .then(sessionID => {
+                    var classSessionID = sessionID
+                    document.getElementById('class-SessionID').innerText = "Class Session ID : "+classSessionID; 
+                    createClassSessionID_database(databaseStartTime,databaseEndTime,moduleName,lecturerName,classSessionID,classType) 
+                })
+                .catch(error => {
+                    console.error('Error generating session ID:', error);
+                });
 
-            var databaseStartTime = date + ' ' + timeFrom
-            var databaseEndTime = date + ' ' + timeTo 
+                //generate QR code 
+                makeCode(moduleName,timeFrom,timeTo,date);
+                // Start executing makeCode initially
+                executeMakeCode(moduleName,timeFrom,timeTo,date);
+
+                var databaseStartTime = date + ' ' + timeFrom
+                var databaseEndTime = date + ' ' + timeTo 
+            } 
         }
     }    
 }

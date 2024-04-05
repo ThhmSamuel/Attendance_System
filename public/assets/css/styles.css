@@ -487,3 +487,21 @@ input{
 }
 
 
+/* Upload MC */
+
+input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff; 
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 10px;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+

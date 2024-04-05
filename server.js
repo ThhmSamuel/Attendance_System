@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(session({
     secret: 'your-secret-key', // Change this to a secure random string 
     resave: false,
-    saveUninitialized: true, 
+    saveUninitialized: true,  
     cookie: { secure: false } // Set secure to true if using HTTPS 
   })); 
 
@@ -29,7 +29,7 @@ app.use("/admin",express.static(__dirname + "/public/admin"));
 app.use("/lecturer",express.static(__dirname + "/public/lecturer"));   
 app.use("/models",express.static(__dirname + "/public/models"));    
  
-console.log(__dirname)  
+// console.log(__dirname)  
 
 app.set("view engine","ejs");      
 app.set("views","./src/views");         
@@ -73,12 +73,14 @@ app.post('/studentModuleData', (req, res) => {
         .catch((error) => {
             res.status(500).json(error); // Send the error back to the client
         });
-});
+}); 
 
 
 app.post('/studentAttendanceData', (req, res) => { 
     const { email , moduleName , attendanceStatus , monthYear } = req.body;  
-      
+    
+    console.log(email, moduleName, attendanceStatus, monthYear); 
+
     const [year, monthNumber] = monthYear.split("-");
 
     var sqlQuery1; 
@@ -412,7 +414,7 @@ function isStudentTakingSubject(studentEmail, moduleName) {
 
 app.post('/submit-form', (req, res) => {
     const { lecturerName, moduleName, class_sessionID , studentEmail } = req.body; 
- 
+    console.log(lecturerName, moduleName, class_sessionID, studentEmail); 
     isValidClassSessionID(lecturerName, moduleName, class_sessionID)  
     .then(isValid => {
         if (isValid) {
@@ -449,7 +451,7 @@ app.post('/submit-form', (req, res) => {
                         const sqlQuery2 = `UPDATE attendance SET statusID = ${statusID} WHERE studentEmail = "${studentEmail}" AND classSessionID = "${class_sessionID}";`;  
                         db.query(sqlQuery2, (err, result) => {
                             if(err) return res.json(err);
-                            return res.json({ message: "Attendance Updated Successfully", result });    
+                            return res.status(200).json({ message: "Attendance Updated Successfully", result });    
                         });
                     }) 
                 }
@@ -470,49 +472,6 @@ app.post('/submit-form', (req, res) => {
     });
 
 }); 
-
-// app.post('/submit-form', (req, res) => {
-//     const { lecturerName, moduleName, class_sessionID , studentEmail } = req.body; 
- 
-//     isValidClassSessionID(lecturerName, moduleName, class_sessionID)  
-//     .then(isValid => {
-//         if (isValid) {
-
-
-//             const sqlQuery1 = `SELECT statusID FROM attendance_status where status='Present';`;
-//             const query1Promise = new Promise((resolve, reject) => {
-//                 db.query(sqlQuery1, (error1, results1) => {
-//                     if (error1) {
-//                         reject('Error querying table1');
-//                     } else {
-//                         resolve(results1);
-//                     }
-//                 });     
-//             });
-
-//             return query1Promise.then(results1 => {
-//                 const rowDataPacket_status = results1[0];
-//                 const statusID = rowDataPacket_status['statusID']; 
-
-//                 const sqlQuery2 = `UPDATE attendance SET statusID = ${statusID} WHERE studentEmail = "${studentEmail}" AND classSessionID = "${class_sessionID}";`;  
-//                 db.query(sqlQuery2, (err, result) => {
-//                     if(err) return res.json(err);
-//                     return res.json({ message: "Attendance Updated Successfully", result });    
-//                 });
-//             }) 
-            
-
-//         } else { 
-//             console.log('Invalid class session ID'); 
-//             res.status(403).send('Invalid class session ID');  
-//         } 
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//         res.status(500).send('Internal Server Error'); // Send an error response
-//     });
-
-// }); 
 
 
 
@@ -697,6 +656,7 @@ app.post('/getLecturerName', (req, res) => {
             res.status(500).json(error); // Send the error back to the client
         });
 });
+
 
 app.post('/lecturerAttendanceData', (req, res) => { 
     const { email , moduleName , monthYear } = req.body;   
@@ -935,6 +895,9 @@ app.post('/getStudentAttendanceRateByModule', (req, res) => {
  
 app.use("/",require("./src/routes/pages"));    // bring anything that starts with "/" to  "./src/routes/pages"
 app.use("/api", require("./src/controllers/auth"));  // bring anything that starts with "/api" to "./src/controllers/auth"  
-app.listen(PORT);   
+
+
+app.listen(PORT);  // use this for running application 
+// module.exports = app; // use this for testing
 
 
