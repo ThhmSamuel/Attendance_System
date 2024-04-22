@@ -455,16 +455,6 @@ button .button-attendance {
   padding-top: 20px; 
 }  
 
- 
-
-tr.good { 
-  background-color: #e6e0ff; 
-}
-
-tr.critical{
-  background-color: #dad1ff;  
-}
-
 
  
 #flagChart{
@@ -485,6 +475,7 @@ input{
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   height: 520px; 
 }
+
 
 #live-time {
   font-size: 35px;
@@ -899,4 +890,4 @@ input[type="checkbox"]{
   .wrapper .carousel {
     grid-auto-columns: 100%;
   }
-}
+} 
