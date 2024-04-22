@@ -21,7 +21,7 @@ function getLecturerName() {
     return new Promise((resolve, reject) => {  
         fetch('/getLecturerName', { 
                 method: 'POST', 
-                headers: {
+                headers: { 
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email: userEmail }),

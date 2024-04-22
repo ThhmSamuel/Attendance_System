@@ -1,4 +1,5 @@
 const express = require("express");
+const nodemailer = require("nodemailer");
 const db = require("./src/routes/db-config") 
 const app = express(); 
 const cookie = require("cookie-parser"); 
@@ -379,7 +380,7 @@ app.post('/expireClassSessionID' , (req,res) => {
             if(err) return res.json(err);
             return res.json({ message: "Class Session ID expired successfully", result });
         });
-    })
+    }) 
 })
 
 
@@ -471,48 +472,34 @@ app.post('/submit-form', (req, res) => {
 
 }); 
 
-// app.post('/submit-form', (req, res) => {
-//     const { lecturerName, moduleName, class_sessionID , studentEmail } = req.body; 
- 
-//     isValidClassSessionID(lecturerName, moduleName, class_sessionID)  
-//     .then(isValid => {
-//         if (isValid) {
 
+app.post('/getLatestTerm', (req, res) => {
+    const sqlQuery = `SELECT MAX(term) AS latest_term FROM cohort_term`;
 
-//             const sqlQuery1 = `SELECT statusID FROM attendance_status where status='Present';`;
-//             const query1Promise = new Promise((resolve, reject) => {
-//                 db.query(sqlQuery1, (error1, results1) => {
-//                     if (error1) {
-//                         reject('Error querying table1');
-//                     } else {
-//                         resolve(results1);
-//                     }
-//                 });     
-//             });
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery, (error, results) => {
+                if (error) {
+                    console.error('Error querying database:', error); // Log detailed error information
+                    reject({ error: 'Error querying database' }); // Send a more descriptive error message
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    };
 
-//             return query1Promise.then(results1 => {
-//                 const rowDataPacket_status = results1[0];
-//                 const statusID = rowDataPacket_status['statusID']; 
-
-//                 const sqlQuery2 = `UPDATE attendance SET statusID = ${statusID} WHERE studentEmail = "${studentEmail}" AND classSessionID = "${class_sessionID}";`;  
-//                 db.query(sqlQuery2, (err, result) => {
-//                     if(err) return res.json(err);
-//                     return res.json({ message: "Attendance Updated Successfully", result });    
-//                 });
-//             }) 
-            
-
-//         } else { 
-//             console.log('Invalid class session ID'); 
-//             res.status(403).send('Invalid class session ID');  
-//         } 
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//         res.status(500).send('Internal Server Error'); // Send an error response
-//     });
-
-// }); 
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            console.error('Error processing request:', error); // Log detailed error information
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
 
 
 
@@ -892,7 +879,7 @@ app.post('/getStudentAttendanceRateByModule', (req, res) => {
     const { moduleName , term } = req.body;
 
     const sqlQuery1 =  
-    `SELECT name, ROUND(((totalSessions - COUNT(status)) / totalSessions) * 100 ,1) as 'attendance_rate' , attendance_threshold.percentage ,  COUNT(status) as absence , totalSessions 
+    `SELECT student.studentEmail , name, ROUND(((totalSessions - COUNT(status)) / totalSessions) * 100 ,1) as 'attendance_rate' , attendance_threshold.percentage ,  COUNT(status) as absence , totalSessions 
     FROM class_session
     JOIN attendance ON class_session.classSessionID = attendance.classSessionID
     JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID
@@ -927,10 +914,81 @@ app.post('/getStudentAttendanceRateByModule', (req, res) => {
             res.status(500).json(error); // Send the error back to the client
         });
 });
+
+
+
+app.post('/getStudentPrevRate', (req, res) => {   
+
+    const { moduleName , studentEmail } = req.body;
+
+    const sqlQuery1 =  
+    `SELECT * FROM studentnotification
+    JOIN module ON module.moduleID = studentnotification.moduleID
+    WHERE moduleName = "${moduleName}" AND studentEmail = "${studentEmail}";`;   
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
 // ADMIN end here --------------------------------------------------------------
 
 
 
+// Sending email --------------------------
+app.post('/sendEmail', async (req, res) => {
+    const { attendanceRate, threshold, email } = req.body;
+    console.log("Email in server : ",email)  
+    // Create transporter for Gmail
+    let gmailTransporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true, 
+        auth: {
+            user: 'rollsroyceisdabest@gmail.com', 
+            pass: 'fuxx vksp npfw llmw',
+        },
+    });
+
+    // Define email content
+    let emailContent = {
+        from: '"UoSM Admin" uosm_admin@gmail.com>',
+        to: email,
+        subject: 'Attendance Alert',
+        html: `
+            <h1>Attendance Alert</h1>
+            <p>Your attendance rate (${attendanceRate}%) is below the threshold (${threshold}%).</p>
+            <p>Please take necessary actions to improve your attendance.</p>
+        `,
+    };
+
+    try {
+        // Send email
+        let info = await gmailTransporter.sendMail(emailContent);
+        console.log('Email sent:', info.messageId);
+        res.status(200).json({ message: 'Email sent successfully' });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ error: 'Failed to send email' });
+    }
+});
 
  
 app.use("/",require("./src/routes/pages"));    // bring anything that starts with "/" to  "./src/routes/pages"
