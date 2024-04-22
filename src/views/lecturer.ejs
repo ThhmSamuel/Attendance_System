@@ -17,8 +17,6 @@
     <body>
         
         <div class="content" id="main-content">
-            <h1>Page lecturer</h1>
-            <h1><%= user.email %></h1>      
         </div> 
 
         <div class="l-navbar" id="nav-bar">  
@@ -30,7 +28,7 @@
  
                     <div class="nav__list">
 
-                        <a href="/" class="nav__link active" onclick="loadContent('dashboard.html')"> 
+                        <a href="/" class="nav__link active" onclick="loadTablePage('lecturer/lecturer-dashboard.html','js/lecturer-dashboard.js')"> 
                             <i class='bx bxs-dashboard  nav__icon' ></i>
                             <span class="nav__name">Dashboard</span> 
                         </a>
@@ -69,6 +67,7 @@
                 </a>
             </nav>
         </div>
+        
  
         
         <!--===== MAIN JS =====--> 
@@ -77,6 +76,8 @@
         <script src="js/qrcode.js"></script>  
 
         <script>  
+
+            
 
             // Immediately show the sidebar without requiring any click event
             const navBar = document.getElementById('nav-bar'); 
@@ -87,60 +88,69 @@
             var userEmail = "<%= user.email %>"; 
             console.log(userEmail);
 
-            // function fetchPageContent(event, pageURL) { 
-            //     event.preventDefault(); // Prevent default behavior 
+            // Immediately show dashboard page when onload without any click event
+            document.addEventListener("DOMContentLoaded", function() {
+                const dashboardLink = document.querySelector('.nav__link.active');
+                if (dashboardLink) {
+                    loadTablePage('lecturer/lecturer-dashboard.html', 'js/lecturer-dashboard.js');
+                }
+            });
+            
+
+             function fetchPageContent(event, pageURL) { 
+                 event.preventDefault(); // Prevent default behavior 
                 
-            //     fetch(pageURL)
-            //         .then(response => response.text())
-            //         .then(data => {
-            //             var doc = new DOMParser().parseFromString(data, 'text/html');
-            //             var newContent = doc.querySelector("#main-content").innerHTML;          
-            //             document.getElementById("main-content").innerHTML = newContent;
-            //         })
-            //         .catch(error => console.error('Error fetching page content:', error));
-            // }
+                 fetch(pageURL)
+                     .then(response => response.text())
+                     .then(data => {
+                         var doc = new DOMParser().parseFromString(data, 'text/html');
+                         var newContent = doc.querySelector("#main-content").innerHTML;          
+                         document.getElementById("main-content").innerHTML = newContent;
+                     })
+                     .catch(error => console.error('Error fetching page content:', error));
+             }
 
 
             
-            // // monitoring attendance page   
-            // function loadTablePage(page) {
-            //     fetchPageContent(event, page); 
-            //     loadDataTablesScripts();  
-            // }
+             // monitoring attendance page   
+             function loadTablePage(page) {
+                 fetchPageContent(event, page); 
+                 loadDataTablesScripts();  
+             }
 
-            // function loadDataTablesScripts() {
-            //     const head = document.getElementsByTagName('head')[0];
-            //     const scriptsToRemove = head.querySelectorAll('script[data-remove-on-reload]');
+             function loadDataTablesScripts() {
+                 const head = document.getElementsByTagName('head')[0];
+                 const scriptsToRemove = head.querySelectorAll('script[data-remove-on-reload]');
 
-            //     // Remove all previously loaded script elements
-            //     scriptsToRemove.forEach(script => {
-            //         script.parentNode.removeChild(script); 
-            //     });
+                 // Remove all previously loaded script elements
+                 scriptsToRemove.forEach(script => {
+                     script.parentNode.removeChild(script); 
+                 });
 
-            //     const scripts = [
-            //         'js/data-table/jquery-3.6.0.min.js',
-            //         'js/data-table/datatables.min.js',
-            //         'js/data-table/pdfmake.min.js',
-            //         'js/data-table/vfs_fonts.js',
-            //         'js/data-table/custom.js',
-            //         'js/lecturerAttendanceMonitoring.js'
-            //     ];
+                 const scripts = [
+                     'js/data-table/jquery-3.6.0.min.js',
+                     'js/data-table/datatables.min.js',
+                     'js/data-table/pdfmake.min.js',
+                     'js/data-table/vfs_fonts.js',
+                     'js/data-table/custom.js',
+                     'js/lecturerAttendanceMonitoring.js'
+                 ];
 
-            //     // Function to load each script sequentially
-            //     function loadScript(index) {
-            //         if (index >= scripts.length) return; // Exit if all scripts are loaded 
-            //         const scriptTag = document.createElement('script');
-            //         scriptTag.src = scripts[index];
-            //         scriptTag.setAttribute('data-remove-on-reload', 'true'); // Add a custom attribute to mark for removal
-            //         scriptTag.onload = function() {
-            //             loadScript(index + 1); // Load next script after current one is loaded
-            //         };
-            //         head.appendChild(scriptTag);
-            //     }
+                 // Function to load each script sequentially
+                 function loadScript(index) {
+                     if (index >= scripts.length) return; // Exit if all scripts are loaded 
+                     const scriptTag = document.createElement('script');
+                     scriptTag.src = scripts[index];
+                     scriptTag.setAttribute('data-remove-on-reload', 'true'); // Add a custom attribute to mark for removal
+                     scriptTag.onload = function() {
+                         loadScript(index + 1); // Load next script after current one is loaded
+                     };
+                     head.appendChild(scriptTag);
+                 }
 
-            //     // Start loading scripts from the beginning of the array
-            //     loadScript(0);
-            // }
+                 // Start loading scripts from the beginning of the array
+                 loadScript(0);
+             }
             
             function fetchPageContent(event, pageURL) { 
                 event.preventDefault(); // Prevent default behavior 
@@ -212,7 +222,6 @@
                 xhttp.open("GET", page, true);
                 xhttp.send();
             }
-
         </script>
 
     </body>

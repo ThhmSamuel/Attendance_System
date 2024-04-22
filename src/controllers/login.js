@@ -41,7 +41,7 @@ const login = async (req,res)=>{
             if (Err) throw Err;
             if (!result.length || hashedPassword !== result[0].password) return res.json({status: "error", error: "Invalid email or password"});  
             else {
-                const token = jwt.sign({email : result[0].email}, process.env.JWT_secret, {
+                const token = jwt.sign({email : result[0].email}, `${process.env.JWT_secret}`, {
                     expiresIn: process.env.JWT_EXPIRES,
                 }); 
                 
