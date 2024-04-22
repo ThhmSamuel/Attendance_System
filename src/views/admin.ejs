@@ -37,12 +37,12 @@
                             <span class="nav__name">Monitor Attendance</span>
                         </a>
 
-                        <a href="/admin/manage-user.html" class="nav__link" onclick="loadContent('')">
-                            <i class='bx bx-columns nav__icon' ></i>
+                        <a href="#" class="nav__link" onclick="loadPage('admin/manage-user.html', 'js/manage-user.js')">
+                            <i class='bx bx-columns nav__icon' ></i> 
                             <span class="nav__name">Manage Users</span>
                         </a>
                          
-                        <a href="#" class="nav__link" onclick="loadContent('/admin/manage-course-roster.html')">
+                        <a href="#" class="nav__link" onclick="loadPage('admin/manage-course-roster.html','js/manageCourseRoster.js')">
                             <i class='bx bx-columns nav__icon' ></i>
                             <span class="nav__name">Manage Course Roster</span>
                         </a>
@@ -166,14 +166,26 @@
                 };
                 xhttp.open("GET", page, true);
                 xhttp.send();
+      
+
+            function loadPage(page,scriptPage) {
+                loadContent(page); 
+                loadDataTablesScripts(scriptPage);  
+
+                if(flagChart){
+                    flagChart.destroy(); 
+                }
             }
-             // Immediately show dashboard page when onload without any click event
+            
+            
+            // Immediately show dashboard page when onload without any click event
              document.addEventListener("DOMContentLoaded", function() {
                 const dashboardLink = document.querySelector('.nav__link.active');
                 if (dashboardLink) {
                     loadTablePage('admin/admin-dashboard.html', 'js/admin-dashboard.js');
                 }
-            });         
+            });
+
         </script>
 
     </body>

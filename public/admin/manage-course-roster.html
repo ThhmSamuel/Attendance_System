@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Course Roster</title>
+</head>
+<body>
+    <h1>Add Student</h1>
+    <form id="addStudentForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        <label for="studentId">Student ID:</label>
+        <input type="text" id="studentId" name="studentId" required><br>
+        <label for="PAT_ID">PAT ID:</label>
+        <input type="text" id="PAT_ID" name="PAT_ID" required><br>
+        <label for="studentEmail">Email:</label>
+        <input type="email" id="studentEmail" name="studentEmail" required><br>
+        <label for="cohortId">Cohort ID:</label>
+        <input type="text" id="cohortId" name="cohortId" required><br>
+        <label for="termId">Term ID:</label>
+        <input type="text" id="termId" name="termId" required><br>
+        <button type="submit">Add Student</button>
+    </form>
+
+    <h1>Update Student</h1>
+    <form id="updateStudentForm">
+        <label for="updateStudentId">Student ID:</label>
+        <input type="text" id="updateStudentId" name="updateStudentId" required><br>
+        <label for="updateCohortId">Cohort ID:</label>
+        <input type="text" id="updateCohortId" name="updateCohortId" required><br>
+        <label for="updateTermId">Term ID:</label>
+        <input type="text" id="updateTermId" name="updateTermId" required><br>
+        <button type="submit">Update Student</button>
+    </form>
+
+    <script src="/public/assets/js/manageCourseRoster"></script>
+</body>
+</html>

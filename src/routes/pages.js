@@ -10,6 +10,9 @@ const getMC = require("../models/getMC");
 // const userList = require("../models/manageUser");
 const { addUsers, removeUsers, userList } = require("../models/manage-user"); // Destructure functions
 
+//manage course roster
+const { addStudent, updateStudent } = require("../models/manage-course-roster");
+
 
 const router = express.Router();
   
@@ -55,5 +58,12 @@ router.post("/addUsers",addUsers)
 router.post("/removeUsers",removeUsers)
 //Route to get userList
 router.get("/userList",userList) 
+
+
+//Route to add student
+router.post("/addStudent",addStudent)
+//Route to update student
+router.post("/updateStudent",updateStudent)
+
 
 module.exports = router;   
