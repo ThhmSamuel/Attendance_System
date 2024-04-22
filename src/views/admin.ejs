@@ -16,9 +16,7 @@
     </head>   
     <body id="body-pd">
         
-        <div class="content" id="main-content">  
-            <h1>Page admin</h1> 
-            <h1><%= user.email %></h1>      
+        <div class="content" id="main-content">   
         </div> 
 
         <div class="l-navbar" id="nav-bar"> 
@@ -29,7 +27,7 @@
                     </a> 
  
                     <div class="nav__list">
-                        <a href="#" class="nav__link active" onclick="loadContent('dashboard.html')"> 
+                        <a href="/" class="nav__link active" onclick="loadContent('admin/admin-dashboard.html','js/admin-dashboard.js')"> 
                         <i class='bx bxs-dashboard  nav__icon' ></i>
                             <span class="nav__name">Dashboard</span>
                         </a>
@@ -85,11 +83,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <canvas id="flagChart" style="width:100%;max-width:1000px"></canvas>  
 
-
-
-
-
-
         <script>
             // Immediately show the sidebar without requiring any click event
             const navBar = document.getElementById('nav-bar'); 
@@ -122,7 +115,6 @@
                     flagChart.destroy(); 
                 }
             }
-            
 
             function loadDataTablesScripts(scriptPage) {  
                 const head = document.getElementsByTagName('head')[0];
@@ -135,6 +127,7 @@
 
                 const scripts = [
                     'js/data-table/jquery-3.6.0.min.js',
+                    'js/admin-dashboard.js',  
                     'js/data-table/datatables.min.js',
                     'js/data-table/pdfmake.min.js',
                     'js/data-table/vfs_fonts.js',
@@ -173,7 +166,7 @@
                 };
                 xhttp.open("GET", page, true);
                 xhttp.send();
-            }
+      
 
             function loadPage(page,scriptPage) {
                 loadContent(page); 
@@ -183,7 +176,15 @@
                     flagChart.destroy(); 
                 }
             }
-
+            
+            
+            // Immediately show dashboard page when onload without any click event
+             document.addEventListener("DOMContentLoaded", function() {
+                const dashboardLink = document.querySelector('.nav__link.active');
+                if (dashboardLink) {
+                    loadTablePage('admin/admin-dashboard.html', 'js/admin-dashboard.js');
+                }
+            });
 
         </script>
 

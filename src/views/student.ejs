@@ -13,14 +13,11 @@
         <link rel="stylesheet" href="css/datatables.min.css"> 
         <link rel="stylesheet" href="css/styles.css">   <!-- ===== loading the custom css after bootstrap to prevent bootstrap from overriding style.css ===== --> 
 
-
         <title>Attendance Management System</title>   
     </head>   
-    <body>
+    <body id="body-pd">
         
-        <div class="content" id="main-content">
-            <h1>Page student</h1>   
-            <h1><%= user.email %></h1>      
+        <div class="content" id="main-content"> 
         </div> 
 
         <div class="l-navbar" id="nav-bar"> 
@@ -31,10 +28,10 @@
                     </a>
 
                     <div class="nav__list"> 
-                        <a href="#" class="nav__link active"> 
+                        <a href="/" class="nav__link active" onclick="loadTablePage('student/student-dashboard.html','js/student-dashboard.js')"class="nav__link">
                             <i class='bx bxs-dashboard  nav__icon' ></i>
                             <span class="nav__name">Dashboard</span> 
-                        </a> 
+                        </a>
  
                         <a href="student/student-monitoring.html" onclick="loadTablePage('student/student-monitoring.html')" class="nav__link"> 
                             <i class='bx bxs-calendar-alt nav__icon' ></i>
@@ -61,11 +58,6 @@
                 </a>
             </nav>
         </div>   
-
-        
-       
-
-       
 
         <script>
             // Immediately show the sidebar without requiring any click event
@@ -109,6 +101,7 @@
                 const scripts = [
                     'js/data-table/jquery-3.6.0.min.js',
                     'js/data-table/datatables.min.js',
+                    'js/student-dashboard.js',  
                     'js/data-table/pdfmake.min.js',
                     'js/data-table/vfs_fonts.js',
                     'js/data-table/custom.js',
@@ -141,19 +134,14 @@
                 xhttp.open("GET", page, true);
                 xhttp.send();
             }
+             // Immediately show dashboard page when onload without any click event
+             document.addEventListener("DOMContentLoaded", function() {
+                const dashboardLink = document.querySelector('.nav__link.active');
+                if (dashboardLink) {
+                    loadTablePage('student/student-dashboard.html', 'js/student-dashboard.js');
+                }
+            });
 
-            
-        </script> 
-
-         <!--===== MAIN JS =====-->
-         <script src="js/main.js"></script>  
-         <!-- <script src="js/data-table/jquery-3.6.0.min.js"></script>  
-         <script src="js/data-table/datatables.min.js"></script>  
-         <script src="js/data-table/pdfmake.min.js"></script>  
-         <script src="js/data-table/vfs_fonts.js"></script>   
-         <script src="js/data-table/custom.js"></script>   -->
-         <!-- <script src="js/studentAttendanceMonitoring.js"></script>   -->
-        
-
+        </script>         
     </body>
 </html> 

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin-Dashboard</title>
+    <!-- <link
+      rel="stylesheet"
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    /> -->
+</head>
+<body>
+    <div class="content" id="main-content">
+        <div class="main--content">
+            <div class="header--wrapper">
+                <div class="header--title">
+                    <span>Welcome,</span>
+                    <h2>Admin Name</h2>
+                </div> 
+                <div class="header--image">
+                    <img src="/img/UOSM.png" alt="Image" width="50" height="50">
+                </div>                          
+            </div>
+
+            <!-- <div class="admin-wrapper">
+                <i id="left" class='bx bxs-chevron-left nav-icons'></i>
+                <ul class="carousel">
+                  <li class="admin-card">
+                    <h2>Blanche Pearson</h2>
+                    <span>Sales Manager</span>
+                  </li>
+                  <li class="admin-card">
+                    <h2>Joenas Brauers</h2>
+                    <span>Web Developer</span>
+                  </li>
+                  <li class="admin-card">
+                    <h2>Ja Morant</h2>
+                    <span>Online Teacher</span>
+                  </li>
+                  <li class="admin-card">
+                    <h2>James Khosravi</h2>
+                    <span>Freelancer</span>
+                  </li>
+                  <li class="admin-card">
+                    <h2>Kristina Zasiadko</h2>
+                    <span>Bank Manager</span>
+                  </li>
+                  <li class="admin-card">
+                    <h2>Donald Horton</h2>
+                    <span>App Designer</span>
+                  </li>
+                </ul>
+                <i id="right" class='bx bxs-chevron-right nav-icons'></i>
+              </div> -->
+
+            <div class="card-container">
+                <h3 class="main-title">
+                    Today's Data
+                </h3>
+                <div class="card--wrapper">
+                    <div class="dash--card light-red ">
+                        <div class="card--header">
+                            <div class="amount">
+                                <span class="title">
+                                    Time
+                                </span>
+                                <div id="live-time"></div>               
+                            </div>
+                            <i class='bx bxs-time nav-icons'></i>
+                        </div>           
+                    </div>
+
+                    <div class="dash--card light-purple">
+                        <div class="card--header">
+                            <div class="amount">
+                                <span class="title">
+                                    Date
+                                </span>
+                                <div id="liveDate"></div>        
+                            </div>
+                            <i class='bx bxs-calendar nav-icons'></i>
+                        </div>         
+                    </div>
+
+                    <div class="dash--card light-green ">
+                        <div class="card--header">
+                            <div class="amount">
+                                <span class="title">
+                                    Total Modules
+                                </span>
+                                <h3 class="module-count">4 modules</h3>     
+                            </div>
+                            <i class='bx bxs-book-content nav-icons'></i>
+                        </div>         
+                    </div>
+
+                    <div class="dash--card light-blue ">
+                        <div class="card--header">
+                            <div class="amount">
+                                <span class="title">
+                                    Total Users
+                                </span>
+                                <h3 class="student-count">1000 users</h3>     
+                            </div>
+                            <i class='bx bxs-user nav-icons'></i>
+                        </div>         
+                    </div>
+                </div>
+            </div>
+            <div class="card-container">
+                <h3 class="main-title">
+                    User
+                </h3>
+                <div class="admin-wrapper">
+                    <ul class="carousel">
+                    <li class="admin-card">
+                        <div class="img"><img src="/img/perfil.jpg" alt="img" draggable="false"></div>
+                        <h2>Blanche Pearson</h2>
+                        <span>Sales Manager</span>
+                    </li>
+                    <li class="admin-card">
+                        <div class="img"><img src="/img/perfil.jpg" alt="img" draggable="false"></div>
+                        <h2>Joenas Brauers</h2>
+                        <span>Web Developer</span>
+                    </li>
+                    <li class="admin-card">
+                        <div class="img"><img src="/img/perfil.jpg" alt="img" draggable="false"></div>
+                        <h2>Lariach French</h2>
+                        <span>Online Teacher</span>
+                    </li>
+                    <li class="admin-card">
+                        <div class="img"><img src="/img/perfil.jpg" alt="img" draggable="false"></div>
+                        <h2>James Khosravi</h2>
+                        <span>Freelancer</span>
+                    </li>
+                    <li class="admin-card">
+                        <div class="img"><img src="/img/perfil.jpg" alt="img" draggable="false"></div>
+                        <h2>Kristina Zasiadko</h2>
+                        <span>Bank Manager</span>
+                    </li>
+                    <li class="admin-card">
+                        <div class="img"><img src="/img/perfil.jpg" alt="img" draggable="false"></div>
+                        <h2>Donald Horton</h2>
+                        <span>App Designer</span>
+                    </li>
+                    </ul>
+                    <i id="right" class='bx bxs-chevron-right nav-icons'></i>
+                </div>
+            </div>
+
+            <div class="tabular-wrapper">
+                <h3 class="main--title">Notifications</h3>
+                <div class="table--container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Messages</th>
+                                <th></th>
+                            </tr>
+
+                            <tbody>
+                                <tr>
+                                    <td>2023-05-01</td>
+                                    <td>There will be a holiday</td>
+                                    <td><input type="checkbox" class="checkbox" data-target="message1"/></td>
+                                </tr>
+                                <tr>
+                                    <td>2023-05-02</td>
+                                    <td>There will be no holiday</td>
+                                    <td><input type="checkbox" class="checkbox" data-target="message2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>2023-05-03</td>
+                                    <td>There are no classes tomorrow</td>
+                                    <td><input type="checkbox" class="checkbox" data-target="message3"/></td>
+                                </tr>
+                            </tbody>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+        
+   
+
+</body>
+</html>
+
