@@ -1,58 +1,27 @@
 
-// document.getElementById('addStudentForm').addEventListener('submit', async function(event) {
-//     event.preventDefault();
-//     console.log("check")
-//     const name = document.getElementById('name').value;
-//     const studentId = document.getElementById('studentId').value;
-//     const PAT_ID = document.getElementById('PAT_ID').value;
-//     const studentEmail = document.getElementById('studentEmail').value;
-//     const cohortId = document.getElementById('cohortId').value;
-//     const termId = document.getElementById('termId').value;
-
-//     try {
-//         console.log("fetching..")
-//         const response = await fetch('/addStudent', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({ name, studentId, PAT_ID, studentEmail, cohortId, termId })
-//         });
-        
-//         if (response.ok) {
-//             const data = await response.json();
-//             alert(data.message);
-//             document.getElementById('name').value = '';
-//             document.getElementById('studentId').value = '';
-//             document.getElementById('PAT_ID').value = '';
-//             document.getElementById('studentEmail').value = '';
-//             document.getElementById('cohortId').value = '';
-//             document.getElementById('termId').value = '';
-//         } else {
-//             throw new Error('Network response was not ok');
-//         }
-//     } catch (error) {
-//         console.error('There was an error!', error);
-//         alert('An error occurred, please try again');
-//     }
-// });
-
-document.getElementById('addStudentForm').addEventListener('submit', function(event) {
+document.getElementById('addStudentForm').addEventListener('submit', async function(event) {
     event.preventDefault();
-    console.log("check");
+    console.log("check")
     const name = document.getElementById('name').value;
     const studentId = document.getElementById('studentId').value;
     const PAT_ID = document.getElementById('PAT_ID').value;
     const studentEmail = document.getElementById('studentEmail').value;
     const cohortId = document.getElementById('cohortId').value;
     const termId = document.getElementById('termId').value;
+    console.log(name, studentId, PAT_ID, studentEmail, cohortId, termId);
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/addStudent');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            const data = JSON.parse(xhr.responseText);
+    try {
+        console.log("fetching..")
+        const response = await fetch('/addStudent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, studentId, PAT_ID, studentEmail, cohortId, termId })
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
             alert(data.message);
             document.getElementById('name').value = '';
             document.getElementById('studentId').value = '';
@@ -61,16 +30,14 @@ document.getElementById('addStudentForm').addEventListener('submit', function(ev
             document.getElementById('cohortId').value = '';
             document.getElementById('termId').value = '';
         } else {
-            console.error('Network response was not ok');
-            alert('An error occurred, please try again');
+            throw new Error('Network response was not ok');
         }
-    };
-    xhr.onerror = function() {
-        console.error('There was an error!');
+    } catch (error) {
+        console.error('There was an error!', error);
         alert('An error occurred, please try again');
-    };
-    xhr.send(JSON.stringify({ name, studentId, PAT_ID, studentEmail, cohortId, termId }));
+    }
 });
+
 
 
 document.getElementById('updateStudentForm').addEventListener('submit', async function(event) {
@@ -78,6 +45,7 @@ document.getElementById('updateStudentForm').addEventListener('submit', async fu
     const updateStudentId = document.getElementById('updateStudentId').value;
     const updateCohortId = document.getElementById('updateCohortId').value;
     const updateTermId = document.getElementById('updateTermId').value;
+    console.log(updateStudentId, updateCohortId, updateTermId);
 
     try {
         const response = await fetch('/updateStudent', {
@@ -86,6 +54,7 @@ document.getElementById('updateStudentForm').addEventListener('submit', async fu
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ studentId: updateStudentId, cohortId: updateCohortId, termId: updateTermId })
+            
         });
         
         if (response.ok) {
