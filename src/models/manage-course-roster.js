@@ -16,10 +16,10 @@ const addStudent = (req, res) => {
 };
 
 const updateStudent = (req, res) => {
-    const { studentId, cohortId, termId } = req.body;
+    const { cohortId, termId, studentId } = req.body;
     console.log(req.body);
     const sql = 'UPDATE student SET cohortId = ?, termId = ? WHERE studentId = ?';
-    db.query(sql, [studentId, cohortId, termId ], (err, result) => {
+    db.query(sql, [cohortId, termId, studentId ], (err, result) => {
       if (err) {
         res.status(500).send({message: 'Error updating student'});
       } else {
@@ -32,7 +32,27 @@ const updateStudent = (req, res) => {
     });
 };
 
+//populate option for cohortId
+const populateOption = (req, res) => {
+  const sql = 'SELECT cohortId, cohortName from cohort';
+  db.query(sql, (err, results) => {
+    if (err) throw error;
+    res.json(results);
+  });
+}
+
+//populate option for termId
+const populateTerm = (req, res) => {
+  const sql = 'SELECT * from cohort_term';
+  db.query(sql, (err, results) => {
+    if (err) throw error;
+    res.json(results);
+  });
+}
+
 module.exports = {
     addStudent,
-    updateStudent
+    updateStudent,
+    populateOption,
+    populateTerm
   };

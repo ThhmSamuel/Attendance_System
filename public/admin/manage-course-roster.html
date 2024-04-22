@@ -6,7 +6,9 @@
     <title>Manage Course Roster</title>
 </head>
 <body>
-    <h1>Add Student</h1>
+    <h1>Manage Course Roster</h1>
+    <br><br>
+    <h2>Add Student</h2>
     <form id="addStudentForm">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required><br>
@@ -17,20 +19,34 @@
         <label for="studentEmail">Email:</label>
         <input type="email" id="studentEmail" name="studentEmail" required><br>
         <label for="cohortId">Cohort ID:</label>
-        <input type="text" id="cohortId" name="cohortId" required><br>
+        <!-- <input type="text" id="cohortId" name="cohortId" required><br> -->
+        <select name="cohortId" id="cohortId">
+            <option value=""></option>t
+        </select>
         <label for="termId">Term ID:</label>
-        <input type="text" id="termId" name="termId" required><br>
+        <!-- <input type="text" id="termId" name="termId" required><br> -->
+        <select name="termId" id="termId">
+            <option value=""></option>t
+        </select>
         <button type="submit">Add Student</button>
     </form>
 
-    <h1>Update Student</h1>
+    <br><br>
+
+    <h2>Update Student</h2>
     <form id="updateStudentForm">
         <label for="updateStudentId">Student ID:</label>
         <input type="text" id="updateStudentId" name="updateStudentId" required><br>
         <label for="updateCohortId">Cohort ID:</label>
-        <input type="text" id="updateCohortId" name="updateCohortId" required><br>
+        <!-- <input type="text" id="updateCohortId" name="updateCohortId" required><br> -->
+        <select name="updateCohortId" id="updateCohortId">
+            <option value=""></option>
+        </select>
         <label for="updateTermId">Term ID:</label>
-        <input type="text" id="updateTermId" name="updateTermId" required><br>
+        <!-- <input type="text" id="updateTermId" name="updateTermId" required><br> -->
+        <select name="updateTermId" id="updateTermId">
+            <option value=""></option>t
+        </select>
         <button type="submit">Update Student</button>
     </form>
 

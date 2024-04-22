@@ -8,7 +8,6 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
     const studentEmail = document.getElementById('studentEmail').value;
     const cohortId = document.getElementById('cohortId').value;
     const termId = document.getElementById('termId').value;
-    console.log(name, studentId, PAT_ID, studentEmail, cohortId, termId);
 
     try {
         console.log("fetching..")
@@ -39,13 +38,11 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
 });
 
 
-
 document.getElementById('updateStudentForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     const updateStudentId = document.getElementById('updateStudentId').value;
     const updateCohortId = document.getElementById('updateCohortId').value;
     const updateTermId = document.getElementById('updateTermId').value;
-    console.log(updateStudentId, updateCohortId, updateTermId);
 
     try {
         const response = await fetch('/updateStudent', {
@@ -53,8 +50,7 @@ document.getElementById('updateStudentForm').addEventListener('submit', async fu
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ studentId: updateStudentId, cohortId: updateCohortId, termId: updateTermId })
-            
+            body: JSON.stringify({ cohortId: updateCohortId, termId: updateTermId, studentId: updateStudentId })
         });
         
         if (response.ok) {
@@ -71,3 +67,42 @@ document.getElementById('updateStudentForm').addEventListener('submit', async fu
         alert('An error occurred, please try again');
     }
 });
+
+// add student option selection for cohortId
+$(document).ready(function() {
+    $.get('/populateOption', function(data) {
+      data.forEach(function(option) {
+        $('#cohortId').append(`<option value="${option.cohortId}">${option.cohortName}</option>`);
+      });
+    });
+  });
+
+// update student option selection for cohortId
+$(document).ready(function() {
+    $.get('/populateOption', function(data) {
+      data.forEach(function(option) {
+        $('#updateCohortId').append(`<option value="${option.cohortId}">${option.cohortName}</option>`);
+      });
+    });
+  });
+  
+  // add student option selection for termId
+  $(document).ready(function() {
+    $.get('/populateTerm', function(data) {
+      data.forEach(function(option) {
+        const termName = `${option.startMonth} - ${option.endMonth}`;
+        $('#termId').append(`<option value="${option.termID}">${termName}</option>`);
+      });
+    });
+  });
+
+
+// update student option selection for termId
+$(document).ready(function() {
+    $.get('/populateTerm', function(data) {
+      data.forEach(function(option) {
+        const termName = `${option.startMonth} - ${option.endMonth}`;
+        $('#updateTermId').append(`<option value="${option.termID}">${termName}</option>`);
+      });
+    });
+  });

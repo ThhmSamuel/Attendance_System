@@ -11,7 +11,7 @@ const getMC = require("../models/getMC");
 const { addUsers, removeUsers, userList } = require("../models/manage-user"); // Destructure functions
 
 //manage course roster
-const { addStudent, updateStudent } = require("../models/manage-course-roster");
+const { addStudent, updateStudent, populateOption, populateTerm } = require("../models/manage-course-roster");
 
 
 const router = express.Router();
@@ -64,6 +64,9 @@ router.get("/userList",userList)
 router.post("/addStudent",addStudent)
 //Route to update student
 router.post("/updateStudent",updateStudent)
+router.get("/populateOption",populateOption)
+router.get("/populateTerm",populateTerm)
+
 
 
 module.exports = router;   
