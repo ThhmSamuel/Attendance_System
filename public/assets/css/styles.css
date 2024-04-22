@@ -889,5 +889,5 @@ input[type="checkbox"]{
 @media screen and (max-width: 600px) {
   .wrapper .carousel {
     grid-auto-columns: 100%;
-  }
-} 
+  } 
+}  
