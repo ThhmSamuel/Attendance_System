@@ -112,7 +112,7 @@ function fetchAndRenderUsers() {
               </tr>
             </thead>
             <tbody>
-              ${users.map(user => `<tr><td>${user.email}</td><td>${user.roleID}</td></tr>`).join('')}
+              ${users.map(user => `<tr><td>${user.email}</td><td>${user.roleName}</td></tr>`).join('')}
             </tbody>
           </table>
         `;

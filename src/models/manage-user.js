@@ -91,23 +91,40 @@ const removeUsers = (req, res) => {
 };
 
 
+// const userList = (req, res) => {
+//     const sql = 'SELECT * FROM logincredential';
+//     db.query(sql, (err, results) => {
+//       if (err) {
+//         res.status(500).send('Error retrieving users');
+//       } else {
+//         const users = results.map(user => ({
+//           //id: user.id,
+//           email: user.email,
+//           roleID: user.roleID
+//         }));
+  
+//         res.json(users);
+//       }
+//     });
+// };
+  
 const userList = (req, res) => {
-    const sql = 'SELECT * FROM logincredential';
-    db.query(sql, (err, results) => {
-      if (err) {
-        res.status(500).send('Error retrieving users');
-      } else {
-        const users = results.map(user => ({
-          //id: user.id,
-          email: user.email,
-          roleID: user.roleID
-        }));
-  
-        res.json(users);
-      }
-    });
+  const sql = `SELECT logincredential.*, role.roleType AS roleName FROM logincredential INNER JOIN role ON logincredential.roleID = role.roleID;`;
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).send('Error retrieving users');
+    } else {
+      const users = results.map(user => ({
+        id: user.id,
+        email: user.email,
+        roleName: user.roleName
+      }));
+
+      res.json(users);
+    }
+  });
 };
-  
+
 
 // module.exports = addUsers;
 // module.exports = removeUsers;
