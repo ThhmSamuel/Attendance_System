@@ -923,7 +923,8 @@ app.post('/getStudentPrevRate', (req, res) => {
 
     const sqlQuery1 =  
     `SELECT * FROM studentnotification
-    JOIN module ON module.moduleID = studentnotification.moduleID
+    JOIN emailbatch ON emailbatch.emailBatchID = studentnotification.emailBatchID
+    JOIN module ON module.moduleID = emailbatch.moduleID
     WHERE moduleName = "${moduleName}" AND studentEmail = "${studentEmail}";`;   
 
     // Wrapping the database query inside a promise
@@ -1135,7 +1136,7 @@ app.post('/insertLoginCredential', (req, res) => {
 
 // Sending email --------------------------
 app.post('/sendEmail', async (req, res) => {
-    const { attendanceRate, threshold, email } = req.body;
+    const { attendanceRate, threshold, email, moduleName } = req.body;
     console.log("Email in server : ",email)  
     // Create transporter for Gmail
     let gmailTransporter = nodemailer.createTransport({
@@ -1155,7 +1156,7 @@ app.post('/sendEmail', async (req, res) => {
         subject: 'Attendance Alert',
         html: `
             <h1>Attendance Alert</h1>
-            <p>Your attendance rate (${attendanceRate}%) is below the threshold (${threshold}%).</p>
+            <p>Your attendance rate (${attendanceRate}%) is below the threshold (${threshold}%) for the module ${moduleName}.</p>
             <p>Please take necessary actions to improve your attendance.</p>
         `,
     };
@@ -1170,6 +1171,178 @@ app.post('/sendEmail', async (req, res) => {
         res.status(500).json({ error: 'Failed to send email' });
     }
 });
+
+
+
+
+app.post('/insertEmailBatch', (req, res) => {   
+ 
+    const {emailBatchID, moduleID, dateTaken} = req.body  
+
+    console.log(emailBatchID) 
+
+    const sqlQuery1 =  `INSERT INTO emailbatch (emailBatchID , moduleID, dateTaken) VALUES ("${emailBatchID}", "${moduleID}", "${dateTaken}");`;          
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+
+app.post('/insertStudentNotification', (req, res) => {   
+ 
+    const {studentEmail, emailBatchID, prevAttendanceRate, threshold} = req.body   
+
+
+    const sqlQuery1 =  `INSERT INTO studentnotification (studentEmail, emailBatchID, prevAttendanceRate, threshold) VALUES ("${studentEmail}","${emailBatchID}",${prevAttendanceRate},${threshold});`;          
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+
+
+app.post('/getModuleID', (req, res) => {    
+ 
+    const {moduleName} = req.body   
+ 
+    console.log("Server: ",moduleName); 
+
+    const sqlQuery1 =  `SELECT * FROM module WHERE moduleName = "${moduleName}";`;          
+ 
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            console.log(data);
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+app.post('/getEmailBatch', (req, res) => {    
+ 
+    const sqlQuery1 =  `SELECT * FROM emailbatch 
+    JOIN module ON module.moduleID = emailbatch.moduleID;`;           
+ 
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            }); 
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            console.log(data);
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+
+
+app.post('/getEmailDetailsByBatchID', (req, res) => {    
+    
+    const {emailBatchID} = req.body;
+
+    console.log("Server: ",emailBatchID);
+
+    const sqlQuery1 =  `SELECT * FROM emailbatch 
+    JOIN studentnotification ON emailbatch.emailBatchID = studentnotification.emailBatchID
+    JOIN student ON student.studentEmail = studentnotification.studentEmail
+    JOIN module ON module.moduleID = emailbatch.moduleID 
+    WHERE emailbatch.emailBatchID = "${emailBatchID}";`;
+ 
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            console.log(data);
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
 
  
 app.use("/",require("./src/routes/pages"));    // bring anything that starts with "/" to  "./src/routes/pages"

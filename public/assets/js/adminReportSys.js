@@ -13,7 +13,7 @@ function handleFile(fileInput, termID) {
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
 
-        // Convert the sheet to JSON format
+        // Convert the sheet to JSON format   
         const jsonData = XLSX.utils.sheet_to_json(sheet);
 
         console.log(jsonData);
