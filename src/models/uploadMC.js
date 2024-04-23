@@ -31,31 +31,61 @@ var upload = multer({
     }
 }).single("mypic");
 
+// const uploadMC = async (req, res, next) => {
+//     upload(req, res, function (err) {
+//         if (err) {
+//             console.log(err);
+//             return res.status(500).send(err.message);
+//         }
+//         if (!req.file) {
+//             console.log("No file uploaded");
+//             return res.status(400).send("No file uploaded");
+//         }
+
+//         console.log(req.file.filename);
+
+//         // Insert the file data into the database directly
+//         var insertData = "INSERT INTO mc_file (file_name, file_data) VALUES(?, ?)";
+//         db.query(insertData, [req.file.originalname, req.file.buffer], (err, result) => {
+//             if (err) {
+//                 console.log("Error uploading file:", err);
+//                 return res.status(500).send("Error uploading file");
+//             }
+//             console.log("File uploaded successfully");
+//             return res.send('Image has been uploaded to the MySQL database.');
+//         });
+//     });
+// };
+
 const uploadMC = async (req, res, next) => {
+    console.log("check")
     upload(req, res, function (err) {
         if (err) {
-            console.log(err);
+            console.error('Error uploading file:', err);
             return res.status(500).send(err.message);
         }
         if (!req.file) {
-            console.log("No file uploaded");
+            console.error("No file uploaded");
             return res.status(400).send("No file uploaded");
         }
 
-        console.log(req.file.filename);
+        console.log('Uploaded file:', req.file.filename);
 
         // Insert the file data into the database directly
         var insertData = "INSERT INTO mc_file (file_name, file_data) VALUES(?, ?)";
         db.query(insertData, [req.file.originalname, req.file.buffer], (err, result) => {
             if (err) {
-                console.log("Error uploading file:", err);
+                console.error("Error inserting file into database:", err);
                 return res.status(500).send("Error uploading file");
             }
             console.log("File uploaded successfully");
-            return res.send('Image has been uploaded to the MySQL database.');
+            // Send success message to the client
+            return res.send('File uploaded successfully!');
         });
     });
 };
+
+
 
 module.exports = uploadMC;
 
