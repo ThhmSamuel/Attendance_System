@@ -184,7 +184,7 @@ function fetchStudentAttendanceRate() {
                 // Redraw the table  
                 table.draw();
 
-
+ 
                 // Creating a chart 
                 const classifications = ["Good", "Critical"];
                 const counts = [0, 0];
@@ -194,7 +194,7 @@ function fetchStudentAttendanceRate() {
                     if (index !== -1) {
                         counts[index]++;
                     }
-                });
+                }); 
 
                 // Create the chart
                 flagChart = new Chart("flagChart", {
