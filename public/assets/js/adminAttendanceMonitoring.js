@@ -218,7 +218,7 @@ function activateByClass(){
 } 
 
 // activateByClass
-
+ 
 function fetchDataAndPopulateModuleByCohort(cohortName) { 
     return new Promise((resolve, reject) => {
         fetch('/getModuleByCohort', {  

@@ -948,6 +948,187 @@ app.post('/getStudentPrevRate', (req, res) => {
             res.status(500).json(error); // Send the error back to the client
         });
 });
+
+
+
+app.post('/getTerm', (req, res) => {   
+
+    const sqlQuery1 =  `SELECT DISTINCT(term) FROM cohort_term;`;   
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        }); 
+});
+
+app.post('/getSemester', (req, res) => {    
+
+    const sqlQuery1 =  `SELECT DISTINCT(semester) FROM cohort_term;`;   
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+app.post('/getTermID', (req, res) => {   
+ 
+    const { term , semester } = req.body 
+
+    const sqlQuery1 =  `SELECT termID FROM cohort_term WHERE term = "${term}" AND semester = ${semester};`;    
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+app.post('/getCohortID', (req, res) => {   
+ 
+    const { cohortName } = req.body 
+
+    const sqlQuery1 =  `SELECT cohortID FROM cohort WHERE LOWER(cohortName) = "${cohortName}";`;          
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+
+app.post('/insertStudentData', (req, res) => {   
+ 
+    const { name, studentID, studentEmail, cohortID, termID } = req.body 
+
+    const sqlQuery1 =  `INSERT INTO student(name, studentID, studentEmail, cohortID, termID) VALUES ("${name}","${studentID}","${studentEmail}",${cohortID},${termID});`;          
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+
+app.post('/insertLoginCredential', (req, res) => {   
+ 
+    const {email, password, roleID } = req.body 
+
+    const sqlQuery1 =  `INSERT INTO logincredential (email, password, roleID) VALUES ("${email}", MD5("${password}"), ${roleID});`;          
+
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise
+    executeQuery()
+        .then((data) => {
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+
 // ADMIN end here --------------------------------------------------------------
 
 
