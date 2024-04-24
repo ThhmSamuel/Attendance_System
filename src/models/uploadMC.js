@@ -37,7 +37,6 @@ const uploadMC = async (req, res, next) => {
     try {
         // Get the current user's email
         const userEmail = await getUserInfo(req);
-        console.log("waiting")
         
         if (!userEmail) {
             console.error("User email not found");
@@ -81,49 +80,85 @@ const uploadMC = async (req, res, next) => {
     }
 };
 
-const applicationTable = async (req, res) => {
+
+async function getFileNames(req, res) {
     try {
-        // Get the user's email from the request (assuming it's stored in req.userEmail)
-        const userEmail = getUserInfo(req);
-        if (!userEmail) {
-            return res.status(401).send("User email not found");
-        }
+        // Retrieve user email asynchronously
+        const userEmail = await getUserInfo(req);
 
-        // Fetch files from the database based on the user's email
-        const files = await db.query("SELECT * FROM mc_file WHERE studentEmail = ?", [userEmail]);
-
-        res.json(files);
+        // Fetch file names from the database
+        db.query('SELECT id, file_name, status, startDate, endDate FROM mc_file WHERE studentEmail = ?', [userEmail], (error, results) => {
+            if (error) {
+                console.error("Error fetching file names:", error);
+                res.status(500).send("Error fetching file names");
+                return;
+            }
+            console.log("File names:", results);
+            // Send the fetched data as JSON response
+            res.json(results);
+        });
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send('Internal Server Error');
+        console.error("Error fetching user email:", error);
+        res.status(500).send("Error fetching user email");
     }
-};
+}
 
-const getFileById = async (req, res) => {
-    try {
-        // Fetch the file data from the database based on the file ID
-        const fileId = req.params.id;
-        const file = await db.query("SELECT file_data FROM mc_file WHERE id = ?", [fileId]);
+  
 
-        // Check if file exists
-        if (file.length === 0 || !file[0].file_data) {
-            return res.status(404).send('File not found');
-        }
 
-        // Set the appropriate content type
-        res.setHeader('Content-Type', 'image/jpeg'); // Adjust content type based on your file type
-        
-        // Send the file data as the response
-        res.send(file[0].file_data);
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send('Internal Server Error');
+function getFileById(req, res) {
+    const fileId = req.params.id;
+    // Fetch file data from the database
+    db.query('SELECT file_data, file_name, status, startDate, endDate FROM mc_file WHERE id = ?', [fileId], (error, results) => {
+      if (error) {
+        console.error("Error fetching file data:", error);
+        res.status(500).send("Error fetching file data");
+        return;
+      }
+      if (results.length > 0) {
+        const fileData = results[0].file_data;
+        const fileName = results[0].file_name;
+        const status = results[0].status;
+        const startDate = results[0].startDate;
+        const endDate = results[0].endDate;
+  
+        // Set content type based on file extension
+        const contentType = getContentType(fileName);
+  
+        // Send the appropriate content type
+        res.contentType(contentType);
+  
+        // Send the file data as response
+        res.send(fileData);
+      } else {
+        res.status(404).send('File not found');
+      }
+    });
+  }
+  
+  function getContentType(fileName) {
+    // Get file extension
+    const fileExtension = fileName.split('.').pop().toLowerCase();
+  
+    // Map file extensions to content types
+    switch (fileExtension) {
+      case 'pdf':
+        return 'application/pdf';
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      // Add more cases for other file types if needed
+      default:
+        return 'application/octet-stream'; // Default to binary data
     }
-};
+  }
+  
 
 
 module.exports = {
     uploadMC,
-    applicationTable,
-    getFileById
+    getFileById,
+    getFileNames
 };

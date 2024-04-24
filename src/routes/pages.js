@@ -7,7 +7,7 @@ const emailVerification = require("../controllers/emailVerification");
 
 const getUserInfo = require("../controllers/getUserInfo");
 
-const { uploadMC, applicationTable, getFileById } = require("../models/uploadMC");
+const { uploadMC, getFileById, getFileNames } = require("../models/uploadMC");
 
 const { addUsers, removeUsers, userList } = require("../models/manage-user"); // Destructure functions
 
@@ -51,8 +51,9 @@ router.get("/logout",logout)
  
 //Route to upload MC
 router.post("/uploadMC",uploadMC,getUserInfo)
-router.get("/applicationTable", applicationTable,getUserInfo)
-router.get("/files/:id", getFileById)
+router.get("/getFileNames", getFileNames,getUserInfo)
+router.get("/file/:id",getFileById)
+
 
 //Route to get MC file
 router.get("/getMC",getMC)

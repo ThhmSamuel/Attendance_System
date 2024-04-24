@@ -1,47 +1,3 @@
-//table to show mc application
-document.addEventListener('DOMContentLoaded', async function() {
-    try {
-        // Fetch data from the server
-        const response = await fetch('/applicationTable');
-        const data = await response.json();
-
-        // Check if the data is empty or not
-        if (data.length === 0) {
-            console.log('No files found.');
-            return;
-        }
-
-        // Populate the table with the fetched data
-        const tableBody = document.querySelector('#fileTable tbody');
-        data.forEach(file => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td><a href="#" class="file-link" data-id="${file.id}">${file.file_name}</a></td>
-                <td>${file.startDate}</td>
-                <td>${file.endDate}</td>
-                <td>${file.notes}</td>
-                <td>${file.status}</td>
-            `;
-            tableBody.appendChild(row);
-        });
-
-        // Attach click event listener to file links
-        const fileLinks = document.querySelectorAll('.file-link');
-        fileLinks.forEach(link => {
-            link.addEventListener('click', async function(event) {
-                event.preventDefault();
-
-                const fileId = this.getAttribute('data-id');
-                const imageUrl = `/files/${fileId}`;
-
-                // Open the image in a new tab
-                window.open(imageUrl, '_blank');
-            });
-        });
-    } catch (error) {
-        console.error('Error:', error);
-    }
-});
 
 
 document.getElementById('uploadForm').addEventListener('submit', async function(event) {
@@ -102,3 +58,48 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
     clearForm();
 });
 
+
+fetch('/getFileNames')
+  .then(response => response.json())
+  .then(data => {
+    const tableBody = document.querySelector('#fileTable tbody');
+
+    // Populate table with data
+    data.forEach(file => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${file.id}</td>
+        <td><a href="#" onclick="showFile('${file.id}')">${file.file_name}</a></td>
+        <td>${file.status}</td>
+        <td>${file.startDate}</td>
+        <td>${file.endDate}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+  })
+  .catch(error => console.error('Error fetching data:', error));
+
+
+  function showFile(fileId) {
+    // Fetch the file data from the server
+    fetch(`/file/${fileId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.blob();
+      })
+      .then(blobData => {
+        // Create a URL for the blob data
+        const imageUrl = URL.createObjectURL(blobData);
+  
+        // Open a new window to display the image
+        const imageWindow = window.open("", "_blank");
+        imageWindow.document.write(`<img src="${imageUrl}" alt="File">`);
+  
+        // Handle window closing to release object URL
+        imageWindow.onunload = () => URL.revokeObjectURL(imageUrl);
+      })
+      .catch(error => console.error('Error fetching file:', error));
+  }
+  
