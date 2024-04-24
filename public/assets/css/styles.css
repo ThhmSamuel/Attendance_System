@@ -891,3 +891,10 @@ input[type="checkbox"]{
     grid-auto-columns: 100%;
   } 
 }  
+
+
+.label-container3{
+  display: block;
+  text-align: center;
+  font-size: large;
+}

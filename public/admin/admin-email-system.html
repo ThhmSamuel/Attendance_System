@@ -171,8 +171,65 @@
             <select id="moduleName-flag"></select>
             
             <button onclick="sendEmail()">Send email</button> 
-            <button>Email settings</button>    
+            <!-- <button>Email settings</button>     -->
         </div>
+
+        <div class="general-use-container">
+        
+            <label for="email-details">Email Details:</label>    
+            
+            <div class="container">    
+                <div class="row">
+                    <div class="col-12">  
+                        <div class="data_table">    
+                            <table id="example" class="table table-striped table-bordered">
+                                <thead class="table-dark">
+                                    <tr> 
+                                        <th>Batch ID</th> 
+                                        <th>Module Name</th> 
+                                        <th>Date</th>
+                                    </tr> 
+                                </thead>  
+                                <tbody id="email-table"> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div> 
+            </div> 
+
+        </div>
+
+
+        <div id="overlay" class="overlay"></div> 
+    
+        <div id="popup" class="popup">
+            <span class="close" onclick="closePopup()">&times;</span>   
+            <div class="label-container3">        
+                <label id="moduleLabel" for="moduleLabel">Module</label> 
+                <label id="dateLabel" for="dateLabel">Date</label> 
+            </div>  
+
+            <div class="container">    
+                <div class="row">
+                    <div class="col-12">  
+                        <div class="data_table">  
+                            <table id="example2" class="table table-striped table-bordered">
+                                <thead class="table-dark">
+                                    <tr> 
+                                        <th>Student Name</th> 
+                                        <th>Current Attendance Rate</th> 
+                                        <th>Threshold</th> 
+                                    </tr> 
+                                </thead>    
+                                <tbody id="email-receipient-table"> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div> 
+            </div> 
+        </div> 
         
     </div>
 
