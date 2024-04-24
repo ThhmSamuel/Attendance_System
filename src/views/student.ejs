@@ -40,7 +40,7 @@
                          
                         <a href="#" class="nav__link" onclick="loadPage('student/uploadMC.html','js/upload-mc.js')"> 
                             <i class='bx bx-message-square-detail nav__icon' ></i>
-                            <span class="nav__name">MC Approval Status</span>
+                            <span class="nav__name">Leave Application</span>
                         </a>
     
 
@@ -58,6 +58,10 @@
                 </a>
             </nav>
         </div>   
+
+        <script src="js/main.js"></script>
+        <script src="js/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.3/xlsx.full.min.js"></script> 
 
         <script>
             // Immediately show the sidebar without requiring any click event
@@ -105,7 +109,8 @@
                     'js/data-table/pdfmake.min.js',
                     'js/data-table/vfs_fonts.js',
                     'js/data-table/custom.js',
-                    'js/studentAttendanceMonitoring.js'
+                    'js/studentAttendanceMonitoring.js',
+                    'js/upload-mc.js'
                 ];
 
                 // Function to load each script sequentially
