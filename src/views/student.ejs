@@ -33,12 +33,12 @@
                             <span class="nav__name">Dashboard</span> 
                         </a>
  
-                        <a href="student/student-monitoring.html" onclick="loadTablePage('student/student-monitoring.html')" class="nav__link"> 
+                        <a href="#" class="nav__link" onclick="loadTablePage('student/student-monitoring.html')"> 
                             <i class='bx bxs-calendar-alt nav__icon' ></i>
                             <span class="nav__name">Monitor Attendance</span> 
                         </a>
                          
-                        <a href="#" onclick="loadContent('/student/uploadMC.html')" class="nav__link"> 
+                        <a href="#"  class="nav__link" onclick="loadContent('/student/uploadMC.html')"> 
                             <i class='bx bx-message-square-detail nav__icon' ></i>
                             <span class="nav__name">MC Approval Status</span>
                         </a>
@@ -134,6 +134,9 @@
                 xhttp.open("GET", page, true);
                 xhttp.send();
             }
+
+           
+
              // Immediately show dashboard page when onload without any click event
              document.addEventListener("DOMContentLoaded", function() {
                 const dashboardLink = document.querySelector('.nav__link.active');
@@ -141,6 +144,7 @@
                     loadTablePage('student/student-dashboard.html', 'js/student-dashboard.js');
                 }
             });
+            
 
         </script>         
     </body>
