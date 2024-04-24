@@ -4,7 +4,7 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
     console.log("check")
     const name = document.getElementById('name').value;
     const studentId = document.getElementById('studentId').value;
-    const PAT_ID = document.getElementById('PAT_ID').value;
+    //const PAT_ID = document.getElementById('PAT_ID').value;
     const studentEmail = document.getElementById('studentEmail').value;
     const cohortId = document.getElementById('cohortId').value;
     const termId = document.getElementById('termId').value;
@@ -16,7 +16,7 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name, studentId, PAT_ID, studentEmail, cohortId, termId })
+            body: JSON.stringify({ name, studentId, studentEmail, cohortId, termId })
         });
         
         if (response.ok) {
@@ -24,7 +24,7 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
             alert(data.message);
             document.getElementById('name').value = '';
             document.getElementById('studentId').value = '';
-            document.getElementById('PAT_ID').value = '';
+            //document.getElementById('PAT_ID').value = '';
             document.getElementById('studentEmail').value = '';
             document.getElementById('cohortId').value = '';
             document.getElementById('termId').value = '';
