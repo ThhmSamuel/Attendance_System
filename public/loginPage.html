@@ -82,17 +82,22 @@
     .forgot-password {
       margin-top: 20px;
       font-size: 14px;
-      color: #251e43;
-      text-decoration: none;
+      color:  #0056b3;
+      text-decoration: none; 
     }
 
     .forgot-password:hover {
       text-decoration: underline;
     }
+
+    .forgot-password-container{
+      margin-top: 10px;
+    }
+
   </style>
  
 </head> 
-<body class="login-body">
+<body class="login-body"> 
 
     <div class="login-container">
         <h2>Attendance Management System</h2>
@@ -100,11 +105,13 @@
         <form onsubmit="return false;" id="form"> 
             <input  type="email" class="form-control" id="email"  autocomplete="off" placeholder="Email" required>
             <input type="password" class="form-control" id="password" placeholder="Password"  autocomplete="off" required>
-            <input type="submit" value="Login">
+            <input type="submit" value="Login">  
         </form> 
-        <a href="#" class="forgot-password">Forgot Password?</a>
+        <div class="forgot-password-container">
+          <a href="/forgetPassword" class="forgot-password">Forgot Password?</a>
+        </div>
     </div> 
-  
+   
     <script src="js/login.js"></script> 
 
 </body>

@@ -1344,6 +1344,113 @@ app.post('/getEmailDetailsByBatchID', (req, res) => {
 
 
 
+
+
+app.post('/getRoleID', (req, res) => {    
+    
+    const {email} = req.body;  
+
+
+    const sqlQuery1 =  `SELECT roleID FROM logincredential
+    WHERE email = "${email}";`; 
+ 
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            console.log(data);
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+
+app.post('/sendEmailForgotPassword', async (req, res) => {
+    const { email , otp } = req.body;
+
+    // Create transporter for Gmail
+    let gmailTransporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true, 
+        auth: {
+            user: 'rollsroyceisdabest@gmail.com', 
+            pass: 'fuxx vksp npfw llmw',
+        },
+    });
+ 
+    // Define email content
+    let emailContent = {
+        from: '"UoSM Admin" uosm_admin@gmail.com>',
+        to: email,
+        subject: 'Reset Password',
+        html: `
+            <h1>OTP number</h1> 
+            <p>Your OTP is ${otp}.</p> 
+            <p>The OTP is only valid for 40 seconds.</p>
+        `,
+    };
+
+    try {
+        // Send email
+        let info = await gmailTransporter.sendMail(emailContent);
+        console.log('Email sent:', info.messageId);
+        res.status(200).json({ message: 'Email sent successfully' });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ error: 'Failed to send email' });
+    }
+});
+
+
+
+app.post('/updatePassword', (req, res) => {    
+    
+    const {email , password} = req.body;   
+
+
+    const sqlQuery1 =  `UPDATE logincredential SET password = MD5("${password}") WHERE email = "${email}";`; 
+ 
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            console.log(data);
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
  
 app.use("/",require("./src/routes/pages"));    // bring anything that starts with "/" to  "./src/routes/pages"
 app.use("/api", require("./src/controllers/auth"));  // bring anything that starts with "/api" to "./src/controllers/auth"  
