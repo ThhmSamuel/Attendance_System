@@ -2,10 +2,10 @@ const db = require("../routes/db-config");
 
 const addStudent = (req, res) => {
     console.log("Adding...");
-    const { name, studentId, PAT_ID, studentEmail, cohortId, termId } = req.body;
+    const { name, studentId, studentEmail, cohortId, termId } = req.body;
     console.log(req.body);
-    const sql = 'INSERT INTO student (name, studentId, PAT_ID, studentEmail, cohortId, termId) VALUES (?, ?, ?, ?, ?, ?)';
-    db.query(sql, [name, studentId, PAT_ID, studentEmail, cohortId, termId], (err, result) => {
+    const sql = 'INSERT INTO student (name, studentId, studentEmail, cohortId, termId) VALUES (?, ?, ?, ?, ?)';
+    db.query(sql, [name, studentId, studentEmail, cohortId, termId], (err, result) => {
       if (err) {
         console.error("Error adding student:", err);
         res.status(500).send({message: 'Error adding student'});

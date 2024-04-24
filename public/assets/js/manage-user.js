@@ -63,41 +63,7 @@ document.getElementById('removeStudentForm').addEventListener('submit', async fu
     }
 });
 
-// function fetchUsers() {
-//     fetch('/userList')
-//     .then(response => response.json())
-//     .then(users => {
-//         const userList = document.getElementById('userList');
-//         userList.innerHTML = '';
-//         users.forEach(user => {
-//         const li = document.createElement('li');
-//         li.textContent = `${user.email} (Role: ${user.roleID})`;
-//         userList.appendChild(li);
-//         });
-//         renderUserTable(users);
-//     })
-//     .catch(error => console.error('Error fetching users:', error));
-// }
 
-// function renderUserTable(users) {
-//     const tableRows = users.map(user => `<tr></td><td>${user.email}</td><td>${user.roleID}</td></tr>`);
-//     const table = `
-//     <table>
-//         <thead>
-//         <tr> 
-//             <th>Email</th>
-//             <th>Role</th>
-//         </tr>
-//         </thead>
-//         <tbody>
-//         ${tableRows.join('')}
-//         </tbody>
-//     </table>
-//     `;
-//     document.getElementById('userTable').innerHTML = table;
-// }
-
-// fetchUsers();
 
 function fetchAndRenderUsers() {
     fetch('/userList')
