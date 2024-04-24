@@ -1,13 +1,13 @@
 const express = require("express"); 
 const loggedIn = require("../controllers/loggedIn");
 const logout = require("../controllers/logout");  
-const uploadMC = require("../models/uploadMC");
+
 const getMC = require("../models/getMC");
 
+const getUserInfo = require("../controllers/getUserInfo");
 
-// const addUsers = require("../models/manageUser");
-// const removeUsers = require("../models/manageUser");
-// const userList = require("../models/manageUser");
+const { uploadMC, applicationTable, getFileById } = require("../models/uploadMC");
+
 const { addUsers, removeUsers, userList } = require("../models/manage-user"); // Destructure functions
 
 //manage course roster
@@ -47,7 +47,9 @@ router.get("/",loggedIn,(req,res)=>{
 router.get("/logout",logout)     
  
 //Route to upload MC
-router.post("/uploadMC",uploadMC)
+router.post("/uploadMC",uploadMC,getUserInfo)
+router.get("/applicationTable", applicationTable,getUserInfo)
+router.get("/files/:id", getFileById)
 
 //Route to get MC file
 router.get("/getMC",getMC)
