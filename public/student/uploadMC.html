@@ -44,6 +44,9 @@
         .back-button {
             margin-top: 20px;
         }
+        .hidden {
+            display: none;
+    }
     </style>
 </head>
 
@@ -74,20 +77,29 @@
     <br><br><br>
 
     <h1>Application Status</h1>
-    <table id="fileTable">
+    
+    <table border="1" id="fileTable">
         <thead>
-            <tr>
-                <th>File Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Notes</th>
-                <th>Status</th>
-            </tr>
+          <tr>
+            <th>ID</th>
+            <th>File Name</th>
+            <th>Status</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+          </tr>
         </thead>
         <tbody>
-            <!-- Table rows will be inserted dynamically -->
+          <!-- Table body will be populated dynamically -->
         </tbody>
-    </table>
+      </table>
+    
+      <div id="fileContainer" class="hidden">
+        <img id="file" src="" alt="File">
+        <p>Status: <span id="status"></span></p>
+        <p>Start Date: <span id="startDate"></span></p>
+        <p>End Date: <span id="endDate"></span></p>
+      </div>
+    
 
     <script src="/public/assets/js/upload-mc"></script>
     

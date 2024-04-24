@@ -10,7 +10,7 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
     const termId = document.getElementById('termId').value;
 
     try {
-        console.log("fetching..")
+        
         const response = await fetch('/addStudent', {
             method: 'POST',
             headers: {
