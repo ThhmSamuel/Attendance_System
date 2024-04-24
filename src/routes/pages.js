@@ -3,11 +3,9 @@ const loggedIn = require("../controllers/loggedIn");
 const logout = require("../controllers/logout");  
 const uploadMC = require("../models/uploadMC");
 const getMC = require("../models/getMC");
+const emailVerification = require("../controllers/emailVerification"); 
 
 
-// const addUsers = require("../models/manageUser");
-// const removeUsers = require("../models/manageUser");
-// const userList = require("../models/manageUser");
 const { addUsers, removeUsers, userList } = require("../models/manage-user"); // Destructure functions
 
 //manage course roster
@@ -17,7 +15,7 @@ const { addStudent, updateStudent, populateOption, populateTerm } = require("../
 const router = express.Router();
   
 // Middleware to parse JSON data
-router.use(express.json());
+router.use(express.json()); 
 
 router.get("/",loggedIn,(req,res)=>{   
  
@@ -34,16 +32,18 @@ router.get("/",loggedIn,(req,res)=>{
         }else if(roleType === "Student"){  
             res.render("student",{user:req.user});    
         } 
-        
+         
     }else{
         res.sendFile("loginPage.html", {root:"./public/"})   
     }
          
 }); 
+
+
+
+
+router.get("/forgetPassword",emailVerification) 
  
-
-
-
 router.get("/logout",logout)     
  
 //Route to upload MC
