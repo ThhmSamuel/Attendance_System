@@ -898,3 +898,49 @@ input[type="checkbox"]{
   text-align: center;
   font-size: large;
 }
+
+
+
+.containerInfo {
+  display: flex;
+  justify-content: space-between;
+  width: 1220px; 
+  padding: 20px;  
+  background-color: #fff;  
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: auto;
+}
+
+.info {
+  width: 48%; 
+}
+
+.info label {
+  font-weight: bold;
+} 
+
+.info-2{
+  padding-top: 20px;
+}
+
+.empty-div{
+  height: 60px;
+}
+
+.passwordButton{
+  margin-top: 20px;
+}
+
+
+.container4{
+  width: 1155px; 
+  padding: 20px;  
+  background-color: #fff; 
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: auto; 
+  display: block; 
+  margin-left: 12px;
+  margin-top: 10px;
+} 
