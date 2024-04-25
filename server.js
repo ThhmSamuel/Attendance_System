@@ -879,16 +879,32 @@ app.post('/getStudentAttendanceRateByModule', (req, res) => {
     const { moduleName , term } = req.body;
 
     const sqlQuery1 =  
-    `SELECT student.studentEmail , name, ROUND(((totalSessions - COUNT(status)) / totalSessions) * 100 ,1) as 'attendance_rate' , attendance_threshold.percentage ,  COUNT(status) as absence , totalSessions 
-    FROM class_session
-    JOIN attendance ON class_session.classSessionID = attendance.classSessionID
-    JOIN module_lecturer ON module_lecturer.module_lecturer_ID = class_session.module_lecturer_ID
-    JOIN attendance_status ON attendance.statusID = attendance_status.statusID
-    JOIN attendance_threshold ON attendance_threshold.moduleID = module_lecturer.moduleID
-    JOIN module ON module.moduleID = module_lecturer.moduleID
-    JOIN student ON student.studentEmail = attendance.studentEmail
-    JOIN cohort_term ON cohort_term.termID = student.termID
-    WHERE status = 'Absent' AND moduleName = '${moduleName}' AND term = '${term}'
+    `SELECT 
+    student.studentEmail,
+    name,
+    ROUND(((totalSessions - COALESCE(COUNT(attendance_status.status), 0)) / totalSessions) * 100, 1) AS 'attendance_rate',
+    attendance_threshold.percentage,
+    COALESCE(COUNT(attendance_status.status), 0) AS absence,
+    totalSessions
+    FROM
+        student
+    LEFT JOIN
+        attendance ON student.studentEmail = attendance.studentEmail
+    LEFT JOIN
+        class_session ON attendance.classSessionID = class_session.classSessionID
+    LEFT JOIN
+        module_lecturer ON class_session.module_lecturer_ID = module_lecturer.module_lecturer_ID
+    LEFT JOIN
+        attendance_status ON attendance.statusID = attendance_status.statusID AND attendance_status.status = 'Absent'
+    LEFT JOIN
+        attendance_threshold ON module_lecturer.moduleID = attendance_threshold.moduleID
+    LEFT JOIN
+        module ON module_lecturer.moduleID = module.moduleID
+    LEFT JOIN
+        cohort_term ON student.termID = cohort_term.termID
+    WHERE
+        moduleName = '${moduleName}' 
+        AND term = '${term}'
     GROUP BY student.studentEmail;`;   
 
 
@@ -1587,6 +1603,78 @@ app.post('/updateStudentAttendance', (req, res) => {
 })
 
 
+
+
+
+app.post('/getFullLecturerData', (req, res) => {    
+    
+    const {userEmail} = req.body;     
+
+
+    const sqlQuery1 =  `SELECT * FROM lecturer
+    JOIN programme ON programme.programmeID = lecturer.programmeID
+    JOIN module_lecturer ON module_lecturer.lecturerID = lecturer.lecturerID
+    JOIN module ON module.moduleID = module_lecturer.moduleID
+    WHERE email = "${userEmail}";`;  
+  
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            console.log(data);
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+
+
+app.post('/getFullAdminData', (req, res) => {    
+    
+    const {userEmail} = req.body;     
+
+
+    const sqlQuery1 =  `SELECT * FROM admin
+    WHERE email = "${userEmail}";`;  
+  
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            console.log(data);
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
 
  
 app.use("/",require("./src/routes/pages"));    // bring anything that starts with "/" to  "./src/routes/pages"

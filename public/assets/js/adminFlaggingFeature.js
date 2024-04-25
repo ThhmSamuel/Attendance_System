@@ -168,7 +168,7 @@ function fetchStudentAttendanceRate() {
 
                 var table = $('#example3').DataTable();
                 
-                // Clear existing data 
+                // Clear existing data  
                 table.clear(); 
                  
                 // Map data and create rows 
@@ -206,7 +206,7 @@ function fetchStudentAttendanceRate() {
                     data: {
                         labels: classifications,
                         datasets: [{ 
-                            backgroundColor: ["#d2c7ff", "#9f8af5"],  
+                            backgroundColor: ["#b9f6ca", "#ffcccc"],  
                             data: counts
                         }]
                     },

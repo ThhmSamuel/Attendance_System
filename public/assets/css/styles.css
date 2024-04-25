@@ -988,3 +988,14 @@ input[type="checkbox"]{
   display: block;
   margin-top: 10px;
 }
+
+
+
+tr.critical {
+  background-color: #ffcccc; 
+}
+
+tr.good { 
+  background-color: #b9f6ca;
+}
+
