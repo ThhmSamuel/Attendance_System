@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Settings</title>  
+
+    <style>
+        .containerInfo {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .info {
+            width: 48%; 
+        }
+
+        .info label {
+            font-weight: bold;
+        } 
+
+        .info-2{
+            padding-top: 20px;
+        }
+
+        .empty-div{
+            height: 60px;
+        }
+
+        .passwordButton{
+            margin-top: 20px;
+        }
+    </style>
+
+</head>  
+<body>
+
+    <div class="content" id="main-content">
+
+        <div class="containerInfo">
+
+            <div class="info">
+                <h1>Personal Information</h1>
+                <div class="info-2">
+                    <label for="name">Name:</label>
+                    <span id="name"></span>
+                </div>
+                <div class="info-2">
+                    <label for="email">Email:</label>
+                    <span id="email"></span>
+                </div>
+                <button id="passwordButton" class="passwordButton" onclick="openPopup()">Change Password</button> 
+            </div>  
+
+            <div class="info">
+                <div class="empty-div"></div>
+                <div class="info-2">   
+                    <label for="adminID">Admin ID:</label> 
+                    <span id="adminID"></span> 
+                </div>   
+            </div>
+         </div>  
+
+        
+        <div id="overlay" class="overlay"></div>  
+
+        <div id="popup" class="popup">
+            <span class="close" onclick="closePopup()">&times;</span>   
+            
+            <div id="resetPassword" class="resetPassword">   
+                <h2>Reset Password</h2>  
+        
+                <input type="password" class="form-control" id="new-password" placeholder="New Password"  autocomplete="off" required>
+            
+                <input type="password" class="form-control" id="confirm-password" placeholder=" Confirm New Password"  autocomplete="off" required>
+        
+                <button id="updatePassword" onclick="changePassword()" class="updatePassword" type="button">Update</button> 
+                
+            </div> 
+
+        </div> 
+
+    </div> 
+
+</body>
+</html>

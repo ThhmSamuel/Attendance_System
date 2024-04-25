@@ -51,7 +51,7 @@
                         <a href="#" class="nav__link" onclick="loadPage('admin/manage-course-roster.html','js/manageCourseRoster.js')">
                             <i class='bx bx-columns nav__icon' ></i>
                             <span class="nav__name">Manage Course Roster</span>
-                        </a>
+                        </a> 
  
                         <a href="#" class="nav__link" onclick="loadTablePage('admin/admin-flagging-feature.html','js/adminFlaggingFeature.js')">
                             <i class='bx bxs-flag nav__icon' ></i>
@@ -68,7 +68,7 @@
                             <span class="nav__name">Report</span>  
                         </a>  
 
-                        <a href="#" class="nav__link" onclick="loadContent('Setting.html')"> 
+                        <a href="#" class="nav__link" onclick="loadTablePage('admin/adminSettings.html','js/adminSettings.js')"> 
                             <i class='bx bx-cog nav__icon' ></i>
                             <span class="nav__name">Settings</span>  
                         </a>
@@ -85,7 +85,7 @@
                     
                 </div>
                 
-            </nav> 
+            </nav>  
         </div>
  
         
@@ -122,12 +122,12 @@
             function loadTablePage(page,scriptPage) {
                 fetchPageContent(event, page); 
                 loadDataTablesScripts(scriptPage);  
-
+ 
                 if(flagChart){
-                    flagChart.destroy(); 
+                    flagChart.remove(); 
                 }
             }
-
+ 
             function loadDataTablesScripts(scriptPage) {  
                 const head = document.getElementsByTagName('head')[0];
                 const scriptsToRemove = head.querySelectorAll('script[data-remove-on-reload]');
@@ -186,7 +186,7 @@
                 loadDataTablesScripts(scriptPage);  
 
                 if(flagChart){
-                    flagChart.destroy(); 
+                    flagChart.remove(); 
                 }
             }
             

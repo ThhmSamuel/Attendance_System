@@ -14,7 +14,7 @@ function updateLiveTime() {
  
         liveTimeElement.innerHTML = formattedTime;
     }
-}
+}  
 
 // Function to update live date
 function updateDate() {

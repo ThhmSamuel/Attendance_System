@@ -354,17 +354,17 @@ td a:hover {
   display: none;
 }
 
+.popup {  
+  overflow-y: auto; /* Enable vertical scrollbar if content overflows vertically */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  max-height: 90vh; /* Limit the maximum height to 90% of the viewport height */
 
-.popup {
   display: none;
   position: fixed;
   top: 50%; 
   left: 50%; 
   transform: translate(-50%, -50%);
   width: 1220px; 
-  /* max-width: 80%; */
-  /* max-height: 80%; */
-  overflow: auto; /* Enable scrolling if the content overflows */
   border: 1px solid #ccc; 
   background-color: #fff;
   padding: 20px;
@@ -373,13 +373,25 @@ td a:hover {
   z-index: 9999;
 }
 
+
+
+/* .label-container2 {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  margin-bottom: 20px; 
+  text-align: center; 
+} */ 
+
 .label-container2 {
   display: flex;
+  flex-direction: column; /* Arrange items vertically */
   justify-content: center; /* Horizontally center contents */
   align-items: center; /* Vertically center contents */
   margin-bottom: 20px; /* Add space below the container */
   text-align: center; /* Center text within the container */
 }
+
 
 .label-container2 label {
   /* margin-right: 10px; Add spacing between label and text */
@@ -436,7 +448,7 @@ button .button-attendance {
 
 }
 
-.search-button{
+.search-button{ 
   width: 100px;
 }  
 
@@ -449,16 +461,19 @@ button .button-attendance {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   height: auto;
   display: block; 
-}
+} 
 
 .flag-result{
-  padding-top: 20px; 
+  padding-top: 40px;
+  padding-left: 25px;
+  font-weight: bold; 
 }  
 
 
  
 #flagChart{
-  margin-left: 350px;
+  margin-top: 10px;
+  margin-left: 65px;
 }
 
 
@@ -669,15 +684,39 @@ input{
 }
 
 
-.container4{
-  width: 1155px; 
+.container4{  
+  width: 100%; 
+  padding: 20px;  
+  background-color: #fff;  
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: auto;  
+  display: none;  
+  margin-left: 12px;
+  margin-top: 10px;
+} 
+
+
+.delete-button{
+  background-color: #c20000;
+  width: 70px;  
+  height: 30px;
+  margin-bottom: 0px;
+  line-height: 12px;
+}
+
+.delete-button:hover { 
+  background-color: #780808;
+}  
+
+.student-attendance-container{ 
+  width: 100%; 
   padding: 20px;  
   background-color: #fff; 
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  height: auto; 
-  display: block; 
-  margin-left: 12px;
+  height: auto;
+  display: block;
   margin-top: 10px;
 } 
 
@@ -710,6 +749,15 @@ input{
   height: 56px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+
+tr.critical {
+  background-color: #ffcccc; 
+}
+
+tr.good { 
+  background-color: #b9f6ca;
+} 
 
 /* Table styling */
 table {
