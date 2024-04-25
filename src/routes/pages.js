@@ -1,8 +1,10 @@
+const db = require("../routes/db-config");
+
 const express = require("express"); 
 const loggedIn = require("../controllers/loggedIn");
 const logout = require("../controllers/logout");  
 
-const { getMC, approveFile, rejectFile } = require("../models/getMC");
+const { getMC, approveFile, rejectFile, getFileHandler } = require("../models/getMC");
 
 const emailVerification = require("../controllers/emailVerification"); 
 
@@ -60,6 +62,7 @@ router.get("/file/:id",getFileById)
 router.get("/getMC",getMC)
 router.post('/getMC/:id/approve', approveFile);
 router.post('/getMC/:id/reject', rejectFile);
+router.get("/getFileHandler/:id",getFileHandler)
 
 //Route to add user
 router.post("/addUsers",addUsers)
