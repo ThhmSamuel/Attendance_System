@@ -11,7 +11,10 @@ fetch('/getMC')
             <td>${file.studentName}</td>
             <td>${startDate}</td>
             <td>${endDate}</td>
-            <td>${file.notes}</td>
+            <td>
+              <button onclick="showNotes('${file.notes}')" class="notes-btn">Notes</button>
+              <button onclick="showImage(${file.id})" class="image-btn">View Image</button>
+            </td>
             <td>${file.status}</td>
             <td>
             <button onclick="${file.status === 'Pending' ? `approveFile(${file.id})` : ''}" ${file.status !== 'Pending' ? 'disabled' : ''} style="background-color: ${file.status === 'Pending' ? 'green' : '#ccc'}">Approve</button>
@@ -23,6 +26,35 @@ fetch('/getMC')
         });
       })
       .catch(error => console.error('Error fetching files:', error));
+    
+    function showNotes(notes) {
+      alert(notes); // You can replace this with a modal or popover
+    }
+
+    function showImage(fileId) {
+      // Fetch the file data from the server
+      fetch(`/getFileHandler/${fileId}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.blob();
+        })
+        .then(blobData => {
+          // Create a URL for the blob data
+          const imageUrl = URL.createObjectURL(blobData);
+    
+          // Open a new window to display the image
+          const imageWindow = window.open("", "_blank");
+          imageWindow.document.write(`<img src="${imageUrl}" alt="File">`);
+    
+          // Handle window closing to release object URL
+          imageWindow.onunload = () => URL.revokeObjectURL(imageUrl);
+        })
+        .catch(error => console.error('Error fetching file:', error));
+    }
+    
+    
 
     function approveFile(id) {
       fetch(`/getMC/${id}/approve`, { method: 'POST' })
