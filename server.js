@@ -1451,6 +1451,111 @@ app.post('/updatePassword', (req, res) => {
 });
 
 
+
+app.post('/getFullStudentData', (req, res) => {    
+    
+    const {userEmail} = req.body;     
+
+
+    const sqlQuery1 =  `SELECT * FROM student
+    JOIN cohort_term ON cohort_term.termID = student.termID
+    JOIN cohort ON cohort.cohortID = student.cohortID
+    JOIN programme ON programme.programmeID = cohort.programmeID
+    WHERE studentEmail = "${userEmail}";`; 
+  
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            console.log(data);
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+app.post('/removeClassSessionID', (req, res) => {    
+    
+    const {classSessionID} = req.body;     
+
+
+    const sqlQuery1 =  `DELETE FROM class_session 
+    WHERE classSessionID = "${classSessionID}";`; 
+  
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            console.log(data);
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+
+app.post('/removeAttendanceData', (req, res) => {    
+    
+    const {classSessionID} = req.body;     
+
+    const sqlQuery1 =  `DELETE FROM attendance 
+    WHERE classSessionID = "${classSessionID}";`; 
+  
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => {
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            });
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            console.log(data);
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+});
+
+
+
+
  
 app.use("/",require("./src/routes/pages"));    // bring anything that starts with "/" to  "./src/routes/pages"
 app.use("/api", require("./src/controllers/auth"));  // bring anything that starts with "/api" to "./src/controllers/auth"  
