@@ -66,13 +66,15 @@ fetch('/getFileNames')
 
     // Populate table with data
     data.forEach(file => {
+      const startDate = new Date(file.startDate).toLocaleDateString(); // Parse and format start date
+      const endDate = new Date(file.endDate).toLocaleDateString(); // Parse and format end date
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${file.id}</td>
         <td><a href="#" onclick="showFile('${file.id}')">${file.file_name}</a></td>
         <td>${file.status}</td>
-        <td>${file.startDate}</td>
-        <td>${file.endDate}</td>
+        <td>${startDate}</td>
+        <td>${endDate}</td>
       `;
       tableBody.appendChild(row);
     });
