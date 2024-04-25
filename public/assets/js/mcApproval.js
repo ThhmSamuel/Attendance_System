@@ -60,10 +60,10 @@ fetch('/getMC')
       fetch(`/getMC/${id}/approve`, { method: 'POST' })
         .then(response => {
           if (response.ok) {
-            alert('File approved successfully');
+            alert('Leave/MC approved successfully');
             location.reload();
           } else {
-            throw new Error('Failed to approve file');
+            throw new Error('Failed to approve Leave/MC');
           }
         })
         .catch(error => console.error('Error approving file:', error));
@@ -73,13 +73,13 @@ fetch('/getMC')
       fetch(`/getMC/${id}/reject`, { method: 'POST' })
         .then(response => {
           if (response.ok) {
-            alert('File rejected successfully');
+            alert('Leave/MC rejected successfully');
             location.reload();
           } else {
-            throw new Error('Failed to reject file');
+            throw new Error('Failed to reject Leave/MC');
           }
         })
-        .catch(error => console.error('Error rejecting file:', error));
+        .catch(error => console.error('Error rejecting Leave/MC:', error));
     }
 
     
