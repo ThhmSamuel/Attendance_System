@@ -1,3 +1,4 @@
+
 function updateLiveTime() {
     var liveTimeElement = document.getElementById("live-time");
     if (liveTimeElement) {
@@ -10,7 +11,7 @@ function updateLiveTime() {
         seconds = (seconds < 10 ? "0" : "") + seconds;
 
         var formattedTime = hours + ":" + minutes + ":" + seconds;
-
+ 
         liveTimeElement.innerHTML = formattedTime;
     }
 }
@@ -26,6 +27,7 @@ function updateDate() {
         liveDateElement.textContent = formattedDate;
     }
 }
+
 
 // Function to initialize the page functionality
 function initializePage() {
