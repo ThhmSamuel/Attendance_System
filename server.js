@@ -1515,7 +1515,7 @@ app.post('/removeClassSessionID', (req, res) => {
             console.log(data);
             res.status(200).json(data); // Send the result back to the client
         })
-        .catch((error) => {
+        .catch((error) => { 
             res.status(500).json(error); // Send the error back to the client
         });
 });
@@ -1553,6 +1553,38 @@ app.post('/removeAttendanceData', (req, res) => {
         });
 });
 
+
+app.post('/updateStudentAttendance', (req, res) => {
+
+    const {currSessionID, studentEmail, status} = req.body;     
+
+
+    const sqlQuery1 =  `UPDATE attendance SET statusID = ${status}
+    WHERE studentEmail = "${studentEmail}" AND classSessionID = "${currSessionID}"`;  
+   
+    // Wrapping the database query inside a promise
+    const executeQuery = () => {
+        return new Promise((resolve, reject) => { 
+            db.query(sqlQuery1, (error1, results1) => {
+                if (error1) {
+                    reject({ error: 'Error querying table2' });
+                } else {
+                    resolve(results1);
+                }
+            }); 
+        });
+    };
+
+    // Call the function that returns the promise 
+    executeQuery()
+        .then((data) => {
+            console.log("From server : ",data);
+            res.status(200).json(data); // Send the result back to the client
+        })
+        .catch((error) => {
+            res.status(500).json(error); // Send the error back to the client
+        });
+})
 
 
 

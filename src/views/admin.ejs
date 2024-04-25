@@ -82,7 +82,7 @@
                     
                 </div>
                 
-            </nav> 
+            </nav>  
         </div>
  
         
@@ -119,12 +119,12 @@
             function loadTablePage(page,scriptPage) {
                 fetchPageContent(event, page); 
                 loadDataTablesScripts(scriptPage);  
-
+ 
                 if(flagChart){
-                    flagChart.destroy(); 
+                    flagChart.remove(); 
                 }
             }
-
+ 
             function loadDataTablesScripts(scriptPage) {  
                 const head = document.getElementsByTagName('head')[0];
                 const scriptsToRemove = head.querySelectorAll('script[data-remove-on-reload]');
@@ -183,7 +183,7 @@
                 loadDataTablesScripts(scriptPage);  
 
                 if(flagChart){
-                    flagChart.destroy(); 
+                    flagChart.remove(); 
                 }
             }
             
