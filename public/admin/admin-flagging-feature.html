@@ -179,13 +179,13 @@
                 <button onclick="clearFlaggingData()" id="showDataFlag">Clear</button>       
             </div>
 
-            <label class="flag-result"></label>  
+            <h3 class="flag-result"></h3>  
             
             <div class="container">    
                 <div class="row">
                     <div class="col-12"> 
                         <div class="data_table">  
-                            <table id="example3" class="table table-striped table-bordered">
+                            <table id="example3" class="table table-bordered"> 
                                 <thead class="table-dark">
                                     <tr> 
                                         <th>Student Name</th>  
@@ -201,6 +201,10 @@
                     </div>
                 </div> 
             </div> 
+
+            <div id="flagChartContainer">
+                <canvas id="flagChart" style="width:100%;max-width:1000px"></canvas>  
+            </div>
 
         </div>
 

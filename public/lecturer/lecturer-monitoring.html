@@ -195,6 +195,7 @@
                                         <th>Start Time</th>  
                                         <th>End Time</th>
                                         <th>Class Session ID</th> 
+                                        <th>Action</th>   
                                     </tr> 
                                 </thead>  
                                 <tbody id="lecturer-attendance-table"> 
@@ -207,56 +208,68 @@
 
         </div>
 
-
+ 
         <div id="overlay" class="overlay"></div> 
-
+ 
         <div id="popup" class="popup">
-            <span class="close" onclick="closePopup()">&times;</span>   
-            <div class="label-container2">
-                <label for="title">Attendance table for class session ID: <span id="classSessionID">[classSessionID here]</span></label>
-            </div>
+            <span class="close" onclick="closePopup()">&times;</span>  
             
-            <div class="container">    
-                <div class="row">
-                    <div class="col-12">  
-                        <div class="data_table">  
-                            <table id="example2" class="table table-striped table-bordered">
-                                <thead class="table-dark">
-                                    <tr> 
-                                        <th>Student Name</th> 
-                                        <th>Attendance Status</th> 
-                                        <th>Date</th> 
-                                        <th>Start Time</th> 
-                                        <th>End Time</th> 
-                                        <th>Session ID</th>  
-                                        <th>Module Name</th>  
-                                        <th>Class Type</th>  
-                                    </tr> 
-                                </thead>   
-                                <tbody id="class-attendance-table"> 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div> 
-            </div>
+            <div class="button-container">
+                <button onclick="activateByView()" class="button-attendance highlight" id="view-attendanceBtn">View attendance</button>  
+                <button onclick="activateByUpdate()" class="button-attendance" id="update-attendanceBtn" >Update attendance</button> 
+            </div>  
 
-            <!-- <div class="container4"> 
-                <label for="moduleName">Select module:</label>    
-                <select id="moduleName">
-                    <option value="All">All</option>   
+            <div id="container4" class="container4" style="display: none;"> 
+                <label for="studentSelection">Select student:</label>    
+                <select id="studentSelection">
                 </select> 
                  
-                <label for="monthYear">Select month and year:</label> 
-                <select id="monthYear">
-                    <option value="All">All</option>
+                <label for="attendanceStatus">Select attendance status:</label> 
+                <select id="attendanceStatus">
+                    <option value=1>Present</option> 
+                    <option value=2>Absent</option> 
                 </select> 
     
-                <div class="button-container">  
-                    <button onclick="fetchLecturerAttendanceData()" id="showDataBtn">Show Data</button>
-                    <button onclick="clearLecturerAttendanceData()" id="clearTableBtn">Clear</button>     
+                <div class="button-container"> 
+                    <button onclick="updateStudentAttendance()" id="updateStudentStatus">Update</button> 
                 </div>   
-            </div> --> 
+            </div> 
+
+
+            <div id="student-attendance-container" class="student-attendance-container" style="display: block;">
+ 
+                <div class="label-container2">
+                    <h5 for="title">Total Present Count: <span id="presentCount">[classSessionID here]</span></h5> 
+                    <h5 for="title">Total Absent Count: <span id="absentCount">[classSessionID here]</span></h5>   
+                    <h5 for="title">Overall Attendee Percentage: <span id="attendee-percentage">[classSessionID here]</span></h5>    
+                </div>
+                
+                <div class="container">    
+                    <div class="row">
+                        <div class="col-12">  
+                            <div class="data_table">  
+                                <table id="example2" class="table table-striped table-bordered">
+                                    <thead class="table-dark">
+                                        <tr> 
+                                            <th>Student Name</th> 
+                                            <th>Attendance Status</th> 
+                                            <th>Date</th> 
+                                            <th>Start Time</th> 
+                                            <th>End Time</th> 
+                                            <th>Session ID</th>  
+                                            <th>Module Name</th>  
+                                            <th>Class Type</th>  
+                                        </tr> 
+                                    </thead>   
+                                    <tbody id="class-attendance-table"> 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+
+            </div>
 
         </div> 
     </div>

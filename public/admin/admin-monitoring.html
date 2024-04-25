@@ -165,10 +165,10 @@
         </div> 
 
         
-        <!-- BY STUDENT  -->
+        <!-- BY STUDENT  --> 
         <div id="by-student-container"  style="display: block;"> 
 
-            <div class="general-use-container">
+            <div class="general-use-container"> 
                 <label for="studentID">Student ID :</label>
                 <input class="studentID-input" type="text" id="studentID" required> 
                 <button onclick="fetchDataAndPopulateModuleByStudentID(document.getElementById('studentID').value)" class="search-button">Search</button>     
@@ -189,31 +189,6 @@
                         <option value="Approved Absent">Approved Absent</option>    
                     </select>   
 
-                    <!-- we'll implement this soon -->
-                    <!-- <label for="year">Year:</label>
-                        <select id="year">
-                            <option value="All">All</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                        </select>
-                    
-                    <label for="month">Month:</label> 
-                        <select id="month">
-                            <option value="All">All</option>
-                            <option value="1">January</option>
-                            <option value="2">February</option>
-                            <option value="3">March</option>
-                            <option value="4">April</option>
-                            <option value="5">May</option>
-                            <option value="6">June</option>
-                            <option value="7">July</option>
-                            <option value="8">August</option>
-                            <option value="9">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option> 
-                        </select> -->
                        
                     <label for="monthYear">Select month and year:</label> 
                     <select id="monthYear">
@@ -310,6 +285,7 @@
                                             <th>Start Time</th>  
                                             <th>End Time</th>
                                             <th>Class Session ID</th> 
+                                            <th>Action</th>   
                                         </tr> 
                                     </thead>  
                                     <tbody id="lecturer-attendance-table"> 
@@ -323,12 +299,40 @@
             </div>
     
     
-            <div id="overlay" class="overlay"></div> 
+               
+        <div id="overlay" class="overlay"></div> 
+ 
+        <div id="popup" class="popup">
+            <span class="close" onclick="closePopup()">&times;</span>  
+            
+            <div class="button-container">
+                <button onclick="activateByView()" class="button-attendance highlight" id="view-attendanceBtn">View attendance</button>  
+                <button onclick="activateByUpdate()" class="button-attendance" id="update-attendanceBtn" >Update attendance</button> 
+            </div>  
+
+            <div id="container4" class="container4" style="display: none;"> 
+                <label for="studentSelection">Select student:</label>    
+                <select id="studentSelection">
+                </select> 
+                 
+                <label for="attendanceStatusStudent">Select attendance status:</label> 
+                <select id="attendanceStatusStudent">
+                    <option value=1>Present</option> 
+                    <option value=2>Absent</option> 
+                </select> 
     
-            <div id="popup" class="popup">
-                <span class="close" onclick="closePopup()">&times;</span>   
+                <div class="button-container"> 
+                    <button onclick="updateStudentAttendance()" id="updateStudentStatus">Update</button> 
+                </div>   
+            </div> 
+
+
+            <div id="student-attendance-container" class="student-attendance-container" style="display: block;">
+
                 <div class="label-container2">
-                    <label for="title">Attendance table for class session ID: <span id="classSessionID">[classSessionID here]</span></label>
+                    <h5 for="title">Total Present Count: <span id="presentCount">[classSessionID here]</span></h5> 
+                    <h5 for="title">Total Absent Count: <span id="absentCount">[classSessionID here]</span></h5>   
+                    <h5 for="title">Overall Attendee Percentage: <span id="attendee-percentage">[classSessionID here]</span></h5>   
                 </div>
                 
                 <div class="container">    
@@ -355,7 +359,10 @@
                         </div>
                     </div> 
                 </div>
+
             </div>
+
+        </div> 
 
         </div>
 

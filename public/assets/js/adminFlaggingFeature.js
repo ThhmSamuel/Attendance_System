@@ -126,6 +126,7 @@ function fetchDataAndPopulateTerm(){
     }); 
 } 
 
+
 function classifyAttendanceRate(attendanceThreshold, studentAttendanceRate){
 
     if(studentAttendanceRate >= attendanceThreshold){
@@ -133,13 +134,15 @@ function classifyAttendanceRate(attendanceThreshold, studentAttendanceRate){
     }else{
         return "Critical"  
     } 
-}
+} 
 
  
 function fetchStudentAttendanceRate() {
-
+ 
     var moduleName = document.getElementById("moduleName-flag").value; 
     var term = document.getElementById("term-flag").value;
+
+    console.log(moduleName, term);
 
     return new Promise((resolve, reject) => {  
         fetch('/getStudentAttendanceRateByModule', { 
@@ -149,7 +152,7 @@ function fetchStudentAttendanceRate() {
                 },
                 body: JSON.stringify({ moduleName , term }),    
             })
-            .then(response => {
+            .then(response => { 
                 if (!response.ok) { 
                     throw new Error('Network response was not ok');
                 }
@@ -157,6 +160,7 @@ function fetchStudentAttendanceRate() {
             })   
             .then(data => {
 
+                console.log(data) 
                 threshold = data[0].percentage;
                 total_sessions = data[0].totalSessions;  
 
@@ -164,7 +168,7 @@ function fetchStudentAttendanceRate() {
 
                 var table = $('#example3').DataTable();
                 
-                // Clear existing data 
+                // Clear existing data  
                 table.clear(); 
                  
                 // Map data and create rows 
@@ -196,13 +200,13 @@ function fetchStudentAttendanceRate() {
                     }
                 }); 
 
-                // Create the chart
+                // Create the chart 
                 flagChart = new Chart("flagChart", {
                     type: "pie",
                     data: {
                         labels: classifications,
                         datasets: [{ 
-                            backgroundColor: ["#d2c7ff", "#9f8af5"],  
+                            backgroundColor: ["#b9f6ca", "#ffcccc"],  
                             data: counts
                         }]
                     },
@@ -246,14 +250,12 @@ function clearFlaggingData() {
 }  
 
 
-
 document.getElementById('cohort-flag').addEventListener('change', function() {
     // Get the selected cohort value
     var selectedCohort = this.value; 
     // clearLecturerAttendanceData()   
     fetchDataAndPopulateModuleByCohort(selectedCohort); 
 }); 
-
 
 fetchDataAndPopulateCohort();  // Fetch and populate the cohort dropdown
 fetchDataAndPopulateTerm();  // Fetch and populate the term dropdown 
