@@ -622,282 +622,12 @@ input{
   background: rgb(236,236,254);
 }
 
-.tabular-wrapper{
-  background: white;
-  margin-top: 1rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  padding: 2rem;
-}
-
-.table--container{
-  width: 100%;
-}
-
-table{
-  width: 100%;
-  border-collapse: collapse;
-}
-
-thead{
-  background:#6a4ae9;
-  color: white;
-}
-
-th{
-  padding:15px;
-  text-align: left;
-}
-
-tbody{
-  background: #f2f2f2;
-}
-
-td{
-  padding: 15px;
-  font-size: 17px;
-  color: #333;
-}
-
-tr:nth-child(even){
-  background: white;
-}
-
-tfoot{
-  background: rgba(113,99,186,255);
-  font-weight: bold;
-  color: white;
-}
-
-tfoot td{
-  padding: 15px; 
-}
-
-input[type="checkbox"]{
-  height: 1.5em;
-  width: 1.5em;
-  background-color: white;
-  border-radius: 0.5em;
-  cursor: pointer;
-  display: flex;
-  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
-}
-
 .nav-icons {
   font-size: 30px; /* Adjust the icon size */
   color: #333; /* Adjust icon color */
   margin-right: 10px; /* Add some space between the icon and other elements */
 
 }
-
-.admin--card{
-  background:white;
-  border-radius: 10px;
-  padding: 1.2rem;
-  width: 250px;
-  height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: all 0.5s ease-in-out;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-}
-
-.admin--card:hover{
-  transform:translateY(-5px);
-}
-/* .admin-wrapper {
-  max-width: 1100px;
-  width: 100%;
-  position: relative;
-}
-.admin-wrapper i {
-  top: 50%;
-  height: 50px;
-  width: 50px;
-  cursor: pointer;
-  font-size: 1.25rem;
-  position: absolute;
-  text-align: center;
-  line-height: 50px;
-  background: #6a4ae9;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transform: translateY(-50%);
-  transition: transform 0.1s linear;
-}
-.admin-wrapper i:active{
-  transform: translateY(-50%) scale(0.85);
-}
-.admin-wrapper i:first-child{
-  left: -22px;
-}
-.admin-wrapper i:last-child{
-  right: -22px;
-}
-.admin-wrapper .carousel{
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: calc((100% / 3) - 12px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  gap: 16px;
-  border-radius: 8px;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-}
-.carousel::-webkit-scrollbar {
-  display: none;
-}
-.carousel.no-transition {
-  scroll-behavior: auto;
-}
-.carousel.dragging {
-  scroll-snap-type: none;
-  scroll-behavior: auto;
-}
-.carousel.dragging .admin-card {
-  cursor: grab;
-  user-select: none;
-}
-.carousel :where(.admin-card, .img) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.carousel .admin-card {
-  scroll-snap-align: start;
-  height: 150px;
-  background: #fff;
-  cursor: pointer;
-  padding-bottom: 15px;
-  flex-direction: column;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-.carousel .admin-card h2 {
-  font-weight: 500;
-  font-size: 1.56rem;
-  margin: 30px 0 5px;
-}
-.carousel .admin-card span {
-  color: #6A6D78;
-  font-size: 1.31rem;
-}
-@media screen and (max-width: 900px) {
-  .wrapper .carousel {
-    grid-auto-columns: calc((100% / 2) - 9px);
-  }
-}
-@media screen and (max-width: 600px) {
-  .wrapper .carousel {
-    grid-auto-columns: 100%;
-  }
-} */
-.admin-wrapper {
-  max-width: 1100px;
-  width: 100%;
-  position: relative;
-}
-.admin-wrapper i {
-  top: 50%;
-  height: 50px;
-  width: 50px;
-  cursor: pointer;
-  font-size: 1.25rem;
-  position: absolute;
-  text-align: center;
-  line-height: 50px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transform: translateY(-50%);
-  transition: transform 0.1s linear;
-}
-.admin-wrapper i:active{
-  transform: translateY(-50%) scale(0.85);
-}
-.admin-wrapper i:first-child{
-  left: -22px;
-}
-.admin-wrapper i:last-child{
-  right: -22px;
-}
-.admin-wrapper .carousel{
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: calc((100% / 3) - 12px);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  gap: 16px;
-  border-radius: 8px;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-}
-.carousel::-webkit-scrollbar {
-  display: none;
-}
-.carousel.no-transition {
-  scroll-behavior: auto;
-}
-.carousel.dragging {
-  scroll-snap-type: none;
-  scroll-behavior: auto;
-}
-.carousel.dragging .admin-card {
-  cursor: grab;
-  user-select: none;
-}
-.carousel :where(.admin-card, .img) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.carousel .admin-card {
-  scroll-snap-align: start;
-  height: 300px;
-  list-style: none;
-  background:white;
-  cursor: pointer;
-  padding-bottom: 15px;
-  flex-direction: column;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-.carousel .admin-card .img {
-  background: #8B53FF;
-  height: 148px;
-  width: 148px;
-  border-radius: 50%;
-}
-.admin-card .img img {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #fff;
-}
-.carousel .admin-card h2 {
-  font-weight: 500;
-  font-size: 1.56rem;
-  margin: 30px 0 5px;
-}
-.carousel .admin-card span {
-  color: #6A6D78;
-  font-size: 1.31rem;
-}
-@media screen and (max-width: 900px) {
-  .wrapper .carousel {
-    grid-auto-columns: calc((100% / 2) - 9px);
-  }
-}
-@media screen and (max-width: 600px) {
-  .wrapper .carousel {
-    grid-auto-columns: 100%;
-  } 
-}  
-
 
 .label-container3{
   display: block;
@@ -951,3 +681,32 @@ input[type="checkbox"]{
   margin-top: 10px;
 } 
 
+.content-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start; /* Align items to the start of the flex container */
+}
+
+.img {
+  margin-right: 10px;
+}
+
+.admin-button-container {
+  display: flex;
+  flex-direction: column; /* Arrange buttons vertically */
+  justify-content: space-between; /* Ensure buttons are spaced evenly */
+}
+
+.admin-button {
+  border-radius: 0; /* No border radius */
+  background-color: white; /* Different color */
+  color: black; /* Text color */
+  border: none; /* No border */
+  padding: 10px 20px; /* Adjust padding as needed */
+  margin-bottom: 5px; /* Add space between buttons */
+  cursor: pointer; /* Cursor style */
+  outline: none; /* Remove default button outline */
+  width: 520px; /* Limit button width */
+  height: 56px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
