@@ -132,7 +132,7 @@ h1 {
 .nav__link{
   position: relative;
   color: var(--first-color-light);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   transition: .3s;
 }
 
@@ -897,4 +897,13 @@ input[type="checkbox"]{
   display: block;
   text-align: center;
   font-size: large;
+}
+
+.nav__list-container {
+  max-height: 80vh; /* Adjust the maximum height as needed */
+  overflow-y: auto;
+}
+
+.nav__list {
+    padding: 10px 0; /* Add padding to the list if needed */
 }

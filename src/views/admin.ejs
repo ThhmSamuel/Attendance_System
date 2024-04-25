@@ -14,6 +14,7 @@
 
         <title>Attendance Management System</title>
     </head>   
+
     <body id="body-pd">
         
         <div class="content" id="main-content">   
@@ -35,6 +36,11 @@
                         <a href="#" class="nav__link" onclick="loadTablePage('admin/admin-monitoring.html','js/adminAttendanceMonitoring.js')">
                             <i class='bx bxs-calendar-alt nav__icon' ></i> 
                             <span class="nav__name">Monitor Attendance</span>
+                        </a>
+
+                        <a href="#" class="nav__link" onclick="loadContent('')">
+                            <i class='bx bx-message-square-detail nav__icon'></i>    
+                            <span class="nav__name">MC Approval</span>
                         </a>
 
                         <a href="#" class="nav__link" onclick="loadPage('admin/manage-user.html', 'js/manage-user.js')">
@@ -66,14 +72,16 @@
                             <i class='bx bx-cog nav__icon' ></i>
                             <span class="nav__name">Settings</span>  
                         </a>
+                        
+                    </div>
 
-                    </div> 
-                </div> 
- 
-                <a href="/logout" class="nav__link">
-                    <i class='bx bx-log-out nav__icon' ></i> 
-                    <span class="nav__name">Log Out</span>
-                </a>
+                    <a href="/logout" class="nav__link">
+                        <i class='bx bx-log-out nav__icon' ></i> 
+                        <span class="nav__name">Log Out</span>
+                    </a>
+                    
+                </div>
+                
             </nav> 
         </div>
  
