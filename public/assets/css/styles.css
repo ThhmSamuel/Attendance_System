@@ -525,7 +525,12 @@ input{
   margin-bottom: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+.header--wrapper img{
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  border-radius: 50%;
+}
 .card-container{
   margin-top: 1rem;
   background: white;
@@ -700,95 +705,6 @@ input[type="checkbox"]{
 .admin--card:hover{
   transform:translateY(-5px);
 }
-/* .admin-wrapper {
-  max-width: 1100px;
-  width: 100%;
-  position: relative;
-}
-.admin-wrapper i {
-  top: 50%;
-  height: 50px;
-  width: 50px;
-  cursor: pointer;
-  font-size: 1.25rem;
-  position: absolute;
-  text-align: center;
-  line-height: 50px;
-  background: #6a4ae9;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transform: translateY(-50%);
-  transition: transform 0.1s linear;
-}
-.admin-wrapper i:active{
-  transform: translateY(-50%) scale(0.85);
-}
-.admin-wrapper i:first-child{
-  left: -22px;
-}
-.admin-wrapper i:last-child{
-  right: -22px;
-}
-.admin-wrapper .carousel{
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: calc((100% / 3) - 12px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  gap: 16px;
-  border-radius: 8px;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-}
-.carousel::-webkit-scrollbar {
-  display: none;
-}
-.carousel.no-transition {
-  scroll-behavior: auto;
-}
-.carousel.dragging {
-  scroll-snap-type: none;
-  scroll-behavior: auto;
-}
-.carousel.dragging .admin-card {
-  cursor: grab;
-  user-select: none;
-}
-.carousel :where(.admin-card, .img) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.carousel .admin-card {
-  scroll-snap-align: start;
-  height: 150px;
-  background: #fff;
-  cursor: pointer;
-  padding-bottom: 15px;
-  flex-direction: column;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-.carousel .admin-card h2 {
-  font-weight: 500;
-  font-size: 1.56rem;
-  margin: 30px 0 5px;
-}
-.carousel .admin-card span {
-  color: #6A6D78;
-  font-size: 1.31rem;
-}
-@media screen and (max-width: 900px) {
-  .wrapper .carousel {
-    grid-auto-columns: calc((100% / 2) - 9px);
-  }
-}
-@media screen and (max-width: 600px) {
-  .wrapper .carousel {
-    grid-auto-columns: 100%;
-  }
-} */
 .admin-wrapper {
   max-width: 1100px;
   width: 100%;
