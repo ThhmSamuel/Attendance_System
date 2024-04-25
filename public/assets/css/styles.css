@@ -401,7 +401,7 @@ td a:hover {
 
 .button-attendance:hover, 
 .button-attendance:focus {
-  background-color: #4723D9;
+  background-color: #4723d9;
   color: white;
 }
  
@@ -750,6 +750,7 @@ input{
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+<<<<<<< HEAD
 
 
 tr.critical {
@@ -759,3 +760,45 @@ tr.critical {
 tr.good { 
   background-color: #b9f6ca;
 } 
+=======
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Table header styling */
+th {
+  background-color: #f2f2f2;
+  border: 1px solid #dddddd;
+  padding: 8px;
+  text-align: left;
+}
+
+/* Table cell styling */
+td {
+  border: 1px solid #dddddd;
+  padding: 8px;
+}
+
+/* Alternating row colors */
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Hover effect */
+tr:hover {
+  background-color: #f2f2f2;
+}
+
+/* Table header styling */
+th {
+  background-color: #6a4ae9;
+  border: 1px solid #dddddd;
+  padding: 8px;
+  text-align: left;
+  color: white; /* Example text color */
+
+}
+
+>>>>>>> ac8c139414b3dea38421e2794eecb8c74b53cfd0
