@@ -70,11 +70,11 @@ fetch('/getFileNames')
       const endDate = new Date(file.endDate).toLocaleDateString(); // Parse and format end date
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td>${file.id}</td>
+        
         <td><a href="#" onclick="showFile('${file.id}')">${file.file_name}</a></td>
-        <td>${file.status}</td>
         <td>${startDate}</td>
         <td>${endDate}</td>
+        <td>${file.status}</td>
       `;
       tableBody.appendChild(row);
     });
