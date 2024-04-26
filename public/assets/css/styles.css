@@ -750,7 +750,7 @@ input{
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-<<<<<<< HEAD
+
 
 
 tr.critical {
@@ -760,7 +760,9 @@ tr.critical {
 tr.good { 
   background-color: #b9f6ca;
 } 
-=======
+
+
+
 /* Table styling */
 table {
   width: 100%;
@@ -778,13 +780,13 @@ th {
 /* Table cell styling */
 td {
   border: 1px solid #dddddd;
-  padding: 8px;
+  padding: 8px; 
 }
 
 /* Alternating row colors */
-tr:nth-child(even) {
+/*tr:nth-child(even) {
   background-color: #f9f9f9;
-}
+}*/
 
 /* Hover effect */
 tr:hover {
@@ -801,4 +803,3 @@ th {
 
 }
 
->>>>>>> ac8c139414b3dea38421e2794eecb8c74b53cfd0
