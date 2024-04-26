@@ -52,7 +52,7 @@ function getMC(req, res) {
 //Define the schedule for the task (runs every day at 11:59 PM)
 cron.schedule('59 23 * * *', () => {
     // Query for leave records with end dates in the future
-    db.query('SELECT id FROM mc_file WHERE endDate >= CURDATE()', (err, results) => {
+    db.query('SELECT id FROM mc_file WHERE status = "Approved" AND endDate >= CURDATE()', (err, results) => {
         if (err) {
             console.error('Error fetching future leave records:', err);
             return;
