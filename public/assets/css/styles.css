@@ -751,6 +751,7 @@ input{
 }
 
 
+
 tr.critical {
   background-color: #ffcccc; 
 }
@@ -776,13 +777,13 @@ th {
 /* Table cell styling */
 td {
   border: 1px solid #dddddd;
-  padding: 8px;
+  padding: 8px; 
 }
 
 /* Alternating row colors */
-tr:nth-child(even) {
+/*tr:nth-child(even) {
   background-color: #f9f9f9;
-}
+}*/
 
 /* Hover effect */
 tr:hover {
