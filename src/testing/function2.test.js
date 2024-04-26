@@ -1,7 +1,6 @@
 const db = require("../routes/db-config");
 
 
-
 const addUsers = (req, res) => {
     const { email, password, role } = req.body;
     const sql = 'INSERT INTO logincredential (email, password, roleID) VALUES (?, ?, ?)';

@@ -15,7 +15,7 @@ function sendOTP(){
         document.getElementById("login-container").style.display = "none" 
  
         generateOTPs()
-        sendEmailForgotPassword(email,OTP) 
+        sendEmailForgotPassword(email,OTP)  
  
     })    
 }  
