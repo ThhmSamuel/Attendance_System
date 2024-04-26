@@ -529,6 +529,7 @@ input{
   padding:1rem;
 }
 
+
 .header--wrapper{
   display: flex;
   justify-content: space-between;
@@ -756,7 +757,7 @@ tr.critical {
   background-color: #ffcccc; 
 }
 
-tr.good { 
+tr.good {  
   background-color: #b9f6ca;
 } 
 
