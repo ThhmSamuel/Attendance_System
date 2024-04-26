@@ -155,7 +155,7 @@ function handleFile(fileInput, termID) {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({  name, studentID, studentEmail, cohortID, termID  })
+                    body: JSON.stringify({  name, studentID, studentEmail, cohortID, termID  }) 
                 })
                 .then(response => {
                     if (!response.ok) {
