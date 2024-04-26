@@ -1366,7 +1366,6 @@ app.post('/getRoleID', (req, res) => {
     
     const {email} = req.body;  
 
-
     const sqlQuery1 =  `SELECT roleID FROM logincredential
     WHERE email = "${email}";`; 
  
@@ -1379,7 +1378,7 @@ app.post('/getRoleID', (req, res) => {
                 } else {
                     resolve(results1);
                 }
-            });
+            }); 
         });
     };
 
