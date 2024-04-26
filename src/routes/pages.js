@@ -16,6 +16,7 @@ const { addUsers, removeUsers, userList } = require("../models/manage-user"); //
 
 //manage course roster
 const { addStudent, updateStudent, populateOption, populateTerm } = require("../models/manage-course-roster");
+const { getCohortName, getLecturerName, getLecturerProgramme } = require("../models/dashboard");
 
 
 const router = express.Router();
@@ -79,6 +80,8 @@ router.post("/updateStudent",updateStudent)
 router.get("/populateOption",populateOption)
 router.get("/populateTerm",populateTerm)
 
-
-
+router.get("/getCohortName",getCohortName)
+router.get("/getLecturerName",getLecturerName)
+router.get("/getLecturerProgramme",getLecturerProgramme)
 module.exports = router;   
+

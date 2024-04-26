@@ -38,21 +38,10 @@ function initializePage() {
     // Set intervals to update the time and date every second
     setInterval(updateLiveTime, 1000);
     setInterval(updateDate, 1000);
-
-    // Checkbox functionality
-    const checkboxes = document.querySelectorAll('.checkbox');
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const targetId = this.dataset.target;
-            const row = this.closest('tr');
-            if (this.checked) {
-                row.remove();
-            }
-        });
-    });
 }
 
 // Check if the live time and live date elements exist before initializing page functionality
 if (document.getElementById("live-time") && document.getElementById("liveDate")) {
     initializePage();
 }
+
